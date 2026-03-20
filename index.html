@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a0a'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%2300f2ea'/%3E%3Cstop offset='100%25' stop-color='%233B8BD4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial Black,sans-serif' font-size='28' font-weight='900' fill='url(%23g)'%3EL%3C/text%3E%3Crect x='12' y='48' width='40' height='3' rx='1.5' fill='url(%23g)'/%3E%3Crect x='16' y='54' width='32' height='2' rx='1' fill='%233B8BD4' opacity='0.6'/%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MeuTok</title>
+<title>Limbo</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -106,7 +107,7 @@
   .emoji-grid button{background:none;border:none;font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:background .15s;}
   .emoji-grid button:hover{background:#1a1a1a;}
   .form-bottom{display:flex;justify-content:flex-end;}
-  .send-btn{padding:7px 18px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--accent),#ff6b6b);color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+  .send-btn{padding:7px 18px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s;}
   .send-btn:hover{opacity:.85;}
 
   /* ── SEÇÃO MÚSICA ── */
@@ -139,7 +140,7 @@
   #section-snake{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;}
   #snakeCanvas{border:2px solid var(--border);border-radius:12px;background:#0d0d0d;}
   .game-score{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--accent2);}
-  .game-btn{padding:10px 28px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--accent),#ff6b6b);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;cursor:pointer;transition:opacity .2s;}
+  .game-btn{padding:10px 28px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;cursor:pointer;transition:opacity .2s;}
   .game-btn:hover{opacity:.85;}
   .game-back{background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 20px;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
   .game-back:hover{border-color:var(--text);color:var(--text);}
@@ -197,7 +198,7 @@
   .modal textarea{resize:vertical;min-height:60px;}
   .hint{font-size:11px;color:var(--muted);margin-top:-6px;margin-bottom:12px;line-height:1.5;}
   .hint code{background:#1a1a1a;padding:1px 5px;border-radius:4px;color:var(--accent2);}
-  .btn-primary{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--accent),#ff6b6b);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:2px;}
+  .btn-primary{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:2px;}
   .btn-primary:hover{opacity:.9;transform:translateY(-1px);}
   .btn-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;position:absolute;top:14px;right:16px;}
   .error-msg{color:var(--accent);font-size:12px;margin-top:-6px;margin-bottom:8px;display:none;}
@@ -219,7 +220,31 @@
 <body>
 
 <nav>
-  <div class="logo">MeuTok</div>
+  <div class="logo" style="display:flex;align-items:center;">
+  <svg width="120" height="36" viewBox="0 0 300 80" style="overflow:visible;">
+    <defs>
+      <linearGradient id="lg" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#00f2ea"/>
+        <stop offset="45%" stop-color="#ffffff"/>
+        <stop offset="100%" stop-color="#3B8BD4"/>
+      </linearGradient>
+      <linearGradient id="ll1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#00f2ea"/>
+        <stop offset="100%" stop-color="#3B8BD4"/>
+      </linearGradient>
+      <linearGradient id="ll2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#3B8BD4"/>
+        <stop offset="100%" stop-color="#00f2ea"/>
+      </linearGradient>
+    </defs>
+    <text x="150" y="52" text-anchor="middle"
+      font-family="'Bebas Neue',sans-serif"
+      font-size="58" letter-spacing="10"
+      fill="url(#lg)">LIMBO</text>
+    <rect x="30" y="60" width="240" height="3" rx="1.5" fill="url(#ll1)"/>
+    <rect x="50" y="67" width="200" height="2" rx="1" fill="url(#ll2)" opacity="0.6"/>
+  </svg>
+</div>
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
     <input type="text" id="searchInput" placeholder="Buscar por título..." oninput="onSearch(this.value)"/>
@@ -314,6 +339,27 @@
       <div class="game-btns">
         <button class="game-back" onclick="showSection('games')">← Voltar</button>
         <button class="game-btn" onclick="startSnake()" id="snakeBtn">Iniciar</button>
+      </div>
+      <div style="background:#111;border:1px solid #222;border-radius:12px;padding:14px 20px;max-width:320px;width:100%;">
+        <div style="font-size:12px;font-weight:700;color:#00f2ea;margin-bottom:10px;letter-spacing:1px;text-transform:uppercase;">Como jogar</div>
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:#888;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:3px 8px;font-size:11px;color:#ccc;">↑ ↓ ← →</span>
+            <span>Mover a cobra (teclado)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:3px 8px;font-size:11px;color:#ccc;">Swipe</span>
+            <span>Mover a cobra (celular)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:12px;height:12px;border-radius:50%;background:#00f2ea;display:inline-block;flex-shrink:0;"></span>
+            <span>Come a comida pra crescer</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:12px;height:12px;border-radius:50%;background:#ff2d55;display:inline-block;flex-shrink:0;"></span>
+            <span>Não bata nas paredes ou em si mesmo!</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -495,7 +541,7 @@
       for(let x=0;x<W;x++){ctx.beginPath();ctx.moveTo(x*SIZE,0);ctx.lineTo(x*SIZE,canvas.height);ctx.stroke();}
       for(let y=0;y<H;y++){ctx.beginPath();ctx.moveTo(0,y*SIZE);ctx.lineTo(canvas.width,y*SIZE);ctx.stroke();}
       // comida
-      ctx.fillStyle = '#ff2d55';
+      ctx.fillStyle = '#00f2ea';
       ctx.beginPath(); ctx.arc(food.x*SIZE+SIZE/2, food.y*SIZE+SIZE/2, SIZE/2-2, 0, Math.PI*2); ctx.fill();
       // cobra
       snake.forEach((s,i) => {
@@ -517,7 +563,7 @@
       if (head.x===food.x && head.y===food.y) { score++; document.getElementById('snakeScore').textContent=score; food=spawnFood(); }
       else snake.pop();
       draw();
-    }, 120);
+    }, 200);
 
     snakeGame = { loop };
 
