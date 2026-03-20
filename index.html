@@ -480,8 +480,8 @@
   <div class="music-player-name" id="musicPlayerName">Nome da música</div>
   <audio id="musicPlayerAudio" controls class="music-player-audio" onplay="document.getElementById('musicPlayerDisc').classList.add('spinning')" onpause="document.getElementById('musicPlayerDisc').classList.remove('spinning')"></audio>
   <div class="music-player-btns">
-    <a id="musicPlayerDownload" href="#" download class="download-btn" style="padding:10px 20px;font-size:13px;">⬇ Download</a>
-    <button id="musicPlayerDelete" onclick="deleteMusicFromPlayer()" class="delete-music-btn" style="padding:10px 16px;font-size:13px;display:none;">🗑 Deletar</button>
+    <a id="musicPlayerDownload" href="#" download style="padding:12px 28px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,#00f2ea,#3B8BD4);color:#0a0a0a;border:none;border-radius:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:opacity .2s;">⬇ Download</a>
+    <button id="musicPlayerDelete" onclick="deleteMusicFromPlayer()" style="padding:12px 28px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;background:transparent;color:#00f2ea;border:2px solid #00f2ea;border-radius:14px;cursor:pointer;display:none;transition:all .2s;" onmouseover="this.style.background='rgba(0,242,234,.1)'" onmouseout="this.style.background='transparent'">🗑 Deletar</button>
   </div>
 </div>
 
