@@ -944,7 +944,7 @@
 
   function renderFeed() {
     const feed=document.getElementById('feed'), noRes=document.getElementById('noResults');
-    document.getElementById('adminNavBtn').textContent=isAdmin?'+ Admin':'+ Admin';
+    document.getElementById('adminNavBtn').textContent=isAdmin?'+ Vídeo':'+ Admin';
     const vub = document.getElementById('videoUploadBtn');
     if (vub) vub.style.display = isAdmin ? 'block' : 'none';
     feed.innerHTML=''; feed.style.display=noRes.style.display='none';
@@ -1096,7 +1096,7 @@
 
   function openLogin(){if(isAdmin){openUpload();return;}document.getElementById('loginModal').classList.add('open');setTimeout(()=>document.getElementById('adminPass').focus(),150);}
   function closeLogin(){document.getElementById('loginModal').classList.remove('open');document.getElementById('adminPass').value='';document.getElementById('loginError').style.display='none';}
-  function checkLogin(){if(document.getElementById('adminPass').value===ADMIN_PASSWORD){isAdmin=true;closeLogin();renderFeed();openUpload();}else{document.getElementById('loginError').style.display='block';document.getElementById('adminPass').value='';}}
+  function checkLogin(){if(document.getElementById('adminPass').value===ADMIN_PASSWORD){isAdmin=true;closeLogin();renderFeed();showToast('Bem-vindo, admin! 👋');}else{document.getElementById('loginError').style.display='block';document.getElementById('adminPass').value='';}}
   window.openLogin=openLogin;window.closeLogin=closeLogin;window.checkLogin=checkLogin;
 
   function openUpload(){
