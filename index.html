@@ -7,196 +7,213 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0a; --surface: #111; --surface2: #161616;
-    --border: #222; --accent: #ff2d55; --accent2: #00f2ea;
-    --text: #f5f5f5; --muted: #666; --nav-h: 58px;
+    --bg:#0a0a0a; --surface:#111; --surface2:#161616;
+    --border:#222; --accent:#ff2d55; --accent2:#00f2ea;
+    --text:#f5f5f5; --muted:#666; --nav-h:58px;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; overflow:hidden; height:100dvh; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;height:100dvh;}
 
-  nav {
-    position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nav-h);
-    display:flex; align-items:center; gap:12px; padding:0 16px;
-    background:rgba(10,10,10,.97); border-bottom:1px solid var(--border);
-  }
-  .logo {
-    font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:2px; flex-shrink:0;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  }
-  .search-wrap { flex:1; position:relative; max-width:380px; }
-  .search-wrap input { width:100%; background:#1a1a1a; border:1.5px solid var(--border); color:var(--text); padding:8px 32px 8px 34px; border-radius:20px; font-family:'DM Sans',sans-serif; font-size:13px; outline:none; transition:border-color .2s; }
-  .search-wrap input:focus { border-color:var(--accent2); }
-  .search-wrap input::placeholder { color:var(--muted); }
-  .search-icon { position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:14px; pointer-events:none; }
-  .clear-btn { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--muted); font-size:15px; cursor:pointer; display:none; }
-  .nav-right { display:flex; align-items:center; gap:8px; flex-shrink:0; margin-left:auto; }
-  #muteBtn { width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.08); border:none; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s; }
-  #muteBtn:hover { background:rgba(255,255,255,.18); }
-  .nav-btn { background:none; border:1.5px solid var(--border); color:var(--text); padding:6px 14px; border-radius:20px; font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all .2s; white-space:nowrap; }
-  .nav-btn:hover { border-color:var(--accent); color:var(--accent); }
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;gap:12px;padding:0 16px;background:rgba(10,10,10,.97);border-bottom:1px solid var(--border);}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .search-wrap{flex:1;position:relative;max-width:380px;}
+  .search-wrap input{width:100%;background:#1a1a1a;border:1.5px solid var(--border);color:var(--text);padding:8px 32px 8px 34px;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+  .search-wrap input:focus{border-color:var(--accent2);}
+  .search-wrap input::placeholder{color:var(--muted);}
+  .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;}
+  .clear-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);font-size:15px;cursor:pointer;display:none;}
+  .nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
+  #muteBtn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);border:none;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+  #muteBtn:hover{background:rgba(255,255,255,.18);}
+  .nav-btn{background:none;border:1.5px solid var(--border);color:var(--text);padding:6px 14px;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+  .nav-btn:hover{border-color:var(--accent);color:var(--accent);}
 
-  #app { display:flex; height:100dvh; padding-top:var(--nav-h); }
+  /* APP */
+  #app{display:flex;height:100dvh;padding-top:var(--nav-h);}
 
-  #sidebar { display:none; width:200px; flex-shrink:0; border-right:1px solid var(--border); flex-direction:column; background:var(--bg); }
-  @media(min-width:768px){ #sidebar { display:flex; } }
-  .sidebar-header { padding:12px 12px 8px; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border); }
-  #sidebarList { flex:1; overflow-y:auto; padding:6px; }
-  #sidebarList::-webkit-scrollbar { width:3px; }
-  #sidebarList::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
-  .sidebar-item { display:flex; align-items:center; gap:8px; padding:8px; border-radius:8px; cursor:pointer; transition:background .15s; font-size:12px; font-weight:500; color:var(--muted); }
-  .sidebar-item:hover { background:#1a1a1a; color:var(--text); }
-  .sidebar-item.active { background:rgba(255,45,85,.1); color:var(--accent); }
-  .sidebar-num { font-family:'Bebas Neue',sans-serif; font-size:14px; width:18px; text-align:center; flex-shrink:0; }
-  .sidebar-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  /* SIDEBAR esquerda — categorias */
+  #sidebar{display:none;width:180px;flex-shrink:0;border-right:1px solid var(--border);flex-direction:column;background:var(--bg);}
+  @media(min-width:768px){#sidebar{display:flex;}}
+  .sidebar-header{padding:16px 14px 10px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);}
+  .cat-item{display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;transition:background .15s;font-size:13px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);}
+  .cat-item:hover{background:#1a1a1a;color:var(--text);}
+  .cat-item.active{background:rgba(255,45,85,.1);color:var(--accent);}
+  .cat-icon{font-size:20px;}
+  .cat-label{flex:1;}
+  .cat-badge{background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;}
 
-  #feed-area { flex:1; display:flex; align-items:stretch; justify-content:center; overflow:hidden; background:#0a0a0a; }
-  #video-col { width:100%; max-width:400px; position:relative; }
-  #feed { width:100%; height:100%; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; }
-  #feed::-webkit-scrollbar { display:none; }
+  /* MAIN AREA */
+  #main{flex:1;display:flex;overflow:hidden;}
 
-  .video-slide { height:calc(100dvh - var(--nav-h)); scroll-snap-align:start; position:relative; background:#000; }
-  .video-slide video { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; cursor:pointer; }
-  .video-slide::after { content:''; position:absolute; inset:0; pointer-events:none; z-index:1; background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 40%,transparent 68%,rgba(0,0,0,.3) 100%); }
+  /* ── SEÇÃO VÍDEOS ── */
+  #section-videos{flex:1;display:flex;overflow:hidden;}
+  #feed-area{flex:1;display:flex;align-items:stretch;justify-content:center;overflow:hidden;background:#0a0a0a;}
+  #video-col{width:100%;max-width:400px;position:relative;}
+  #feed{width:100%;height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;}
+  #feed::-webkit-scrollbar{display:none;}
+  .video-slide{height:calc(100dvh - var(--nav-h));scroll-snap-align:start;position:relative;background:#000;}
+  .video-slide video{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;cursor:pointer;}
+  .video-slide::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 40%,transparent 68%,rgba(0,0,0,.3) 100%);}
+  .video-info{position:absolute;bottom:90px;left:14px;right:70px;z-index:2;animation:fadeUp .4s ease;}
+  .video-title{font-size:14px;font-weight:700;margin-bottom:4px;text-shadow:0 1px 8px rgba(0,0,0,.9);}
+  .video-desc{font-size:12px;color:rgba(255,255,255,.7);line-height:1.4;}
+  .side-actions{position:absolute;right:10px;bottom:240px;z-index:2;display:flex;flex-direction:column;gap:14px;align-items:center;}
+  .action-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;user-select:none;}
+  .action-icon{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.13);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:18px;transition:transform .15s,background .15s;}
+  .action-btn:active .action-icon{transform:scale(1.22);background:rgba(255,45,85,.35);}
+  .action-btn span{font-size:10px;color:rgba(255,255,255,.85);font-weight:500;}
+  .progress-wrap{position:absolute;bottom:0;left:0;right:0;z-index:4;padding:18px 0 8px;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 100%);cursor:pointer;user-select:none;}
+  .progress-track{position:relative;height:3px;margin:0 12px;background:rgba(255,255,255,.25);border-radius:3px;transition:height .15s;}
+  .progress-wrap:hover .progress-track{height:5px;}
+  .progress-fill{height:100%;border-radius:3px;width:0%;background:linear-gradient(to right,var(--accent),var(--accent2));pointer-events:none;}
+  .progress-thumb{position:absolute;top:50%;left:0%;width:13px;height:13px;border-radius:50%;background:#fff;transform:translateY(-50%);opacity:0;transition:opacity .15s;pointer-events:none;box-shadow:0 0 4px rgba(0,0,0,.5);}
+  .progress-wrap:hover .progress-thumb{opacity:1;}
+  .time-display{display:flex;justify-content:space-between;padding:5px 12px 0;font-size:10px;color:rgba(255,255,255,.7);pointer-events:none;}
+  .play-indicator{position:absolute;font-size:56px;z-index:5;pointer-events:none;opacity:0;top:50%;left:50%;transform:translate(-50%,-50%);margin-top:-30px;margin-left:-30px;}
+  .play-indicator.pop{animation:fadeOut .55s ease forwards;}
 
-  .video-info { position:absolute; bottom:90px; left:14px; right:70px; z-index:2; animation:fadeUp .4s ease; }
-  .video-title { font-size:14px; font-weight:700; margin-bottom:4px; text-shadow:0 1px 8px rgba(0,0,0,.9); }
-  .video-desc  { font-size:12px; color:rgba(255,255,255,.7); line-height:1.4; }
+  /* comentários desktop */
+  #comments-col{display:none;width:280px;flex-shrink:0;border-left:1px solid var(--border);flex-direction:column;background:var(--surface);}
+  @media(min-width:768px){#comments-col{display:flex;}}
+  .comments-header{padding:12px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .comments-header h3{font-size:13px;font-weight:700;}
+  .comments-header-right{display:flex;align-items:center;gap:8px;}
+  .comments-count{font-size:11px;color:var(--muted);background:var(--surface2);padding:2px 8px;border-radius:10px;}
+  .close-comments-btn{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;transition:color .2s;}
+  .close-comments-btn:hover{color:var(--text);}
+  #commentsList{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;}
+  #commentsList::-webkit-scrollbar{width:3px;}
+  #commentsList::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  .comment-item{background:var(--surface2);border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5;animation:fadeUp .3s ease;border:1px solid var(--border);position:relative;}
+  .comment-text{color:var(--text);word-break:break-word;padding-right:20px;}
+  .comment-time{font-size:10px;color:var(--muted);margin-top:4px;}
+  .comment-delete{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;opacity:0;transition:opacity .2s,color .2s;line-height:1;}
+  .comment-item:hover .comment-delete{opacity:1;}
+  .comment-delete:hover{color:var(--accent);}
+  .no-comments-msg{text-align:center;color:var(--muted);font-size:12px;padding:30px 10px;}
+  .no-comments-msg .icon{font-size:28px;margin-bottom:6px;}
+  .comment-form{padding:10px 12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;position:relative;}
+  .comment-input-wrap{position:relative;}
+  .comment-form textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:9px 36px 9px 12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;resize:none;height:64px;outline:none;transition:border-color .2s;}
+  .comment-form textarea:focus{border-color:var(--accent2);}
+  .comment-form textarea::placeholder{color:var(--muted);}
+  .emoji-btn{position:absolute;right:8px;bottom:8px;background:none;border:none;font-size:18px;cursor:pointer;opacity:.6;transition:opacity .2s;}
+  .emoji-btn:hover{opacity:1;}
+  .emoji-picker{display:none;position:absolute;bottom:100%;right:0;z-index:50;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;width:240px;animation:fadeUp .2s ease;}
+  .emoji-picker.open{display:block;}
+  .emoji-grid{display:flex;flex-wrap:wrap;gap:4px;}
+  .emoji-grid button{background:none;border:none;font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:background .15s;}
+  .emoji-grid button:hover{background:#1a1a1a;}
+  .form-bottom{display:flex;justify-content:flex-end;}
+  .send-btn{padding:7px 18px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--accent),#ff6b6b);color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+  .send-btn:hover{opacity:.85;}
 
-  /* botões laterais */
-  .side-actions { position:absolute; right:10px; bottom:240px; z-index:2; display:flex; flex-direction:column; gap:14px; align-items:center; }
-  .action-btn { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; user-select:none; }
-  .action-icon { width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.13); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; font-size:18px; transition:transform .15s,background .15s; }
-  .action-btn:active .action-icon { transform:scale(1.22); background:rgba(255,45,85,.35); }
-  .action-btn span { font-size:10px; color:rgba(255,255,255,.85); font-weight:500; }
+  /* ── SEÇÃO MÚSICA ── */
+  #section-music{flex:1;display:none;flex-direction:column;overflow:hidden;}
+  .section-top{padding:24px 28px 16px;border-bottom:1px solid var(--border);}
+  .section-top h2{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .section-top p{font-size:13px;color:var(--muted);margin-top:4px;}
+  .music-feed{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;}
+  .music-feed::-webkit-scrollbar{width:3px;}
+  .music-feed::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  .music-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s;}
+  .music-card:hover{border-color:var(--accent2);}
+  .music-card video{width:100%;max-height:300px;object-fit:cover;display:block;}
+  .music-info{padding:12px 14px;}
+  .music-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+  .music-desc{font-size:12px;color:var(--muted);}
+  .music-empty{text-align:center;color:var(--muted);padding:60px 20px;}
+  .music-empty .icon{font-size:48px;margin-bottom:10px;}
 
-  /* barra de progresso */
-  .progress-wrap { position:absolute; bottom:0; left:0; right:0; z-index:4; padding:18px 0 8px; background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 100%); cursor:pointer; user-select:none; }
-  .progress-track { position:relative; height:3px; margin:0 12px; background:rgba(255,255,255,.25); border-radius:3px; transition:height .15s; }
-  .progress-wrap:hover .progress-track { height:5px; }
-  .progress-fill { height:100%; border-radius:3px; width:0%; background:linear-gradient(to right,var(--accent),var(--accent2)); pointer-events:none; position:relative; }
-  .progress-thumb { position:absolute; top:50%; left:0%; width:13px; height:13px; border-radius:50%; background:#fff; transform:translateY(-50%); opacity:0; transition:opacity .15s; pointer-events:none; box-shadow:0 0 4px rgba(0,0,0,.5); }
-  .progress-wrap:hover .progress-thumb { opacity:1; }
-  .time-display { display:flex; justify-content:space-between; padding:5px 12px 0; font-size:10px; color:rgba(255,255,255,.7); pointer-events:none; }
+  /* ── SEÇÃO JOGOS ── */
+  #section-games{flex:1;display:none;flex-direction:column;overflow:hidden;}
+  .games-grid{flex:1;overflow-y:auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;align-content:start;}
+  .game-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;}
+  .game-card:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .game-card .g-icon{font-size:48px;margin-bottom:12px;}
+  .game-card .g-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:6px;}
+  .game-card .g-desc{font-size:12px;color:var(--muted);line-height:1.4;}
 
-  .play-indicator { position:absolute; font-size:56px; z-index:5; pointer-events:none; opacity:0; top:50%; left:50%; transform:translate(-50%, -50%); margin-top:-30px; margin-left:-30px; }
-  .play-indicator.pop { animation:fadeOut .55s ease forwards; }
+  /* ── JOGO: COBRINHA ── */
+  #section-snake{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;}
+  #snakeCanvas{border:2px solid var(--border);border-radius:12px;background:#0d0d0d;}
+  .game-score{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--accent2);}
+  .game-btn{padding:10px 28px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--accent),#ff6b6b);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;cursor:pointer;transition:opacity .2s;}
+  .game-btn:hover{opacity:.85;}
+  .game-back{background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 20px;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
+  .game-back:hover{border-color:var(--text);color:var(--text);}
+  .game-btns{display:flex;gap:10px;align-items:center;}
+  .snake-msg{font-size:14px;color:var(--muted);text-align:center;}
 
-  /* ── COMENTÁRIOS direita (desktop) ── */
-  #comments-col {
-    display:none; width:280px; flex-shrink:0;
-    border-left:1px solid var(--border); flex-direction:column; background:var(--surface);
-  }
-  @media(min-width:768px){ #comments-col { display:flex; } }
+  /* ── JOGO: QUIZ ── */
+  #section-quiz{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:16px;}
+  .quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;width:100%;max-width:480px;}
+  .quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+  .quiz-prog{font-size:12px;color:var(--muted);}
+  .quiz-timer{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent2);}
+  .quiz-timer.urgent{color:var(--accent);animation:pulse .5s infinite;}
+  .quiz-q{font-size:18px;font-weight:700;margin-bottom:20px;line-height:1.4;}
+  .quiz-opts{display:flex;flex-direction:column;gap:10px;}
+  .quiz-opt{padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface2);cursor:pointer;font-size:14px;transition:all .2s;text-align:left;}
+  .quiz-opt:hover{border-color:var(--accent2);background:rgba(0,242,234,.06);}
+  .quiz-opt.correct{border-color:#00c853;background:rgba(0,200,83,.1);color:#00c853;}
+  .quiz-opt.wrong{border-color:var(--accent);background:rgba(255,45,85,.1);color:var(--accent);}
+  .quiz-opt:disabled{cursor:default;}
+  .quiz-result{text-align:center;padding:10px 0;}
+  .quiz-result .big{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;}
+  .quiz-result p{font-size:14px;color:var(--muted);margin-top:6px;}
+  .timer-bar{height:4px;background:var(--border);border-radius:4px;margin-bottom:16px;overflow:hidden;}
+  .timer-fill{height:100%;background:var(--accent2);border-radius:4px;transition:width .1s linear;}
 
-  .comments-header {
-    padding:12px 16px 10px; border-bottom:1px solid var(--border);
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .comments-header h3 { font-size:13px; font-weight:700; }
-  .comments-header-right { display:flex; align-items:center; gap:8px; }
-  .comments-count { font-size:11px; color:var(--muted); background:var(--surface2); padding:2px 8px; border-radius:10px; }
-  .close-comments-btn { background:none; border:none; color:var(--muted); font-size:18px; cursor:pointer; line-height:1; transition:color .2s; }
-  .close-comments-btn:hover { color:var(--text); }
+  /* mobile comments modal */
+  #mobileCommentModal{display:none;position:fixed;inset:0;z-index:300;background:rgba(10,10,10,.97);flex-direction:column;}
+  #mobileCommentModal.open{display:flex;}
+  .mcm-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+  .mcm-header h3{font-size:15px;font-weight:700;}
+  .mcm-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;}
+  #mobileCommentsList{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
+  .mcm-form{padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;}
+  .mcm-input-wrap{flex:1;position:relative;}
+  .mcm-form textarea{width:100%;background:#1a1a1a;border:1.5px solid var(--border);color:var(--text);padding:10px 36px 10px 12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;resize:none;height:44px;outline:none;}
+  .mcm-form textarea:focus{border-color:var(--accent2);}
+  .mcm-emoji-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;cursor:pointer;opacity:.6;}
+  .mcm-emoji-picker{display:none;position:absolute;bottom:100%;right:0;z-index:50;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;width:240px;}
+  .mcm-emoji-picker.open{display:block;}
+  .mcm-send{padding:0 16px;height:44px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-weight:700;font-size:13px;cursor:pointer;flex-shrink:0;}
 
-  #commentsList { flex:1; overflow-y:auto; padding:10px 12px; display:flex; flex-direction:column; gap:8px; }
-  #commentsList::-webkit-scrollbar { width:3px; }
-  #commentsList::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+  .center-msg{display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;text-align:center;padding:40px;}
+  .center-msg .big-icon{font-size:52px;}
+  .center-msg h2{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--muted);}
+  .center-msg p{font-size:13px;color:var(--muted);line-height:1.6;}
 
-  .comment-item { background:var(--surface2); border-radius:10px; padding:10px 12px; font-size:12px; line-height:1.5; animation:fadeUp .3s ease; border:1px solid var(--border); position:relative; }
-  .comment-text { color:var(--text); word-break:break-word; padding-right:20px; }
-  .comment-time { font-size:10px; color:var(--muted); margin-top:4px; }
-  .comment-delete {
-    position:absolute; top:8px; right:8px;
-    background:none; border:none; color:var(--muted);
-    font-size:13px; cursor:pointer; opacity:0;
-    transition:opacity .2s, color .2s; line-height:1;
-  }
-  .comment-item:hover .comment-delete { opacity:1; }
-  .comment-delete:hover { color:var(--accent); }
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);z-index:200;align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:30px;width:90%;max-width:400px;position:relative;animation:popIn .25s cubic-bezier(.34,1.56,.64,1);}
+  .modal h2{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;margin-bottom:6px;}
+  .modal p.subtitle{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5;}
+  .modal input[type="password"],.modal input[type="text"],.modal textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:11px 14px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;margin-bottom:10px;outline:none;transition:border-color .2s;}
+  .modal input:focus,.modal textarea:focus{border-color:var(--accent2);}
+  .modal textarea{resize:vertical;min-height:60px;}
+  .hint{font-size:11px;color:var(--muted);margin-top:-6px;margin-bottom:12px;line-height:1.5;}
+  .hint code{background:#1a1a1a;padding:1px 5px;border-radius:4px;color:var(--accent2);}
+  .btn-primary{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--accent),#ff6b6b);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:2px;}
+  .btn-primary:hover{opacity:.9;transform:translateY(-1px);}
+  .btn-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;position:absolute;top:14px;right:16px;}
+  .error-msg{color:var(--accent);font-size:12px;margin-top:-6px;margin-bottom:8px;display:none;}
 
-  .no-comments-msg { text-align:center; color:var(--muted); font-size:12px; padding:30px 10px; }
-  .no-comments-msg .icon { font-size:28px; margin-bottom:6px; }
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 22px;border-radius:30px;font-size:13px;font-weight:500;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;}
+  #toast.show{transform:translateX(-50%) translateY(0);}
+  .heart-burst{position:absolute;font-size:72px;z-index:10;pointer-events:none;left:50%;top:40%;transform:translate(-50%,-50%);animation:heartBurst .6s ease forwards;}
+  .mute-hint{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);color:#fff;padding:8px 18px;border-radius:30px;font-size:12px;z-index:102;animation:fadeUpC .4s ease,fadeOut2 .4s ease 3s forwards;pointer-events:none;white-space:nowrap;}
 
-  /* form com emoji */
-  .comment-form { padding:10px 12px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:8px; position:relative; }
-  .comment-input-wrap { position:relative; }
-  .comment-form textarea {
-    width:100%; background:var(--bg); border:1.5px solid var(--border); color:var(--text);
-    padding:9px 36px 9px 12px; border-radius:10px; font-family:'DM Sans',sans-serif;
-    font-size:13px; resize:none; height:64px; outline:none; transition:border-color .2s;
-  }
-  .comment-form textarea:focus { border-color:var(--accent2); }
-  .comment-form textarea::placeholder { color:var(--muted); }
-  .emoji-btn {
-    position:absolute; right:8px; bottom:8px;
-    background:none; border:none; font-size:18px; cursor:pointer;
-    opacity:.6; transition:opacity .2s;
-  }
-  .emoji-btn:hover { opacity:1; }
-
-  /* emoji picker */
-  .emoji-picker {
-    display:none; position:absolute; bottom:100%; right:0; z-index:50;
-    background:var(--surface); border:1px solid var(--border); border-radius:12px;
-    padding:10px; width:240px; animation:fadeUp .2s ease;
-  }
-  .emoji-picker.open { display:block; }
-  .emoji-grid { display:flex; flex-wrap:wrap; gap:4px; }
-  .emoji-grid button { background:none; border:none; font-size:20px; cursor:pointer; padding:4px; border-radius:6px; transition:background .15s; }
-  .emoji-grid button:hover { background:#1a1a1a; }
-
-  .form-bottom { display:flex; justify-content:flex-end; }
-  .send-btn { padding:7px 18px; border:none; border-radius:20px; background:linear-gradient(135deg,var(--accent),#ff6b6b); color:#fff; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; cursor:pointer; transition:opacity .2s; }
-  .send-btn:hover { opacity:.85; }
-
-  /* modal mobile */
-  #mobileCommentModal { display:none; position:fixed; inset:0; z-index:300; background:rgba(10,10,10,.97); flex-direction:column; }
-  #mobileCommentModal.open { display:flex; }
-  .mcm-header { padding:14px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
-  .mcm-header h3 { font-size:15px; font-weight:700; }
-  .mcm-close { background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; }
-  #mobileCommentsList { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; }
-  .mcm-form { padding:12px; border-top:1px solid var(--border); display:flex; gap:8px; align-items:center; position:relative; }
-  .mcm-input-wrap { flex:1; position:relative; }
-  .mcm-form textarea { width:100%; background:#1a1a1a; border:1.5px solid var(--border); color:var(--text); padding:10px 36px 10px 12px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; resize:none; height:44px; outline:none; }
-  .mcm-form textarea:focus { border-color:var(--accent2); }
-  .mcm-emoji-btn { position:absolute; right:8px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:18px; cursor:pointer; opacity:.6; }
-  .mcm-emoji-picker { display:none; position:absolute; bottom:100%; right:0; z-index:50; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px; width:240px; animation:fadeUp .2s ease; }
-  .mcm-emoji-picker.open { display:block; }
-  .mcm-send { padding:0 16px; height:44px; border:none; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; font-size:13px; cursor:pointer; flex-shrink:0; }
-
-  .center-msg { display:none; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:12px; text-align:center; padding:40px; }
-  .center-msg .big-icon { font-size:52px; }
-  .center-msg h2 { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--muted); }
-  .center-msg p { font-size:13px; color:var(--muted); line-height:1.6; }
-
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); backdrop-filter:blur(12px); z-index:200; align-items:center; justify-content:center; }
-  .modal-overlay.open { display:flex; }
-  .modal { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:30px; width:90%; max-width:400px; position:relative; animation:popIn .25s cubic-bezier(.34,1.56,.64,1); }
-  .modal h2 { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:6px; }
-  .modal p.subtitle { font-size:13px; color:var(--muted); margin-bottom:18px; line-height:1.5; }
-  .modal input[type="password"],.modal input[type="text"],.modal textarea { width:100%; background:var(--bg); border:1.5px solid var(--border); color:var(--text); padding:11px 14px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; margin-bottom:10px; outline:none; transition:border-color .2s; }
-  .modal input:focus,.modal textarea:focus { border-color:var(--accent2); }
-  .modal textarea { resize:vertical; min-height:60px; }
-  .hint { font-size:11px; color:var(--muted); margin-top:-6px; margin-bottom:12px; line-height:1.5; }
-  .hint code { background:#1a1a1a; padding:1px 5px; border-radius:4px; color:var(--accent2); }
-  .btn-primary { width:100%; padding:13px; border:none; border-radius:10px; background:linear-gradient(135deg,var(--accent),#ff6b6b); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:1px; cursor:pointer; transition:opacity .2s,transform .15s; margin-top:2px; }
-  .btn-primary:hover { opacity:.9; transform:translateY(-1px); }
-  .btn-close { background:none; border:none; color:var(--muted); font-size:20px; cursor:pointer; position:absolute; top:14px; right:16px; }
-  .error-msg { color:var(--accent); font-size:12px; margin-top:-6px; margin-bottom:8px; display:none; }
-
-  #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 22px; border-radius:30px; font-size:13px; font-weight:500; z-index:999; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
-  #toast.show { transform:translateX(-50%) translateY(0); }
-  .heart-burst { position:absolute; font-size:72px; z-index:10; pointer-events:none; left:50%; top:40%; transform:translate(-50%,-50%); animation:heartBurst .6s ease forwards; }
-  .mute-hint { position:fixed; bottom:60px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.75); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.1); color:#fff; padding:8px 18px; border-radius:30px; font-size:12px; z-index:102; animation:fadeUpC .4s ease, fadeOut2 .4s ease 3s forwards; pointer-events:none; white-space:nowrap; }
-
-  @keyframes heartBurst { 0%{transform:translate(-50%,-50%) scale(0);opacity:1} 50%{transform:translate(-50%,-50%) scale(1.3);opacity:1} 100%{transform:translate(-50%,-50%) scale(1.5);opacity:0} }
-  @keyframes fadeUp  { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-  @keyframes fadeUpC { from{opacity:0;transform:translateX(-50%) translateY(12px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
-  @keyframes popIn   { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
-  @keyframes fadeOut { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.4)} }
-  @keyframes fadeOut2{ from{opacity:1} to{opacity:0} }
+  @keyframes heartBurst{0%{transform:translate(-50%,-50%) scale(0);opacity:1}50%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeUpC{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+  @keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+  @keyframes fadeOut{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.4)}}
+  @keyframes fadeOut2{from{opacity:1}to{opacity:0}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 </style>
 </head>
 <body>
@@ -215,43 +232,101 @@
 </nav>
 
 <div id="app">
+  <!-- SIDEBAR categorias -->
   <div id="sidebar">
-    <div class="sidebar-header">Vídeos</div>
-    <div id="sidebarList"></div>
-  </div>
-
-  <div id="feed-area">
-    <div id="video-col">
-      <div id="feed"></div>
-      <div class="center-msg" id="noResults"><div class="big-icon">🔍</div><h2>Sem resultados</h2><p>Nenhum vídeo com esse título</p></div>
+    <div class="sidebar-header">Categorias</div>
+    <div class="cat-item active" onclick="showSection('videos')" id="cat-videos">
+      <span class="cat-icon">🎬</span><span class="cat-label">Vídeos</span>
+    </div>
+    <div class="cat-item" onclick="showSection('music')" id="cat-music">
+      <span class="cat-icon">🎵</span><span class="cat-label">Música</span>
+    </div>
+    <div class="cat-item" onclick="showSection('games')" id="cat-games">
+      <span class="cat-icon">🎮</span><span class="cat-label">Jogos</span>
     </div>
   </div>
 
-  <!-- COMENTÁRIOS desktop -->
-  <div id="comments-col">
-    <div class="comments-header">
-      <h3>💬 Comentários</h3>
-      <div class="comments-header-right">
-        <span class="comments-count" id="commentsCount">0</span>
-        <button class="close-comments-btn" onclick="toggleCommentsCol()" title="Fechar">✕</button>
-      </div>
-    </div>
-    <div id="commentsList"></div>
-    <div class="comment-form">
-      <div class="comment-input-wrap">
-        <textarea id="commentInput" placeholder="Escreva um comentário..."
-          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendComment();}"></textarea>
-        <button class="emoji-btn" onclick="toggleEmojiPicker('emojiPicker')" title="Emoji">😊</button>
-        <div class="emoji-picker" id="emojiPicker">
-          <div class="emoji-grid" id="emojiGrid"></div>
+  <div id="main">
+
+    <!-- SEÇÃO VÍDEOS -->
+    <div id="section-videos" style="flex:1;display:flex;overflow:hidden;">
+      <div id="feed-area">
+        <div id="video-col">
+          <div id="feed"></div>
+          <div class="center-msg" id="noResults"><div class="big-icon">🔍</div><h2>Sem resultados</h2><p>Nenhum vídeo com esse título</p></div>
         </div>
       </div>
-      <div class="form-bottom">
-        <button class="send-btn" onclick="sendComment()">Enviar ↑</button>
+      <div id="comments-col">
+        <div class="comments-header">
+          <h3>💬 Comentários</h3>
+          <div class="comments-header-right">
+            <span class="comments-count" id="commentsCount">0</span>
+            <button class="close-comments-btn" onclick="toggleCommentsCol()">✕</button>
+          </div>
+        </div>
+        <div id="commentsList"></div>
+        <div class="comment-form">
+          <div class="comment-input-wrap">
+            <textarea id="commentInput" placeholder="Escreva um comentário..."
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendComment();}"></textarea>
+            <button class="emoji-btn" onclick="toggleEmojiPicker('emojiPicker')">😊</button>
+            <div class="emoji-picker" id="emojiPicker"><div class="emoji-grid" id="emojiGrid"></div></div>
+          </div>
+          <div class="form-bottom"><button class="send-btn" onclick="sendComment()">Enviar ↑</button></div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <!-- SEÇÃO MÚSICA -->
+    <div id="section-music">
+      <div class="section-top">
+        <h2>🎵 Música</h2>
+        <p>Vídeos musicais adicionados pelo admin</p>
+      </div>
+      <div class="music-feed" id="musicFeed"></div>
+    </div>
+
+    <!-- SEÇÃO JOGOS -->
+    <div id="section-games">
+      <div class="section-top">
+        <h2>🎮 Jogos</h2>
+        <p>Escolha um jogo pra jogar!</p>
+      </div>
+      <div class="games-grid">
+        <div class="game-card" onclick="showSection('snake')">
+          <div class="g-icon">🐍</div>
+          <div class="g-name">Cobrinha</div>
+          <div class="g-desc">Use as setas do teclado ou swipe no celular pra mover a cobra. Não bata nas paredes!</div>
+        </div>
+        <div class="game-card" onclick="startQuiz()">
+          <div class="g-icon">🧮</div>
+          <div class="g-name">Quiz Matemática</div>
+          <div class="g-desc">10 perguntas, 30 segundos cada. Quanto você consegue acertar?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOGO COBRINHA -->
+    <div id="section-snake">
+      <div class="game-score">Pontos: <span id="snakeScore">0</span></div>
+      <canvas id="snakeCanvas" width="320" height="320"></canvas>
+      <div class="snake-msg" id="snakeMsg">Pressione Iniciar para jogar!</div>
+      <div class="game-btns">
+        <button class="game-back" onclick="showSection('games')">← Voltar</button>
+        <button class="game-btn" onclick="startSnake()" id="snakeBtn">Iniciar</button>
+      </div>
+    </div>
+
+    <!-- JOGO QUIZ -->
+    <div id="section-quiz">
+      <div class="quiz-box" id="quizBox">
+        <div id="quizContent"></div>
+      </div>
+      <button class="game-back" onclick="showSection('games')">← Voltar</button>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
 
 <!-- MOBILE COMMENTS -->
 <div id="mobileCommentModal">
@@ -265,9 +340,7 @@
       <textarea id="mobileCommentInput" placeholder="Comentar..."
         onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendComment(true);}"></textarea>
       <button class="mcm-emoji-btn" onclick="toggleEmojiPicker('mcmEmojiPicker')">😊</button>
-      <div class="mcm-emoji-picker" id="mcmEmojiPicker">
-        <div class="emoji-grid" id="mcmEmojiGrid"></div>
-      </div>
+      <div class="mcm-emoji-picker" id="mcmEmojiPicker"><div class="emoji-grid" id="mcmEmojiGrid"></div></div>
     </div>
     <button class="mcm-send" onclick="sendComment(true)">↑</button>
   </div>
@@ -290,11 +363,18 @@
   <div class="modal">
     <button class="btn-close" onclick="closeUpload()">✕</button>
     <h2>Novo Vídeo</h2>
-    <p class="subtitle">Nome do arquivo na pasta <code>videos/</code> do repositório.</p>
+    <p class="subtitle">Nome do arquivo na pasta <code>videos/</code>.</p>
     <input type="text" id="videoFile" placeholder="meu-video.mp4"/>
-    <div class="hint">Ex: <code>festa.mp4</code> — com o <code>.mp4</code>!</div>
-    <input type="text" id="videoTitle" placeholder="Título do vídeo"/>
+    <div class="hint">Ex: <code>festa.mp4</code></div>
+    <input type="text" id="videoTitle" placeholder="Título"/>
     <textarea id="videoDesc" placeholder="Descrição (opcional)"></textarea>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Categoria</label>
+      <select id="videoCategory" style="width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;">
+        <option value="videos">🎬 Vídeos</option>
+        <option value="music">🎵 Música</option>
+      </select>
+    </div>
     <button class="btn-primary" onclick="addVideo()">PUBLICAR</button>
   </div>
 </div>
@@ -306,170 +386,317 @@
   import { getFirestore, collection, addDoc, onSnapshot, query, where, orderBy,
            serverTimestamp, doc, setDoc, increment, deleteDoc }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
   const firebaseConfig = {
-    apiKey: "AIzaSyCrl1XpBV7MEk2U_AuttbqElbsuvCUWsNA",
-    authDomain: "meutok-84223.firebaseapp.com",
-    projectId: "meutok-84223",
-    storageBucket: "meutok-84223.firebasestorage.app",
-    messagingSenderId: "845294197626",
-    appId: "1:845294197626:web:ee664365c517ed8d1614c3"
+    apiKey:"AIzaSyCrl1XpBV7MEk2U_AuttbqElbsuvCUWsNA",
+    authDomain:"meutok-84223.firebaseapp.com",
+    projectId:"meutok-84223",
+    storageBucket:"meutok-84223.firebasestorage.app",
+    messagingSenderId:"845294197626",
+    appId:"1:845294197626:web:ee664365c517ed8d1614c3"
   };
-
-  const app = initializeApp(firebaseConfig);
-  const db  = getFirestore(app);
-
-  window._db = db;
-  window._addDoc = addDoc;
-  window._collection = collection;
-  window._query = query;
-  window._where = where;
-  window._orderBy = orderBy;
-  window._onSnapshot = onSnapshot;
-  window._serverTimestamp = serverTimestamp;
-  window._doc = doc;
-  window._setDoc = setDoc;
-  window._increment = increment;
-  window._deleteDoc = deleteDoc;
-  window._firebaseReady = true;
+  const app=initializeApp(firebaseConfig);
+  const db=getFirestore(app);
+  window._db=db; window._addDoc=addDoc; window._collection=collection;
+  window._query=query; window._where=where; window._orderBy=orderBy;
+  window._onSnapshot=onSnapshot; window._serverTimestamp=serverTimestamp;
+  window._doc=doc; window._setDoc=setDoc; window._increment=increment; window._deleteDoc=deleteDoc;
+  window._firebaseReady=true;
   window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <script>
-  // ══════════════════════════════════
-  //  ⚠️  TROQUE A SENHA ABAIXO
-  // ══════════════════════════════════
+  // ══════════════════════════════
+  //  ⚠️ TROQUE A SENHA
+  // ══════════════════════════════
   const ADMIN_PASSWORD = "minhasenha123";
   const VIDEO_FOLDER   = "videos/";
 
-  // ══════════════════════════════════
-  //  VÍDEOS FIXOS
-  // ══════════════════════════════════
   const VIDEOS_FIXOS = [
-    { id: "video_rata",       file: "ratacamponesa.mp4", title: "Rata",       desc: "" },
-    { id: "video_pernambuco", file: "pernambuco.mp4",    title: "Pernambuco", desc: "" },
+    { id:"video_rata",       file:"ratacamponesa.mp4", title:"Rata",       desc:"", category:"videos" },
+    { id:"video_pernambuco", file:"pernambuco.mp4",    title:"Pernambuco", desc:"", category:"videos" },
   ];
 
-  // código secreto único por dispositivo pra identificar quem comentou
-  let myToken = localStorage.getItem('meutok_token');
-  if (!myToken) {
-    myToken = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-    localStorage.setItem('meutok_token', myToken);
+  let myToken      = localStorage.getItem('meutok_token') || (() => { const t='u_'+Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem('meutok_token',t); return t; })();
+  let videosExtra  = JSON.parse(localStorage.getItem('meutok_extra')||'[]');
+  let likedLocally = JSON.parse(localStorage.getItem('meutok_liked')||'{}');
+  let isAdmin=false, isMuted=true, currentVid=null, currentId=null, hintShown=false;
+  let filtered=[], searchQ='', unsubComments=null, unsubLikes=null;
+  let currentSection = 'videos';
+
+  const EMOJIS=['😀','😂','🥰','😍','🤩','😎','🥳','😜','🤔','😮','😢','😡','❤️','🔥','👏','🙌','💯','✨','🎉','🎬','👍','👎','💀','😭','🤣','😱','🥺','😏','🤗','💪','🙏','👀'];
+
+  // ── NAVEGAÇÃO SEÇÕES ──
+  function showSection(name) {
+    currentSection = name;
+    ['videos','music','games','snake','quiz'].forEach(s => {
+      const el = document.getElementById('section-'+s);
+      if (el) el.style.display = 'none';
+    });
+    const target = document.getElementById('section-'+name);
+    if (target) target.style.display = (name==='videos') ? 'flex' : (name==='music'||name==='games') ? 'flex' : 'flex';
+
+    // highlight sidebar
+    ['videos','music','games'].forEach(c => {
+      const el = document.getElementById('cat-'+c);
+      if (el) el.classList.toggle('active', c===name || (name==='snake'&&c==='games') || (name==='quiz'&&c==='games'));
+    });
+
+    if (name==='music') renderMusic();
+    document.getElementById('searchInput').style.display = name==='videos' ? '' : 'none';
+    document.getElementById('muteBtn').style.display     = name==='videos' ? '' : 'none';
+  }
+  window.showSection = showSection;
+
+  // ── MÚSICA ──
+  function renderMusic() {
+    const feed = document.getElementById('musicFeed');
+    const all  = [...VIDEOS_FIXOS, ...videosExtra].filter(v => v.category === 'music');
+    if (all.length === 0) {
+      feed.innerHTML = `<div class="music-empty"><div class="icon">🎵</div><p>Nenhum vídeo musical ainda.<br>Admin pode adicionar na categoria Música!</p></div>`;
+      return;
+    }
+    feed.innerHTML = all.map(v => `
+      <div class="music-card">
+        <video src="${VIDEO_FOLDER}${v.file}" controls preload="metadata" style="width:100%;max-height:300px;object-fit:cover;display:block;"></video>
+        <div class="music-info">
+          <div class="music-title">${esc(v.title)}</div>
+          ${v.desc ? `<div class="music-desc">${esc(v.desc)}</div>` : ''}
+        </div>
+      </div>`).join('');
   }
 
-  let videosExtra   = JSON.parse(localStorage.getItem('meutok_extra') || '[]');
-  let likedLocally  = JSON.parse(localStorage.getItem('meutok_liked') || '{}');
-  let isAdmin       = false;
-  let isMuted       = true;
-  let currentVid    = null;
-  let currentId     = null;
-  let hintShown     = false;
-  let filtered      = [];
-  let searchQ       = '';
-  let unsubComments = null;
-  let unsubLikes    = null;
-  let commentsColOpen = true;
+  // ─────────────────────────────
+  //  JOGO: COBRINHA
+  // ─────────────────────────────
+  let snakeGame = null;
+  function startSnake() {
+    if (snakeGame) { clearInterval(snakeGame.loop); }
+    const canvas = document.getElementById('snakeCanvas');
+    const ctx    = canvas.getContext('2d');
+    const SIZE   = 20, W = canvas.width/SIZE, H = canvas.height/SIZE;
+    let snake = [{x:10,y:10}], dir={x:1,y:0}, nextDir={x:1,y:0};
+    let food  = spawnFood(), score = 0, running = true;
 
-  // emojis
-  const EMOJIS = ['😀','😂','🥰','😍','🤩','😎','🥳','😜','🤔','😮','😢','😡','❤️','🔥','👏','🙌','💯','✨','🎉','🎬','👍','👎','💀','😭','🤣','😱','🥺','😏','🤗','💪','🙏','👀'];
+    document.getElementById('snakeScore').textContent = 0;
+    document.getElementById('snakeMsg').textContent   = '';
+    document.getElementById('snakeBtn').textContent   = 'Reiniciar';
 
+    function spawnFood() {
+      let f;
+      do { f = {x:Math.floor(Math.random()*W), y:Math.floor(Math.random()*H)}; }
+      while (snake.some(s => s.x===f.x && s.y===f.y));
+      return f;
+    }
+
+    function draw() {
+      ctx.fillStyle = '#0d0d0d'; ctx.fillRect(0,0,canvas.width,canvas.height);
+      // grade
+      ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = .5;
+      for(let x=0;x<W;x++){ctx.beginPath();ctx.moveTo(x*SIZE,0);ctx.lineTo(x*SIZE,canvas.height);ctx.stroke();}
+      for(let y=0;y<H;y++){ctx.beginPath();ctx.moveTo(0,y*SIZE);ctx.lineTo(canvas.width,y*SIZE);ctx.stroke();}
+      // comida
+      ctx.fillStyle = '#ff2d55';
+      ctx.beginPath(); ctx.arc(food.x*SIZE+SIZE/2, food.y*SIZE+SIZE/2, SIZE/2-2, 0, Math.PI*2); ctx.fill();
+      // cobra
+      snake.forEach((s,i) => {
+        ctx.fillStyle = i===0 ? '#00f2ea' : `rgba(0,242,234,${0.8-i*0.03})`;
+        ctx.beginPath(); ctx.roundRect(s.x*SIZE+1,s.y*SIZE+1,SIZE-2,SIZE-2,4); ctx.fill();
+      });
+    }
+
+    const loop = setInterval(() => {
+      if (!running) return;
+      dir = {...nextDir};
+      const head = {x: snake[0].x+dir.x, y: snake[0].y+dir.y};
+      if (head.x<0||head.x>=W||head.y<0||head.y>=H||snake.some(s=>s.x===head.x&&s.y===head.y)) {
+        running = false;
+        document.getElementById('snakeMsg').textContent = `💀 Game Over! Pontos: ${score}`;
+        clearInterval(loop); return;
+      }
+      snake.unshift(head);
+      if (head.x===food.x && head.y===food.y) { score++; document.getElementById('snakeScore').textContent=score; food=spawnFood(); }
+      else snake.pop();
+      draw();
+    }, 120);
+
+    snakeGame = { loop };
+
+    // teclado
+    document.onkeydown = e => {
+      if (e.key==='ArrowUp'    && dir.y!==1)  nextDir={x:0,y:-1};
+      if (e.key==='ArrowDown'  && dir.y!==-1) nextDir={x:0,y:1};
+      if (e.key==='ArrowLeft'  && dir.x!==1)  nextDir={x:-1,y:0};
+      if (e.key==='ArrowRight' && dir.x!==-1) nextDir={x:1,y:0};
+    };
+
+    // swipe mobile
+    let tx=0,ty=0;
+    canvas.ontouchstart = e => { tx=e.touches[0].clientX; ty=e.touches[0].clientY; };
+    canvas.ontouchend   = e => {
+      const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+      if (Math.abs(dx)>Math.abs(dy)) { if(dx>0&&dir.x!==-1)nextDir={x:1,y:0}; else if(dx<0&&dir.x!==1)nextDir={x:-1,y:0}; }
+      else                           { if(dy>0&&dir.y!==-1)nextDir={x:0,y:1}; else if(dy<0&&dir.y!==1)nextDir={x:0,y:-1}; }
+    };
+
+    draw();
+  }
+  window.startSnake = startSnake;
+
+  // ─────────────────────────────
+  //  JOGO: QUIZ MATEMÁTICA
+  // ─────────────────────────────
+  const QUIZ_QUESTIONS = 10, QUIZ_TIME = 30;
+  let quizState = null;
+
+  function genQuestion() {
+    const ops = ['+','-','×','÷'];
+    const op  = ops[Math.floor(Math.random()*ops.length)];
+    let a, b, answer, q;
+    if (op==='+') { a=Math.floor(Math.random()*50)+1; b=Math.floor(Math.random()*50)+1; answer=a+b; q=`${a} + ${b}`; }
+    else if(op==='-') { a=Math.floor(Math.random()*50)+20; b=Math.floor(Math.random()*20)+1; answer=a-b; q=`${a} - ${b}`; }
+    else if(op==='×') { a=Math.floor(Math.random()*12)+1; b=Math.floor(Math.random()*12)+1; answer=a*b; q=`${a} × ${b}`; }
+    else { a=Math.floor(Math.random()*11)+1; b=a*(Math.floor(Math.random()*10)+1); answer=b/a; q=`${b} ÷ ${a}`; }
+
+    // opções falsas
+    const wrongs = new Set();
+    while(wrongs.size < 3) {
+      const w = answer + (Math.random()<.5?1:-1)*(Math.floor(Math.random()*10)+1);
+      if (w!==answer && w>0) wrongs.add(w);
+    }
+    const opts = [...wrongs, answer].sort(()=>Math.random()-.5);
+    return { q, answer, opts };
+  }
+
+  function startQuiz() {
+    showSection('quiz');
+    quizState = { current:0, score:0, timer:null };
+    showQuizQuestion();
+  }
+  window.startQuiz = startQuiz;
+
+  function showQuizQuestion() {
+    if (quizState.current >= QUIZ_QUESTIONS) { showQuizResult(); return; }
+    clearInterval(quizState.timer);
+    const qn   = genQuestion();
+    const box  = document.getElementById('quizContent');
+    let timeLeft = QUIZ_TIME;
+
+    box.innerHTML = `
+      <div class="quiz-header">
+        <span class="quiz-prog">Pergunta ${quizState.current+1}/${QUIZ_QUESTIONS} · ✅ ${quizState.score}</span>
+        <span class="quiz-timer" id="quizTimer">${timeLeft}s</span>
+      </div>
+      <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+      <div class="quiz-q">${qn.q} = ?</div>
+      <div class="quiz-opts">
+        ${qn.opts.map(o => `<button class="quiz-opt" onclick="answerQuiz(${o},${qn.answer},this)">${o}</button>`).join('')}
+      </div>`;
+
+    quizState.timer = setInterval(() => {
+      timeLeft--;
+      const timerEl = document.getElementById('quizTimer');
+      const fillEl  = document.getElementById('timerFill');
+      if (timerEl) { timerEl.textContent = timeLeft+'s'; if(timeLeft<=10) timerEl.classList.add('urgent'); }
+      if (fillEl)  fillEl.style.width = (timeLeft/QUIZ_TIME*100)+'%';
+      if (timeLeft<=0) { clearInterval(quizState.timer); quizState.current++; showQuizQuestion(); }
+    }, 1000);
+  }
+
+  function answerQuiz(chosen, correct, btn) {
+    clearInterval(quizState.timer);
+    document.querySelectorAll('.quiz-opt').forEach(b => b.disabled=true);
+    if (chosen===correct) { btn.classList.add('correct'); quizState.score++; }
+    else {
+      btn.classList.add('wrong');
+      document.querySelectorAll('.quiz-opt').forEach(b => { if(parseInt(b.textContent)===correct) b.classList.add('correct'); });
+    }
+    quizState.current++;
+    setTimeout(showQuizQuestion, 1000);
+  }
+  window.answerQuiz = answerQuiz;
+
+  function showQuizResult() {
+    const pct = Math.round(quizState.score/QUIZ_QUESTIONS*100);
+    const msg = pct>=80 ? '🏆 Incrível!' : pct>=50 ? '👍 Bom trabalho!' : '😅 Continue tentando!';
+    document.getElementById('quizContent').innerHTML = `
+      <div class="quiz-result">
+        <div class="big">${quizState.score}/${QUIZ_QUESTIONS}</div>
+        <p>${msg}</p>
+        <p style="margin-top:8px;font-size:12px;color:var(--muted)">${pct}% de acertos</p>
+        <button class="game-btn" onclick="startQuiz()" style="margin-top:20px;width:100%">Jogar de novo</button>
+      </div>`;
+  }
+
+  // ── EMOJIS ──
   function buildEmojiGrid(gridId, inputId) {
     const grid = document.getElementById(gridId);
-    if (!grid || grid.children.length > 0) return;
+    if (!grid || grid.children.length>0) return;
     EMOJIS.forEach(e => {
-      const btn = document.createElement('button');
-      btn.textContent = e;
-      btn.onclick = () => {
-        const input = document.getElementById(inputId);
-        const pos   = input.selectionStart || input.value.length;
-        input.value = input.value.slice(0, pos) + e + input.value.slice(pos);
+      const btn=document.createElement('button'); btn.textContent=e;
+      btn.onclick=()=>{
+        const input=document.getElementById(inputId);
+        const pos=input.selectionStart||input.value.length;
+        input.value=input.value.slice(0,pos)+e+input.value.slice(pos);
         input.focus();
-        document.getElementById(gridId).closest('.emoji-picker, .mcm-emoji-picker').classList.remove('open');
+        document.getElementById(gridId).closest('.emoji-picker,.mcm-emoji-picker').classList.remove('open');
       };
       grid.appendChild(btn);
     });
   }
-
-  function toggleEmojiPicker(pickerId) {
-    const picker = document.getElementById(pickerId);
-    const isDesktop = pickerId === 'emojiPicker';
-    buildEmojiGrid(isDesktop ? 'emojiGrid' : 'mcmEmojiGrid', isDesktop ? 'commentInput' : 'mobileCommentInput');
-    picker.classList.toggle('open');
+  function toggleEmojiPicker(id) {
+    const p=document.getElementById(id); const isD=id==='emojiPicker';
+    buildEmojiGrid(isD?'emojiGrid':'mcmEmojiGrid', isD?'commentInput':'mobileCommentInput');
+    p.classList.toggle('open');
   }
-  window.toggleEmojiPicker = toggleEmojiPicker;
-
-  // fecha emoji picker ao clicar fora
+  window.toggleEmojiPicker=toggleEmojiPicker;
   document.addEventListener('click', e => {
-    if (!e.target.closest('.emoji-btn') && !e.target.closest('.mcm-emoji-btn') &&
-        !e.target.closest('.emoji-picker') && !e.target.closest('.mcm-emoji-picker')) {
-      document.querySelectorAll('.emoji-picker, .mcm-emoji-picker').forEach(p => p.classList.remove('open'));
-    }
+    if (!e.target.closest('.emoji-btn')&&!e.target.closest('.mcm-emoji-btn')&&!e.target.closest('.emoji-picker')&&!e.target.closest('.mcm-emoji-picker'))
+      document.querySelectorAll('.emoji-picker,.mcm-emoji-picker').forEach(p=>p.classList.remove('open'));
   });
 
   function toggleCommentsCol() {
-    const col = document.getElementById('comments-col');
-    commentsColOpen = !commentsColOpen;
-    col.style.display = commentsColOpen ? 'flex' : 'none';
+    const col=document.getElementById('comments-col');
+    col.style.display = col.style.display==='none' ? 'flex' : 'none';
   }
-  window.toggleCommentsCol = toggleCommentsCol;
+  window.toggleCommentsCol=toggleCommentsCol;
 
-  function getAllVideos() { return [...VIDEOS_FIXOS, ...videosExtra]; }
+  // ── VÍDEOS ──
+  function getAllVideos(cat='videos') { return [...VIDEOS_FIXOS,...videosExtra].filter(v=>(v.category||'videos')===cat); }
 
-  function onSearch(q) {
-    searchQ = q.trim().toLowerCase();
-    document.getElementById('clearBtn').style.display = q ? 'block' : 'none';
-    applyFilter();
-  }
-  function clearSearch() {
-    document.getElementById('searchInput').value = '';
-    document.getElementById('clearBtn').style.display = 'none';
-    searchQ = ''; applyFilter();
-  }
+  function onSearch(q) { searchQ=q.trim().toLowerCase(); document.getElementById('clearBtn').style.display=q?'block':'none'; applyFilter(); }
+  function clearSearch() { document.getElementById('searchInput').value=''; document.getElementById('clearBtn').style.display='none'; searchQ=''; applyFilter(); }
   function applyFilter() {
-    const all = getAllVideos();
-    let r = searchQ ? all.filter(v => v.title.toLowerCase().startsWith(searchQ)) : [...all];
-    r.sort((a,b) => a.title.localeCompare(b.title, 'pt'));
-    filtered = r; renderFeed();
+    const all=getAllVideos('videos');
+    let r=searchQ?all.filter(v=>v.title.toLowerCase().startsWith(searchQ)):[...all];
+    r.sort((a,b)=>a.title.localeCompare(b.title,'pt')); filtered=r; renderFeed();
   }
 
-  function toggleMute() {
-    isMuted = !isMuted;
-    document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
-    if (currentVid) currentVid.muted = isMuted;
-  }
-  window.toggleMute = toggleMute;
+  function toggleMute() { isMuted=!isMuted; document.getElementById('muteBtn').textContent=isMuted?'🔇':'🔊'; if(currentVid)currentVid.muted=isMuted; }
+  window.toggleMute=toggleMute;
 
   function showMuteHint() {
-    if (hintShown || filtered.length === 0) return;
-    hintShown = true;
-    const h = document.createElement('div');
-    h.className = 'mute-hint'; h.textContent = '🔇 Clique em 🔇 para ativar o som';
-    document.body.appendChild(h); setTimeout(() => h.remove(), 4000);
+    if(hintShown||filtered.length===0)return; hintShown=true;
+    const h=document.createElement('div'); h.className='mute-hint'; h.textContent='🔇 Clique em 🔇 para ativar o som';
+    document.body.appendChild(h); setTimeout(()=>h.remove(),4000);
   }
 
   function renderFeed() {
-    const feed  = document.getElementById('feed');
-    const noRes = document.getElementById('noResults');
-    document.getElementById('adminNavBtn').textContent = isAdmin ? '+ Adicionar' : '+ Admin';
-    renderSidebar();
-    feed.innerHTML = '';
-    feed.style.display = noRes.style.display = 'none';
-    if (filtered.length === 0) { noRes.style.display = 'flex'; return; }
-    feed.style.display = 'block';
+    const feed=document.getElementById('feed'), noRes=document.getElementById('noResults');
+    document.getElementById('adminNavBtn').textContent=isAdmin?'+ Adicionar':'+ Admin';
+    feed.innerHTML=''; feed.style.display=noRes.style.display='none';
+    if(filtered.length===0){noRes.style.display='flex';return;}
+    feed.style.display='block';
 
-    filtered.forEach((v, i) => {
-      const liked = !!likedLocally[v.id];
-      const slide = document.createElement('div');
-      slide.className = 'video-slide';
-      slide.dataset.index = i;
-      slide.dataset.id    = v.id;
-
-      slide.innerHTML = `
+    filtered.forEach((v,i)=>{
+      const liked=!!likedLocally[v.id];
+      const slide=document.createElement('div');
+      slide.className='video-slide'; slide.dataset.index=i; slide.dataset.id=v.id;
+      slide.innerHTML=`
         <video src="${VIDEO_FOLDER}${v.file}" loop playsinline preload="auto" muted></video>
         <div class="play-indicator" id="pi-${i}"></div>
         <div class="video-info">
           <div class="video-title">${esc(v.title)}</div>
-          ${v.desc ? `<div class="video-desc">${esc(v.desc)}</div>` : ''}
+          ${v.desc?`<div class="video-desc">${esc(v.desc)}</div>`:''}
         </div>
         <div class="side-actions">
           <div class="action-btn" onclick="toggleLike('${v.id}',${i})">
@@ -477,8 +704,7 @@
             <span id="like-count-${i}">0</span>
           </div>
           <div class="action-btn" onclick="openMobileComments()">
-            <div class="action-icon">💬</div>
-            <span>Comentar</span>
+            <div class="action-icon">💬</div><span>Comentar</span>
           </div>
           ${isAdmin?`<div class="action-btn" onclick="deleteVideo('${v.id}')"><div class="action-icon">🗑️</div><span>Deletar</span></div>`:''}
         </div>
@@ -487,280 +713,146 @@
             <div class="progress-fill" id="pb-${i}"></div>
             <div class="progress-thumb" id="pth-${i}"></div>
           </div>
-          <div class="time-display">
-            <span id="cur-${i}">0:00</span>
-            <span id="dur-${i}">0:00</span>
-          </div>
-        </div>
-      `;
+          <div class="time-display"><span id="cur-${i}">0:00</span><span id="dur-${i}">0:00</span></div>
+        </div>`;
 
-      // barra clicável
-      const pw = slide.querySelector(`#pw-${i}`);
-      const pt = slide.querySelector(`#pt-${i}`);
-      const seekTo = (clientX) => {
-        const vid = slide.querySelector('video');
-        if (!vid.duration) return;
-        const rect = pt.getBoundingClientRect();
-        vid.currentTime = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)) * vid.duration;
-      };
-      // mouse drag — limpa listeners após soltar
-      pw.addEventListener('mousedown', e => {
-        e.preventDefault();
-        e.stopPropagation();
-        let isDragging = true;
-        seekTo(e.clientX);
-        const onMove = e => { if (isDragging) seekTo(e.clientX); };
-        const onUp   = () => {
-          isDragging = false;
-          window.removeEventListener('mousemove', onMove);
-          window.removeEventListener('mouseup', onUp);
-        };
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('mouseup', onUp);
+      const pw=slide.querySelector(`#pw-${i}`), pt=slide.querySelector(`#pt-${i}`);
+      const seekTo=x=>{const vid=slide.querySelector('video');if(!vid.duration)return;const r=pt.getBoundingClientRect();vid.currentTime=Math.max(0,Math.min(1,(x-r.left)/r.width))*vid.duration;};
+      pw.addEventListener('mousedown',e=>{e.preventDefault();e.stopPropagation();seekTo(e.clientX);const om=e=>seekTo(e.clientX),ou=()=>{window.removeEventListener('mousemove',om);window.removeEventListener('mouseup',ou);};window.addEventListener('mousemove',om);window.addEventListener('mouseup',ou);});
+      pw.addEventListener('touchstart',e=>{e.stopPropagation();seekTo(e.touches[0].clientX);const om=e=>{seekTo(e.touches[0].clientX);e.preventDefault();},oe=()=>{pw.removeEventListener('touchmove',om);pw.removeEventListener('touchend',oe);};pw.addEventListener('touchmove',om,{passive:false});pw.addEventListener('touchend',oe);},{passive:true});
+
+      let lastTap=0;
+      slide.addEventListener('click',e=>{
+        if(e.target.closest('.side-actions')||e.target.closest('.progress-wrap'))return;
+        const now=Date.now();
+        if(now-lastTap<300){triggerLike(v.id,i,slide);}
+        else{const vid=slide.querySelector('video'),pi=document.getElementById('pi-'+i);if(vid.paused){vid.play();pi.textContent='▶️';}else{vid.pause();pi.textContent='⏸️';}pi.classList.remove('pop');void pi.offsetWidth;pi.classList.add('pop');}
+        lastTap=now;
       });
-      // touch drag
-      pw.addEventListener('touchstart', e => {
-        e.stopPropagation();
-        seekTo(e.touches[0].clientX);
-        const onMove = e => { seekTo(e.touches[0].clientX); e.preventDefault(); };
-        const onEnd  = () => { pw.removeEventListener('touchmove', onMove); pw.removeEventListener('touchend', onEnd); };
-        pw.addEventListener('touchmove', onMove, { passive:false });
-        pw.addEventListener('touchend', onEnd);
-      }, { passive:true });
-
-      let lastTap = 0;
-      slide.addEventListener('click', e => {
-        if (e.target.closest('.side-actions') || e.target.closest('.progress-wrap')) return;
-        const now = Date.now();
-        if (now - lastTap < 300) { triggerLike(v.id, i, slide); }
-        else {
-          const vid = slide.querySelector('video');
-          const pi  = document.getElementById('pi-'+i);
-          if (vid.paused) { vid.play(); pi.textContent='▶️'; }
-          else            { vid.pause(); pi.textContent='⏸️'; }
-          pi.classList.remove('pop'); void pi.offsetWidth; pi.classList.add('pop');
-        }
-        lastTap = now;
-      });
-
       feed.appendChild(slide);
     });
-
-    observeSlides();
-    showMuteHint();
+    observeSlides(); showMuteHint();
   }
 
-  function renderSidebar() {
-    const list = document.getElementById('sidebarList');
-    list.innerHTML = '';
-    filtered.forEach((v,i) => {
-      const item = document.createElement('div');
-      item.className = 'sidebar-item';
-      item.innerHTML = `<span class="sidebar-num">${i+1}</span><span class="sidebar-name">${esc(v.title)}</span>`;
-      item.onclick = () => document.querySelectorAll('.video-slide')[i]?.scrollIntoView({ behavior:'smooth' });
-      list.appendChild(item);
-    });
-  }
-
-  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function fmtTime(s) { if(isNaN(s))return'0:00'; const m=Math.floor(s/60),sec=Math.floor(s%60); return`${m}:${sec.toString().padStart(2,'0')}`; }
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function fmtTime(s){if(isNaN(s))return'0:00';const m=Math.floor(s/60),sec=Math.floor(s%60);return`${m}:${sec.toString().padStart(2,'0')}`;}
 
   function observeSlides() {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const vid = entry.target.querySelector('video');
-        const i   = parseInt(entry.target.dataset.index);
-        const id  = entry.target.dataset.id;
-        if (entry.isIntersecting) {
-          if (currentVid && currentVid !== vid) { currentVid.pause(); currentVid.currentTime=0; }
-          currentVid = vid; currentId = id;
-          vid.muted = isMuted;
-          vid.play().catch(()=>{});
-          trackProgress(vid, i);
-          document.querySelectorAll('.sidebar-item').forEach((el,j) => el.classList.toggle('active', j===i));
-          loadComments(id);
-          loadLikes(id, i);
-        } else {
-          vid.pause(); vid.currentTime = 0;
-        }
+    const io=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        const vid=entry.target.querySelector('video'),i=parseInt(entry.target.dataset.index),id=entry.target.dataset.id;
+        if(entry.isIntersecting){
+          if(currentVid&&currentVid!==vid){currentVid.pause();currentVid.currentTime=0;}
+          currentVid=vid;currentId=id;vid.muted=isMuted;vid.play().catch(()=>{});
+          trackProgress(vid,i);
+          loadComments(id);loadLikes(id,i);
+        } else {vid.pause();vid.currentTime=0;}
       });
-    }, { threshold:0.65 });
-    document.querySelectorAll('.video-slide').forEach(s => io.observe(s));
+    },{threshold:.65});
+    document.querySelectorAll('.video-slide').forEach(s=>io.observe(s));
   }
 
-  function trackProgress(vid, i) {
-    const fill  = document.getElementById('pb-'+i);
-    const thumb = document.getElementById('pth-'+i);
-    const cur   = document.getElementById('cur-'+i);
-    const dur   = document.getElementById('dur-'+i);
-
-    const update = () => {
-      if (!vid.duration) return;
-      const pct = (vid.currentTime / vid.duration * 100);
-      if (fill)  fill.style.width = pct + '%';
-      if (thumb) thumb.style.left = pct + '%';
-      if (cur)   cur.textContent  = fmtTime(vid.currentTime);
-    };
-
-    vid.addEventListener('loadedmetadata', () => { if(dur) dur.textContent = fmtTime(vid.duration); update(); }, { once:true });
-    vid.addEventListener('timeupdate', update);
-    vid.addEventListener('play', () => requestAnimationFrame(function tick(){ update(); if(!vid.paused) requestAnimationFrame(tick); }));
+  function trackProgress(vid,i){
+    const fill=document.getElementById('pb-'+i),thumb=document.getElementById('pth-'+i),cur=document.getElementById('cur-'+i),dur=document.getElementById('dur-'+i);
+    const update=()=>{if(!vid.duration)return;const p=(vid.currentTime/vid.duration*100);if(fill)fill.style.width=p+'%';if(thumb)thumb.style.left=p+'%';if(cur)cur.textContent=fmtTime(vid.currentTime);};
+    vid.addEventListener('loadedmetadata',()=>{if(dur)dur.textContent=fmtTime(vid.duration);update();},{once:true});
+    vid.addEventListener('timeupdate',update);
+    vid.addEventListener('play',()=>requestAnimationFrame(function tick(){update();if(!vid.paused)requestAnimationFrame(tick);}));
     requestAnimationFrame(update);
   }
 
-  // ── LIKES ──
-  function loadLikes(videoId, slideIndex) {
-    if (!window._firebaseReady) { window.addEventListener('firebaseReady', ()=>loadLikes(videoId,slideIndex),{once:true}); return; }
-    if (unsubLikes) { unsubLikes(); unsubLikes=null; }
-    const ref = window._doc(window._db, 'likes', videoId);
-    unsubLikes = window._onSnapshot(ref, snap => {
-      const count = snap.exists() ? (snap.data().count||0) : 0;
-      const el = document.getElementById('like-count-'+slideIndex);
-      if (el) el.textContent = count;
+  function loadLikes(videoId,slideIndex){
+    if(!window._firebaseReady){window.addEventListener('firebaseReady',()=>loadLikes(videoId,slideIndex),{once:true});return;}
+    if(unsubLikes){unsubLikes();unsubLikes=null;}
+    unsubLikes=window._onSnapshot(window._doc(window._db,'likes',videoId),snap=>{
+      const count=snap.exists()?(snap.data().count||0):0;
+      const el=document.getElementById('like-count-'+slideIndex);if(el)el.textContent=count;
     });
   }
 
-  async function toggleLike(videoId, slideIndex) {
-    if (!window._firebaseReady) return;
-    const icon  = document.getElementById('like-icon-'+slideIndex);
-    const already = !!likedLocally[videoId];
-    if (already) {
-      delete likedLocally[videoId]; icon.textContent='🤍';
-      await window._setDoc(window._doc(window._db,'likes',videoId),{count:window._increment(-1)},{merge:true});
-    } else {
-      likedLocally[videoId]=true; icon.textContent='❤️';
-      await window._setDoc(window._doc(window._db,'likes',videoId),{count:window._increment(1)},{merge:true});
-    }
-    localStorage.setItem('meutok_liked', JSON.stringify(likedLocally));
+  async function toggleLike(videoId,slideIndex){
+    if(!window._firebaseReady)return;
+    const icon=document.getElementById('like-icon-'+slideIndex),already=!!likedLocally[videoId];
+    if(already){delete likedLocally[videoId];icon.textContent='🤍';await window._setDoc(window._doc(window._db,'likes',videoId),{count:window._increment(-1)},{merge:true});}
+    else{likedLocally[videoId]=true;icon.textContent='❤️';await window._setDoc(window._doc(window._db,'likes',videoId),{count:window._increment(1)},{merge:true});}
+    localStorage.setItem('meutok_liked',JSON.stringify(likedLocally));
   }
-  window.toggleLike = toggleLike;
+  window.toggleLike=toggleLike;
 
-  function triggerLike(videoId, slideIndex, slide) {
-    const icon = document.getElementById('like-icon-'+slideIndex);
-    if (icon.textContent !== '❤️') toggleLike(videoId, slideIndex);
-    const burst = document.createElement('div');
-    burst.className='heart-burst'; burst.textContent='❤️';
-    slide.appendChild(burst); setTimeout(()=>burst.remove(), 700);
+  function triggerLike(videoId,slideIndex,slide){
+    const icon=document.getElementById('like-icon-'+slideIndex);
+    if(icon.textContent!=='❤️')toggleLike(videoId,slideIndex);
+    const burst=document.createElement('div');burst.className='heart-burst';burst.textContent='❤️';slide.appendChild(burst);setTimeout(()=>burst.remove(),700);
   }
 
-  // ── COMENTÁRIOS ──
-  function loadComments(videoId) {
-    if (!window._firebaseReady) { window.addEventListener('firebaseReady',()=>loadComments(videoId),{once:true}); return; }
-    if (unsubComments) { unsubComments(); unsubComments=null; }
-    try {
-      const q = window._query(
-        window._collection(window._db,'comments'),
-        window._where('videoId','==',videoId),
-        window._orderBy('createdAt','asc')
-      );
-      unsubComments = window._onSnapshot(q, snap => {
-        renderComments(snap.docs.map(d=>({id:d.id,...d.data()})));
-      }, err=>console.error(err));
-    } catch(e) { console.error(e); }
+  function loadComments(videoId){
+    if(!window._firebaseReady){window.addEventListener('firebaseReady',()=>loadComments(videoId),{once:true});return;}
+    if(unsubComments){unsubComments();unsubComments=null;}
+    try{
+      const q=window._query(window._collection(window._db,'comments'),window._where('videoId','==',videoId),window._orderBy('createdAt','asc'));
+      unsubComments=window._onSnapshot(q,snap=>renderComments(snap.docs.map(d=>({id:d.id,...d.data()}))),err=>console.error(err));
+    }catch(e){console.error(e);}
   }
 
-  function renderComments(comments) {
-    const list   = document.getElementById('commentsList');
-    const mobile = document.getElementById('mobileCommentsList');
-    document.getElementById('commentsCount').textContent = comments.length;
-
-    if (comments.length === 0) {
-      const html = `<div class="no-comments-msg"><div class="icon">💬</div><div>Nenhum comentário ainda.<br>Seja o primeiro!</div></div>`;
-      list.innerHTML = mobile.innerHTML = html;
-      return;
-    }
-
-    const makeHtml = (c) => {
-      const isMine = c.token === myToken;
-      return `<div class="comment-item">
-        <div class="comment-text">${esc(c.text)}</div>
-        <div class="comment-time">${formatTime(c.createdAt)}</div>
-        ${isMine ? `<button class="comment-delete" onclick="deleteComment('${c.id}')" title="Excluir">🗑</button>` : ''}
-      </div>`;
-    };
-
-    list.innerHTML   = comments.map(makeHtml).join('');
-    mobile.innerHTML = comments.map(makeHtml).join('');
-    list.scrollTop   = list.scrollHeight;
-    mobile.scrollTop = mobile.scrollHeight;
+  function renderComments(comments){
+    const list=document.getElementById('commentsList'),mobile=document.getElementById('mobileCommentsList');
+    document.getElementById('commentsCount').textContent=comments.length;
+    const makeHtml=c=>`<div class="comment-item"><div class="comment-text">${esc(c.text)}</div><div class="comment-time">${formatTime(c.createdAt)}</div>${c.token===myToken?`<button class="comment-delete" onclick="deleteComment('${c.id}')">🗑</button>`:''}</div>`;
+    const html=comments.length===0?`<div class="no-comments-msg"><div class="icon">💬</div><div>Nenhum comentário ainda.<br>Seja o primeiro!</div></div>`:comments.map(makeHtml).join('');
+    list.innerHTML=mobile.innerHTML=html;list.scrollTop=list.scrollHeight;mobile.scrollTop=mobile.scrollHeight;
   }
 
-  async function deleteComment(commentId) {
-    if (!confirm('Excluir seu comentário?')) return;
-    try {
-      await window._deleteDoc(window._doc(window._db,'comments',commentId));
-    } catch(e) { showToast('Erro ao excluir'); }
-  }
-  window.deleteComment = deleteComment;
+  async function deleteComment(id){if(!confirm('Excluir seu comentário?'))return;try{await window._deleteDoc(window._doc(window._db,'comments',id));}catch(e){showToast('Erro ao excluir');}}
+  window.deleteComment=deleteComment;
 
-  function formatTime(ts) {
-    if (!ts) return 'agora';
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
-    return d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-  }
+  function formatTime(ts){if(!ts)return'agora';const d=ts.toDate?ts.toDate():new Date(ts);return d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});}
 
-  async function sendComment(mobile=false) {
-    const inputId = mobile ? 'mobileCommentInput' : 'commentInput';
-    const input   = document.getElementById(inputId);
-    const text    = input.value.trim();
-    if (!text || !currentId || !window._firebaseReady) return;
-    input.value = '';
-    try {
-      await window._addDoc(window._collection(window._db,'comments'), {
-        videoId: currentId, text, token: myToken, createdAt: window._serverTimestamp()
-      });
-    } catch(e) { showToast('Erro ao enviar comentário'); }
+  async function sendComment(mobile=false){
+    const inputId=mobile?'mobileCommentInput':'commentInput';
+    const input=document.getElementById(inputId),text=input.value.trim();
+    if(!text||!currentId||!window._firebaseReady)return;
+    input.value='';
+    try{await window._addDoc(window._collection(window._db,'comments'),{videoId:currentId,text,token:myToken,createdAt:window._serverTimestamp()});}
+    catch(e){showToast('Erro ao enviar');}
   }
-  window.sendComment = sendComment;
+  window.sendComment=sendComment;
 
-  function deleteVideo(id) {
-    const isFixed = VIDEOS_FIXOS.find(v=>v.id===id);
-    if (isFixed) { showToast('Vídeos fixos não podem ser deletados aqui'); return; }
-    if (!confirm('Deletar este vídeo?')) return;
-    videosExtra = videosExtra.filter(x=>x.id!==id);
-    localStorage.setItem('meutok_extra', JSON.stringify(videosExtra));
-    applyFilter(); showToast('Vídeo removido');
+  function deleteVideo(id){
+    if(VIDEOS_FIXOS.find(v=>v.id===id)){showToast('Vídeos fixos não podem ser deletados aqui');return;}
+    if(!confirm('Deletar?'))return;
+    videosExtra=videosExtra.filter(x=>x.id!==id);
+    localStorage.setItem('meutok_extra',JSON.stringify(videosExtra));
+    applyFilter();showToast('Vídeo removido');
   }
-  window.deleteVideo = deleteVideo;
+  window.deleteVideo=deleteVideo;
 
-  function openMobileComments()  { document.getElementById('mobileCommentModal').classList.add('open'); }
-  function closeMobileComments() { document.getElementById('mobileCommentModal').classList.remove('open'); }
-  window.openMobileComments  = openMobileComments;
-  window.closeMobileComments = closeMobileComments;
+  function openMobileComments(){document.getElementById('mobileCommentModal').classList.add('open');}
+  function closeMobileComments(){document.getElementById('mobileCommentModal').classList.remove('open');}
+  window.openMobileComments=openMobileComments;window.closeMobileComments=closeMobileComments;
 
-  function openLogin()  { if(isAdmin){openUpload();return;} document.getElementById('loginModal').classList.add('open'); setTimeout(()=>document.getElementById('adminPass').focus(),150); }
-  function closeLogin() { document.getElementById('loginModal').classList.remove('open'); document.getElementById('adminPass').value=''; document.getElementById('loginError').style.display='none'; }
-  function checkLogin() {
-    if (document.getElementById('adminPass').value===ADMIN_PASSWORD) { isAdmin=true; closeLogin(); renderFeed(); openUpload(); }
-    else { document.getElementById('loginError').style.display='block'; document.getElementById('adminPass').value=''; }
+  function openLogin(){if(isAdmin){openUpload();return;}document.getElementById('loginModal').classList.add('open');setTimeout(()=>document.getElementById('adminPass').focus(),150);}
+  function closeLogin(){document.getElementById('loginModal').classList.remove('open');document.getElementById('adminPass').value='';document.getElementById('loginError').style.display='none';}
+  function checkLogin(){if(document.getElementById('adminPass').value===ADMIN_PASSWORD){isAdmin=true;closeLogin();renderFeed();openUpload();}else{document.getElementById('loginError').style.display='block';document.getElementById('adminPass').value='';}}
+  window.openLogin=openLogin;window.closeLogin=closeLogin;window.checkLogin=checkLogin;
+
+  function openUpload(){document.getElementById('uploadModal').classList.add('open');}
+  function closeUpload(){document.getElementById('uploadModal').classList.remove('open');document.getElementById('videoFile').value='';document.getElementById('videoTitle').value='';document.getElementById('videoDesc').value='';}
+  function addVideo(){
+    const file=document.getElementById('videoFile').value.trim(),title=document.getElementById('videoTitle').value.trim();
+    const desc=document.getElementById('videoDesc').value.trim(),category=document.getElementById('videoCategory').value;
+    if(!file){showToast('Digite o nome do arquivo!');return;}
+    if(!title){showToast('Adicione um título!');return;}
+    videosExtra.unshift({id:'extra_'+Date.now(),file,title,desc,category});
+    localStorage.setItem('meutok_extra',JSON.stringify(videosExtra));
+    closeUpload();applyFilter();if(category==='music')renderMusic();showToast('Vídeo adicionado! 🎉');
   }
-  window.openLogin=openLogin; window.closeLogin=closeLogin; window.checkLogin=checkLogin;
+  window.openUpload=openUpload;window.closeUpload=closeUpload;window.addVideo=addVideo;
 
-  function openUpload()  { document.getElementById('uploadModal').classList.add('open'); }
-  function closeUpload() { document.getElementById('uploadModal').classList.remove('open'); document.getElementById('videoFile').value=''; document.getElementById('videoTitle').value=''; document.getElementById('videoDesc').value=''; }
-  function addVideo() {
-    const file  = document.getElementById('videoFile').value.trim();
-    const title = document.getElementById('videoTitle').value.trim();
-    const desc  = document.getElementById('videoDesc').value.trim();
-    if (!file)  { showToast('Digite o nome do arquivo!'); return; }
-    if (!title) { showToast('Adicione um título!'); return; }
-    videosExtra.unshift({ id:'extra_'+Date.now(), file, title, desc });
-    localStorage.setItem('meutok_extra', JSON.stringify(videosExtra));
-    closeUpload(); applyFilter(); showToast('Vídeo adicionado! 🎉');
-  }
-  window.openUpload=openUpload; window.closeUpload=closeUpload; window.addVideo=addVideo;
-
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent=msg; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2500);
-  }
-  window.showToast=showToast; window.onSearch=onSearch; window.clearSearch=clearSearch;
+  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+  window.showToast=showToast;window.onSearch=onSearch;window.clearSearch=clearSearch;
 
   applyFilter();
-  window.addEventListener('firebaseReady', () => {
-    if (currentId) { loadComments(currentId); loadLikes(currentId,0); }
-  });
+  window.addEventListener('firebaseReady',()=>{if(currentId){loadComments(currentId);loadLikes(currentId,0);}});
 </script>
 </body>
 </html>
