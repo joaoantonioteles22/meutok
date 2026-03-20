@@ -7,19 +7,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0a;
-    --surface: #111;
-    --border: #222;
-    --accent: #ff2d55;
-    --accent2: #00f2ea;
-    --text: #f5f5f5;
-    --muted: #777;
-    --nav-h: 60px;
+    --bg: #0a0a0a; --surface: #111; --surface2: #161616;
+    --border: #222; --accent: #ff2d55; --accent2: #00f2ea;
+    --text: #f5f5f5; --muted: #666; --nav-h: 58px;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; overflow:hidden; height:100dvh; }
 
-  /* ── NAV ── */
+  /* NAV */
   nav {
     position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nav-h);
     display:flex; align-items:center; gap:12px; padding:0 16px;
@@ -30,289 +25,182 @@
     background:linear-gradient(135deg,var(--accent),var(--accent2));
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   }
-
-  /* search */
-  .search-wrap {
-    flex:1; position:relative; max-width:420px;
-  }
+  .search-wrap { flex:1; position:relative; max-width:380px; }
   .search-wrap input {
     width:100%; background:#1a1a1a; border:1.5px solid var(--border);
-    color:var(--text); padding:8px 14px 8px 36px;
-    border-radius:20px; font-family:'DM Sans',sans-serif; font-size:14px;
-    outline:none; transition:border-color .2s;
+    color:var(--text); padding:8px 32px 8px 34px; border-radius:20px;
+    font-family:'DM Sans',sans-serif; font-size:13px; outline:none; transition:border-color .2s;
   }
   .search-wrap input:focus { border-color:var(--accent2); }
   .search-wrap input::placeholder { color:var(--muted); }
-  .search-icon {
-    position:absolute; left:11px; top:50%; transform:translateY(-50%);
-    font-size:15px; pointer-events:none;
-  }
-  .clear-btn {
-    position:absolute; right:10px; top:50%; transform:translateY(-50%);
-    background:none; border:none; color:var(--muted); font-size:16px;
-    cursor:pointer; display:none; line-height:1;
-  }
-
-  .nav-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
-
-  #muteBtn {
-    width:34px; height:34px; border-radius:50%;
-    background:rgba(255,255,255,.1); border:none; font-size:16px;
-    cursor:pointer; display:flex; align-items:center; justify-content:center;
-    transition:background .2s;
-  }
-  #muteBtn:hover { background:rgba(255,255,255,.2); }
-
-  .nav-btn {
-    background:none; border:1.5px solid var(--border); color:var(--text);
-    padding:6px 14px; border-radius:20px; font-family:'DM Sans',sans-serif;
-    font-size:13px; cursor:pointer; transition:all .2s; white-space:nowrap;
-  }
+  .search-icon { position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:14px; pointer-events:none; }
+  .clear-btn { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--muted); font-size:15px; cursor:pointer; display:none; }
+  .nav-right { display:flex; align-items:center; gap:8px; flex-shrink:0; margin-left:auto; }
+  #muteBtn { width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.08); border:none; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+  #muteBtn:hover { background:rgba(255,255,255,.18); }
+  .nav-btn { background:none; border:1.5px solid var(--border); color:var(--text); padding:6px 14px; border-radius:20px; font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all .2s; white-space:nowrap; }
   .nav-btn:hover { border-color:var(--accent); color:var(--accent); }
 
-  /* ── LAYOUT ── */
-  #app {
-    display:flex;
-    padding-top:var(--nav-h);
-    height:100dvh;
-  }
+  /* LAYOUT */
+  #app { display:flex; height:100dvh; padding-top:var(--nav-h); }
 
-  /* sidebar (desktop) */
-  #sidebar {
-    display:none;
-    width:220px; flex-shrink:0;
-    border-right:1px solid var(--border);
-    overflow-y:auto; padding:12px 8px;
-    background:var(--bg);
-  }
-  #sidebar::-webkit-scrollbar { width:4px; }
-  #sidebar::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
-  .sidebar-title {
-    font-size:11px; color:var(--muted); text-transform:uppercase;
-    letter-spacing:1px; padding:6px 8px 10px;
-  }
-  .sidebar-item {
-    display:flex; align-items:center; gap:10px;
-    padding:9px 10px; border-radius:10px; cursor:pointer;
-    transition:background .15s; font-size:13px; font-weight:500;
-  }
-  .sidebar-item:hover { background:#1a1a1a; }
-  .sidebar-item.active { background:rgba(255,45,85,.12); color:var(--accent); }
-  .sidebar-thumb {
-    width:36px; height:36px; border-radius:6px; object-fit:cover;
-    background:#1a1a1a; flex-shrink:0; font-size:18px;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .sidebar-thumb video { width:100%; height:100%; object-fit:cover; border-radius:6px; }
-  .sidebar-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+  /* SIDEBAR esquerda */
+  #sidebar { display:none; width:200px; flex-shrink:0; border-right:1px solid var(--border); flex-direction:column; background:var(--bg); }
+  @media(min-width:768px){ #sidebar { display:flex; } }
+  .sidebar-header { padding:12px 12px 8px; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border); }
+  #sidebarList { flex:1; overflow-y:auto; padding:6px; }
+  #sidebarList::-webkit-scrollbar { width:3px; }
+  #sidebarList::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+  .sidebar-item { display:flex; align-items:center; gap:8px; padding:8px; border-radius:8px; cursor:pointer; transition:background .15s; font-size:12px; font-weight:500; color:var(--muted); }
+  .sidebar-item:hover { background:#1a1a1a; color:var(--text); }
+  .sidebar-item.active { background:rgba(255,45,85,.1); color:var(--accent); }
+  .sidebar-num { font-family:'Bebas Neue',sans-serif; font-size:14px; width:18px; text-align:center; flex-shrink:0; }
+  .sidebar-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
-  /* feed area */
-  #feed-area { flex:1; overflow:hidden; position:relative; }
-
-  /* FEED */
-  #feed {
-    height:100%; overflow-y:scroll;
-    scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch;
-  }
+  /* FEED AREA centro */
+  #feed-area { flex:1; display:flex; align-items:stretch; justify-content:center; overflow:hidden; background:#0a0a0a; }
+  #video-col { width:100%; max-width:400px; position:relative; }
+  #feed { width:100%; height:100%; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; }
   #feed::-webkit-scrollbar { display:none; }
 
-  /* desktop: video centered with max width */
-  .video-slide {
-    height:100%; scroll-snap-align:start;
-    position:relative; background:#000;
-    display:flex; align-items:center; justify-content:center;
-  }
+  .video-slide { height:calc(100dvh - var(--nav-h)); scroll-snap-align:start; position:relative; background:#000; }
+  .video-slide video { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; cursor:pointer; }
+  .video-slide::after { content:''; position:absolute; inset:0; pointer-events:none; z-index:1; background:linear-gradient(to top,rgba(0,0,0,.82) 0%,transparent 38%,transparent 68%,rgba(0,0,0,.3) 100%); }
+  .video-info { position:absolute; bottom:70px; left:14px; right:70px; z-index:2; animation:fadeUp .4s ease; }
+  .video-title { font-size:14px; font-weight:700; margin-bottom:4px; text-shadow:0 1px 8px rgba(0,0,0,.9); }
+  .video-desc  { font-size:12px; color:rgba(255,255,255,.7); line-height:1.4; }
 
-  .video-inner {
-    position:relative;
-    width:100%; height:100%;
-    display:flex; align-items:center; justify-content:center;
-  }
-
-  /* on desktop, limit video width to look like phone */
-  @media (min-width: 768px) {
-    #sidebar { display:flex; flex-direction:column; }
-    .video-inner {
-      max-width:400px;
-      height:calc(100dvh - var(--nav-h));
-      margin:0 auto;
-    }
-    .video-slide { background:#0a0a0a; }
-    .video-slide::before {
-      content:'';
-      position:absolute; inset:0;
-      background:repeating-linear-gradient(
-        45deg, #0f0f0f 0px, #0f0f0f 10px, #0a0a0a 10px, #0a0a0a 20px
-      );
-    }
-  }
-
-  .video-inner video {
-    width:100%; height:100%; object-fit:cover;
-    position:absolute; inset:0; cursor:pointer; border-radius:0;
-  }
-
-  @media (min-width: 768px) {
-    .video-inner video { border-radius:16px; position:relative; inset:auto; }
-    .video-inner { border-radius:16px; overflow:hidden; box-shadow:0 0 60px rgba(0,0,0,.8); }
-  }
-
-  .video-inner::after {
-    content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
-    background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 40%,transparent 70%,rgba(0,0,0,.3) 100%);
-    border-radius:inherit;
-  }
-
-  .video-info {
-    position:absolute; bottom:70px; left:14px; right:70px; z-index:2;
-    animation:fadeUp .4s ease;
-  }
-  .video-title { font-size:14px; font-weight:700; margin-bottom:4px; text-shadow:0 1px 6px rgba(0,0,0,.9); }
-  .video-desc  { font-size:12px; color:rgba(255,255,255,.75); line-height:1.4; }
-
-  .side-actions {
-    position:absolute; right:10px; bottom:75px; z-index:2;
-    display:flex; flex-direction:column; gap:16px; align-items:center;
-  }
+  .side-actions { position:absolute; right:10px; bottom:75px; z-index:2; display:flex; flex-direction:column; gap:14px; align-items:center; }
   .action-btn { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; user-select:none; }
-  .action-icon {
-    width:40px; height:40px; border-radius:50%;
-    background:rgba(255,255,255,.13); backdrop-filter:blur(10px);
-    display:flex; align-items:center; justify-content:center;
-    font-size:18px; transition:transform .15s,background .15s;
-  }
-  .action-btn:active .action-icon { transform:scale(1.25); background:rgba(255,45,85,.4); }
-  .action-btn span { font-size:10px; color:rgba(255,255,255,.9); font-weight:500; }
+  .action-icon { width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.13); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; font-size:18px; transition:transform .15s,background .15s; }
+  .action-btn:active .action-icon { transform:scale(1.22); background:rgba(255,45,85,.35); }
+  .action-btn span { font-size:10px; color:rgba(255,255,255,.85); font-weight:500; }
 
-  .progress-bar {
-    position:absolute; bottom:0; left:0; right:0; height:2px; z-index:3; width:0%;
-    background:linear-gradient(to right,var(--accent),var(--accent2));
-    border-radius:0 0 16px 16px;
-  }
-
-  .play-indicator {
-    position:absolute; font-size:56px; z-index:5; pointer-events:none; opacity:0;
-  }
+  .progress-bar { position:absolute; bottom:0; left:0; right:0; height:2px; z-index:3; width:0%; background:linear-gradient(to right,var(--accent),var(--accent2)); }
+  .play-indicator { position:absolute; font-size:56px; z-index:5; pointer-events:none; opacity:0; }
   .play-indicator.pop { animation:fadeOut .55s ease forwards; }
 
-  /* no results */
-  #no-results {
-    display:none; flex-direction:column; align-items:center; justify-content:center;
-    height:100%; gap:12px; text-align:center; padding:40px;
-  }
-  #no-results .big-icon { font-size:48px; }
-  #no-results h2 { font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--muted); }
-  #no-results p  { font-size:13px; color:var(--muted); }
+  /* COMENTÁRIOS direita */
+  #comments-col { display:none; width:280px; flex-shrink:0; border-left:1px solid var(--border); flex-direction:column; background:var(--surface); }
+  @media(min-width:768px){ #comments-col { display:flex; } }
+  .comments-header { padding:14px 16px 10px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .comments-header h3 { font-size:13px; font-weight:700; }
+  .comments-count { font-size:11px; color:var(--muted); background:var(--surface2); padding:2px 8px; border-radius:10px; }
+  #commentsList { flex:1; overflow-y:auto; padding:10px 12px; display:flex; flex-direction:column; gap:8px; }
+  #commentsList::-webkit-scrollbar { width:3px; }
+  #commentsList::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+  .comment-item { background:var(--surface2); border-radius:10px; padding:10px 12px; font-size:12px; line-height:1.5; animation:fadeUp .3s ease; border:1px solid var(--border); }
+  .comment-text { color:var(--text); word-break:break-word; }
+  .comment-time { font-size:10px; color:var(--muted); margin-top:4px; }
+  .no-comments-msg { text-align:center; color:var(--muted); font-size:12px; padding:30px 10px; }
+  .no-comments-msg .icon { font-size:28px; margin-bottom:6px; }
+  .comment-form { padding:10px 12px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:8px; }
+  .comment-form textarea { width:100%; background:var(--bg); border:1.5px solid var(--border); color:var(--text); padding:9px 12px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; resize:none; height:64px; outline:none; transition:border-color .2s; }
+  .comment-form textarea:focus { border-color:var(--accent2); }
+  .comment-form textarea::placeholder { color:var(--muted); }
+  .send-btn { align-self:flex-end; padding:7px 18px; border:none; border-radius:20px; background:linear-gradient(135deg,var(--accent),#ff6b6b); color:#fff; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; cursor:pointer; transition:opacity .2s; }
+  .send-btn:hover { opacity:.85; }
 
-  /* EMPTY */
-  #empty-state {
-    display:none; flex-direction:column; align-items:center; justify-content:center;
-    height:100%; gap:16px; text-align:center; padding:40px;
-  }
-  #empty-state .big-icon { font-size:64px; }
-  #empty-state h2 { font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:1px; color:var(--muted); }
-  #empty-state p  { font-size:14px; color:var(--muted); line-height:1.7; }
+  /* modal comentários mobile */
+  #mobileCommentModal { display:none; position:fixed; inset:0; z-index:300; background:rgba(10,10,10,.97); flex-direction:column; }
+  #mobileCommentModal.open { display:flex; }
+  .mcm-header { padding:16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
+  .mcm-header h3 { font-size:15px; font-weight:700; }
+  .mcm-close { background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; }
+  #mobileCommentsList { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; }
+  .mcm-form { padding:12px; border-top:1px solid var(--border); display:flex; gap:8px; }
+  .mcm-form textarea { flex:1; background:#1a1a1a; border:1.5px solid var(--border); color:var(--text); padding:10px 12px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; resize:none; height:44px; outline:none; }
+  .mcm-form textarea:focus { border-color:var(--accent2); }
+  .mcm-send { padding:0 16px; border:none; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; font-size:13px; cursor:pointer; }
 
-  /* MODALS */
+  /* mensagens centrais */
+  .center-msg { display:none; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:12px; text-align:center; padding:40px; }
+  .center-msg .big-icon { font-size:52px; }
+  .center-msg h2 { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--muted); }
+  .center-msg p { font-size:13px; color:var(--muted); line-height:1.6; }
+
+  /* modais */
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); backdrop-filter:blur(12px); z-index:200; align-items:center; justify-content:center; }
   .modal-overlay.open { display:flex; }
-  .modal { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:32px; width:90%; max-width:420px; position:relative; animation:popIn .25s cubic-bezier(.34,1.56,.64,1); }
-  .modal h2 { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:1px; margin-bottom:6px; }
-  .modal p.subtitle { font-size:13px; color:var(--muted); margin-bottom:20px; line-height:1.5; }
-  .modal input[type="password"],
-  .modal input[type="text"],
-  .modal textarea {
-    width:100%; background:var(--bg); border:1.5px solid var(--border); color:var(--text);
-    padding:12px 16px; border-radius:12px; font-family:'DM Sans',sans-serif;
-    font-size:14px; margin-bottom:12px; outline:none; transition:border-color .2s;
-  }
+  .modal { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:30px; width:90%; max-width:400px; position:relative; animation:popIn .25s cubic-bezier(.34,1.56,.64,1); }
+  .modal h2 { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:6px; }
+  .modal p.subtitle { font-size:13px; color:var(--muted); margin-bottom:18px; line-height:1.5; }
+  .modal input[type="password"],.modal input[type="text"],.modal textarea { width:100%; background:var(--bg); border:1.5px solid var(--border); color:var(--text); padding:11px 14px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; margin-bottom:10px; outline:none; transition:border-color .2s; }
   .modal input:focus,.modal textarea:focus { border-color:var(--accent2); }
-  .modal textarea { resize:vertical; min-height:70px; }
-  .hint { font-size:11px; color:var(--muted); margin-top:-8px; margin-bottom:14px; line-height:1.6; }
+  .modal textarea { resize:vertical; min-height:60px; }
+  .hint { font-size:11px; color:var(--muted); margin-top:-6px; margin-bottom:12px; line-height:1.5; }
   .hint code { background:#1a1a1a; padding:1px 5px; border-radius:4px; color:var(--accent2); }
-  .btn-primary {
-    width:100%; padding:14px; border:none; border-radius:12px;
-    background:linear-gradient(135deg,var(--accent),#ff6b6b); color:#fff;
-    font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px;
-    cursor:pointer; transition:opacity .2s,transform .15s; margin-top:4px;
-  }
+  .btn-primary { width:100%; padding:13px; border:none; border-radius:10px; background:linear-gradient(135deg,var(--accent),#ff6b6b); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:1px; cursor:pointer; transition:opacity .2s,transform .15s; margin-top:2px; }
   .btn-primary:hover { opacity:.9; transform:translateY(-1px); }
-  .btn-primary:active { transform:scale(.98); }
-  .btn-close { background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; position:absolute; top:16px; right:20px; }
-  .error-msg { color:var(--accent); font-size:12px; margin-top:-8px; margin-bottom:10px; display:none; }
+  .btn-close { background:none; border:none; color:var(--muted); font-size:20px; cursor:pointer; position:absolute; top:14px; right:16px; }
+  .error-msg { color:var(--accent); font-size:12px; margin-top:-6px; margin-bottom:8px; display:none; }
 
-  #toast {
-    position:fixed; bottom:24px; left:50%;
-    transform:translateX(-50%) translateY(80px);
-    background:var(--surface); border:1px solid var(--border); color:var(--text);
-    padding:11px 22px; border-radius:30px; font-size:13px; font-weight:500;
-    z-index:999; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap;
-  }
+  #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 22px; border-radius:30px; font-size:13px; font-weight:500; z-index:999; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
   #toast.show { transform:translateX(-50%) translateY(0); }
 
-  .heart-burst {
-    position:absolute; font-size:72px; z-index:10; pointer-events:none;
-    left:50%; top:40%; transform:translate(-50%,-50%);
-    animation:heartBurst .6s ease forwards;
-  }
+  .heart-burst { position:absolute; font-size:72px; z-index:10; pointer-events:none; left:50%; top:40%; transform:translate(-50%,-50%); animation:heartBurst .6s ease forwards; }
+  .mute-hint { position:fixed; bottom:32px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.75); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.1); color:#fff; padding:8px 18px; border-radius:30px; font-size:12px; z-index:102; animation:fadeUpC .4s ease, fadeOut2 .4s ease 3s forwards; pointer-events:none; white-space:nowrap; }
 
-  /* mute hint */
-  .mute-hint {
-    position:fixed; bottom:36px; left:50%; transform:translateX(-50%);
-    background:rgba(0,0,0,.7); backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,.12); color:#fff;
-    padding:8px 18px; border-radius:30px; font-size:12px; z-index:102;
-    animation:fadeUp .4s ease, fadeOut2 .4s ease 3s forwards;
-    pointer-events:none; white-space:nowrap;
-  }
-
-  @keyframes heartBurst {
-    0%   { transform:translate(-50%,-50%) scale(0);   opacity:1; }
-    50%  { transform:translate(-50%,-50%) scale(1.3); opacity:1; }
-    100% { transform:translate(-50%,-50%) scale(1.5); opacity:0; }
-  }
-  @keyframes fadeUp   { from{opacity:0;transform:translateY(16px) translateX(-50%)} to{opacity:1;transform:translateY(0) translateX(-50%)} }
-  @keyframes popIn    { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
-  @keyframes fadeOut  { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.4)} }
-  @keyframes fadeOut2 { from{opacity:1} to{opacity:0} }
+  @keyframes heartBurst { 0%{transform:translate(-50%,-50%) scale(0);opacity:1} 50%{transform:translate(-50%,-50%) scale(1.3);opacity:1} 100%{transform:translate(-50%,-50%) scale(1.5);opacity:0} }
+  @keyframes fadeUp  { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeUpC { from{opacity:0;transform:translateX(-50%) translateY(12px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+  @keyframes popIn   { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
+  @keyframes fadeOut { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.4)} }
+  @keyframes fadeOut2{ from{opacity:1} to{opacity:0} }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="logo">MeuTok</div>
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="Buscar vídeos..." oninput="onSearch(this.value)"/>
+    <input type="text" id="searchInput" placeholder="Buscar por título..." oninput="onSearch(this.value)"/>
     <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
   </div>
   <div class="nav-right">
-    <button id="muteBtn" onclick="toggleMute()" title="Som">🔇</button>
+    <button id="muteBtn" onclick="toggleMute()">🔇</button>
     <button class="nav-btn" id="adminNavBtn" onclick="openLogin()">+ Admin</button>
   </div>
 </nav>
 
 <div id="app">
-  <!-- SIDEBAR (desktop) -->
   <div id="sidebar">
-    <div class="sidebar-title">Vídeos</div>
+    <div class="sidebar-header">Vídeos</div>
     <div id="sidebarList"></div>
   </div>
 
-  <!-- FEED AREA -->
   <div id="feed-area">
-    <div id="feed"></div>
-    <div id="no-results">
-      <div class="big-icon">🔍</div>
-      <h2>Nenhum resultado</h2>
-      <p>Tente outro termo de busca</p>
+    <div id="video-col">
+      <div id="feed"></div>
+      <div class="center-msg" id="noResults"><div class="big-icon">🔍</div><h2>Sem resultados</h2><p>Nenhum vídeo com esse título</p></div>
+      <div class="center-msg" id="emptyState"><div class="big-icon">🎬</div><h2>Nenhum vídeo ainda</h2><p>Faça login como admin<br>e adicione o primeiro vídeo!</p></div>
     </div>
-    <div id="empty-state">
-      <div class="big-icon">🎬</div>
-      <h2>Nenhum vídeo ainda</h2>
-      <p>Faça login como admin e adicione o primeiro vídeo!</p>
+  </div>
+
+  <div id="comments-col">
+    <div class="comments-header">
+      <h3>💬 Comentários</h3>
+      <span class="comments-count" id="commentsCount">0</span>
     </div>
+    <div id="commentsList"></div>
+    <div class="comment-form">
+      <textarea id="commentInput" placeholder="Escreva um comentário..."></textarea>
+      <button class="send-btn" onclick="sendComment()">Enviar ↑</button>
+    </div>
+  </div>
+</div>
+
+<!-- mobile comments -->
+<div id="mobileCommentModal">
+  <div class="mcm-header">
+    <h3>💬 Comentários</h3>
+    <button class="mcm-close" onclick="closeMobileComments()">✕</button>
+  </div>
+  <div id="mobileCommentsList"></div>
+  <div class="mcm-form">
+    <textarea id="mobileCommentInput" placeholder="Comentar..."></textarea>
+    <button class="mcm-send" onclick="sendComment(true)">↑</button>
   </div>
 </div>
 
@@ -322,8 +210,7 @@
     <button class="btn-close" onclick="closeLogin()">✕</button>
     <h2>Área Admin</h2>
     <p class="subtitle">Digite a senha para acessar o painel.</p>
-    <input type="password" id="adminPass" placeholder="Senha"
-      onkeydown="if(event.key==='Enter')checkLogin()"/>
+    <input type="password" id="adminPass" placeholder="Senha" onkeydown="if(event.key==='Enter')checkLogin()"/>
     <div class="error-msg" id="loginError">Senha incorreta!</div>
     <button class="btn-primary" onclick="checkLogin()">ENTRAR</button>
   </div>
@@ -334,9 +221,9 @@
   <div class="modal">
     <button class="btn-close" onclick="closeUpload()">✕</button>
     <h2>Novo Vídeo</h2>
-    <p class="subtitle">Digite o nome do arquivo na pasta <code>videos/</code> do repositório.</p>
+    <p class="subtitle">Nome do arquivo na pasta <code>videos/</code> do repositório.</p>
     <input type="text" id="videoFile" placeholder="meu-video.mp4"/>
-    <div class="hint">Ex: <code>festa.mp4</code> — com o <code>.mp4</code> no final!</div>
+    <div class="hint">Ex: <code>festa.mp4</code> — com o <code>.mp4</code>!</div>
     <input type="text" id="videoTitle" placeholder="Título do vídeo"/>
     <textarea id="videoDesc" placeholder="Descrição (opcional)"></textarea>
     <button class="btn-primary" onclick="addVideo()">PUBLICAR</button>
@@ -344,6 +231,39 @@
 </div>
 
 <div id="toast"></div>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCrl1XpBV7MEk2U_AuttbqElbsuvCUWsNA",
+    authDomain: "meutok-84223.firebaseapp.com",
+    projectId: "meutok-84223",
+    storageBucket: "meutok-84223.firebasestorage.app",
+    messagingSenderId: "845294197626",
+    appId: "1:845294197626:web:ee664365c517ed8d1614c3"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  // expõe funções pro escopo global
+  window._db = db;
+  window._addDoc = addDoc;
+  window._collection = collection;
+  window._query = query;
+  window._where = where;
+  window._orderBy = orderBy;
+  window._onSnapshot = onSnapshot;
+  window._serverTimestamp = serverTimestamp;
+  window._firebaseReady = true;
+
+  // avisa o app que Firebase está pronto
+  window.dispatchEvent(new Event('firebaseReady'));
+</script>
 
 <script>
   // ══════════════════════════════════
@@ -357,9 +277,11 @@
   let isAdmin    = false;
   let isMuted    = true;
   let currentVid = null;
+  let currentId  = null;
   let hintShown  = false;
   let filtered   = [];
   let searchQ    = '';
+  let unsubscribe = null;
 
   // ── SEARCH ──
   function onSearch(q) {
@@ -370,13 +292,14 @@
   function clearSearch() {
     document.getElementById('searchInput').value = '';
     document.getElementById('clearBtn').style.display = 'none';
-    searchQ = '';
-    applyFilter();
+    searchQ = ''; applyFilter();
   }
   function applyFilter() {
-    filtered = searchQ
-      ? videos.filter(v => v.title.toLowerCase().includes(searchQ) || (v.desc||'').toLowerCase().includes(searchQ))
+    let r = searchQ
+      ? videos.filter(v => v.title.toLowerCase().startsWith(searchQ))
       : [...videos];
+    r.sort((a,b) => a.title.localeCompare(b.title, 'pt'));
+    filtered = r;
     renderFeed();
   }
 
@@ -386,12 +309,13 @@
     document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
     if (currentVid) currentVid.muted = isMuted;
   }
+  window.toggleMute = toggleMute;
 
   function showMuteHint() {
-    if (hintShown || videos.length === 0) return;
+    if (hintShown || filtered.length === 0) return;
     hintShown = true;
     const h = document.createElement('div');
-    h.className   = 'mute-hint';
+    h.className = 'mute-hint';
     h.textContent = '🔇 Clique em 🔇 para ativar o som';
     document.body.appendChild(h);
     setTimeout(() => h.remove(), 4000);
@@ -399,73 +323,65 @@
 
   // ── RENDER ──
   function renderFeed() {
-    const feed   = document.getElementById('feed');
-    const empty  = document.getElementById('empty-state');
-    const noRes  = document.getElementById('no-results');
+    const feed  = document.getElementById('feed');
+    const noRes = document.getElementById('noResults');
+    const empty = document.getElementById('emptyState');
     document.getElementById('adminNavBtn').textContent = isAdmin ? '+ Adicionar' : '+ Admin';
 
-    // sidebar
     renderSidebar();
-
     feed.innerHTML = '';
-    empty.style.display  = 'none';
-    noRes.style.display  = 'none';
+    feed.style.display = noRes.style.display = empty.style.display = 'none';
 
-    if (videos.length === 0) {
-      feed.style.display  = 'none';
-      empty.style.display = 'flex';
-      return;
-    }
-    if (filtered.length === 0) {
-      feed.style.display = 'none';
-      noRes.style.display = 'flex';
-      return;
-    }
+    if (videos.length === 0)  { empty.style.display = 'flex'; return; }
+    if (filtered.length === 0){ noRes.style.display = 'flex'; return; }
 
     feed.style.display = 'block';
 
     filtered.forEach((v, i) => {
       const likeCount = likes[v.id] || 0;
       const liked     = !!likes['liked_' + v.id];
-
       const slide = document.createElement('div');
       slide.className     = 'video-slide';
       slide.dataset.index = i;
       slide.dataset.id    = v.id;
 
       slide.innerHTML = `
-        <div class="video-inner" id="inner-${i}">
-          <video src="${VIDEO_FOLDER}${v.file}" loop playsinline preload="auto" muted></video>
-          <div class="play-indicator" id="pi-${i}"></div>
-          <div class="progress-bar"  id="pb-${i}"></div>
-          <div class="video-info">
-            <div class="video-title">${esc(v.title)}</div>
-            ${v.desc ? `<div class="video-desc">${esc(v.desc)}</div>` : ''}
+        <video src="${VIDEO_FOLDER}${v.file}" loop playsinline preload="auto" muted></video>
+        <div class="play-indicator" id="pi-${i}"></div>
+        <div class="progress-bar"  id="pb-${i}"></div>
+        <div class="video-info">
+          <div class="video-title">${esc(v.title)}</div>
+          ${v.desc ? `<div class="video-desc">${esc(v.desc)}</div>` : ''}
+        </div>
+        <div class="side-actions">
+          <div class="action-btn" onclick="toggleLike(${i})">
+            <div class="action-icon" id="like-icon-${i}">${liked?'❤️':'🤍'}</div>
+            <span id="like-count-${i}">${likeCount}</span>
           </div>
-          <div class="side-actions">
-            <div class="action-btn" onclick="toggleLike(${i})">
-              <div class="action-icon" id="like-icon-${i}">${liked ? '❤️' : '🤍'}</div>
-              <span id="like-count-${i}">${likeCount}</span>
-            </div>
-            ${isAdmin ? `<div class="action-btn" onclick="deleteVideo('${v.id}')">
-              <div class="action-icon">🗑️</div>
-              <span>Deletar</span>
-            </div>` : ''}
+          <div class="action-btn" onclick="openMobileComments()" style="display:none" id="mob-cmt-btn-${i}">
+            <div class="action-icon">💬</div>
+            <span>Comentar</span>
           </div>
+          ${isAdmin ? `<div class="action-btn" onclick="deleteVideo('${v.id}')"><div class="action-icon">🗑️</div><span>Deletar</span></div>` : ''}
         </div>
       `;
+
+      // mostrar botão comentar só no mobile
+      if (window.innerWidth < 768) {
+        const btn = slide.querySelector(`#mob-cmt-btn-${i}`);
+        if (btn) btn.style.display = 'flex';
+      }
 
       let lastTap = 0;
       slide.addEventListener('click', e => {
         if (e.target.closest('.side-actions')) return;
         const now = Date.now();
-        if (now - lastTap < 300) {
-          triggerLike(i, slide);
-        } else {
+        if (now - lastTap < 300) { triggerLike(i, slide); }
+        else {
           const vid = slide.querySelector('video');
-          const pi  = document.getElementById('pi-' + i);
-          if (vid.paused) { vid.play(); pi.textContent = '▶️'; }
-          else            { vid.pause(); pi.textContent = '⏸️'; }
+          const pi  = document.getElementById('pi-'+i);
+          if (vid.paused) { vid.play(); pi.textContent='▶️'; }
+          else            { vid.pause(); pi.textContent='⏸️'; }
           pi.classList.remove('pop'); void pi.offsetWidth; pi.classList.add('pop');
         }
         lastTap = now;
@@ -480,30 +396,21 @@
 
   function renderSidebar() {
     const list = document.getElementById('sidebarList');
-    if (!list) return;
     list.innerHTML = '';
-    const src = searchQ ? filtered : videos;
-    src.forEach((v, i) => {
+    filtered.forEach((v,i) => {
       const item = document.createElement('div');
       item.className = 'sidebar-item';
       item.dataset.idx = i;
-      item.innerHTML = `
-        <div class="sidebar-thumb">🎬</div>
-        <span class="sidebar-name">${esc(v.title)}</span>
-      `;
-      item.onclick = () => scrollToSlide(i);
+      item.innerHTML = `<span class="sidebar-num">${i+1}</span><span class="sidebar-name">${esc(v.title)}</span>`;
+      item.onclick = () => {
+        const slides = document.querySelectorAll('.video-slide');
+        if (slides[i]) slides[i].scrollIntoView({ behavior:'smooth' });
+      };
       list.appendChild(item);
     });
   }
 
-  function scrollToSlide(i) {
-    const slides = document.querySelectorAll('.video-slide');
-    if (slides[i]) slides[i].scrollIntoView({ behavior: 'smooth' });
-  }
-
-  function esc(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
   // ── OBSERVER ──
   function observeSlides() {
@@ -511,115 +418,178 @@
       entries.forEach(entry => {
         const vid = entry.target.querySelector('video');
         const i   = parseInt(entry.target.dataset.index);
+        const id  = entry.target.dataset.id;
         if (entry.isIntersecting) {
-          if (currentVid && currentVid !== vid) { currentVid.pause(); currentVid.currentTime = 0; }
-          currentVid    = vid;
-          vid.muted     = isMuted;
+          if (currentVid && currentVid !== vid) { currentVid.pause(); currentVid.currentTime=0; }
+          currentVid = vid; currentId = id;
+          vid.muted = isMuted;
           vid.play().catch(()=>{});
           trackProgress(vid, i);
-          // highlight sidebar
-          document.querySelectorAll('.sidebar-item').forEach((el,j) => {
-            el.classList.toggle('active', j === i);
-          });
+          document.querySelectorAll('.sidebar-item').forEach((el,j) => el.classList.toggle('active', j===i));
+          loadComments(id);
         } else {
           vid.pause(); vid.currentTime = 0;
         }
       });
-    }, { threshold: 0.65 });
+    }, { threshold:0.65 });
     document.querySelectorAll('.video-slide').forEach(s => io.observe(s));
   }
 
   function trackProgress(vid, i) {
-    const bar = document.getElementById('pb-' + i);
+    const bar = document.getElementById('pb-'+i);
     if (!bar) return;
     const tick = () => {
-      if (vid.duration) bar.style.width = (vid.currentTime / vid.duration * 100) + '%';
-      if (!vid.paused)  requestAnimationFrame(tick);
+      if (vid.duration) bar.style.width = (vid.currentTime/vid.duration*100)+'%';
+      if (!vid.paused) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
   }
 
   // ── LIKES ──
   function toggleLike(i) {
-    const v       = filtered[i];
-    const icon    = document.getElementById('like-icon-' + i);
-    const countEl = document.getElementById('like-count-' + i);
-    const key     = 'liked_' + v.id;
-    let count     = likes[v.id] || 0;
-    if (likes[key]) {
-      count = Math.max(0, count - 1); icon.textContent = '🤍'; delete likes[key];
-    } else {
-      count++; icon.textContent = '❤️'; likes[key] = true;
-    }
-    likes[v.id] = count; countEl.textContent = count;
+    const v = filtered[i];
+    const icon = document.getElementById('like-icon-'+i);
+    const countEl = document.getElementById('like-count-'+i);
+    const key = 'liked_'+v.id;
+    let count = likes[v.id] || 0;
+    if (likes[key]) { count=Math.max(0,count-1); icon.textContent='🤍'; delete likes[key]; }
+    else            { count++; icon.textContent='❤️'; likes[key]=true; }
+    likes[v.id]=count; countEl.textContent=count;
     localStorage.setItem('meutok_likes', JSON.stringify(likes));
   }
+  window.toggleLike = toggleLike;
 
   function triggerLike(i, slide) {
-    const icon = document.getElementById('like-icon-' + i);
+    const icon = document.getElementById('like-icon-'+i);
     if (icon.textContent !== '❤️') toggleLike(i);
     const burst = document.createElement('div');
-    burst.className = 'heart-burst'; burst.textContent = '❤️';
-    slide.appendChild(burst); setTimeout(() => burst.remove(), 700);
+    burst.className='heart-burst'; burst.textContent='❤️';
+    slide.appendChild(burst); setTimeout(()=>burst.remove(), 700);
   }
+
+  // ── COMENTÁRIOS (Firebase) ──
+  function loadComments(videoId) {
+    if (!window._firebaseReady) return;
+    if (unsubscribe) unsubscribe();
+
+    const q = window._query(
+      window._collection(window._db, 'comments'),
+      window._where('videoId','==', videoId),
+      window._orderBy('createdAt','asc')
+    );
+
+    unsubscribe = window._onSnapshot(q, snap => {
+      const comments = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+      renderComments(comments);
+    });
+  }
+
+  function renderComments(comments) {
+    const list   = document.getElementById('commentsList');
+    const mobile = document.getElementById('mobileCommentsList');
+    const count  = document.getElementById('commentsCount');
+    count.textContent = comments.length;
+
+    const html = comments.length === 0
+      ? `<div class="no-comments-msg"><div class="icon">💬</div><div>Nenhum comentário ainda.<br>Seja o primeiro!</div></div>`
+      : comments.map(c => `
+          <div class="comment-item">
+            <div class="comment-text">${esc(c.text)}</div>
+            <div class="comment-time">${formatTime(c.createdAt)}</div>
+          </div>`).join('');
+
+    list.innerHTML   = html;
+    mobile.innerHTML = html;
+    list.scrollTop   = list.scrollHeight;
+    mobile.scrollTop = mobile.scrollHeight;
+  }
+
+  function formatTime(ts) {
+    if (!ts) return 'agora';
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+  }
+
+  async function sendComment(mobile=false) {
+    const inputId = mobile ? 'mobileCommentInput' : 'commentInput';
+    const input   = document.getElementById(inputId);
+    const text    = input.value.trim();
+    if (!text) return;
+    if (!currentId) { showToast('Nenhum vídeo selecionado'); return; }
+    if (!window._firebaseReady) { showToast('Firebase não conectado'); return; }
+
+    input.value = '';
+    try {
+      await window._addDoc(window._collection(window._db,'comments'), {
+        videoId: currentId,
+        text,
+        createdAt: window._serverTimestamp()
+      });
+    } catch(e) {
+      showToast('Erro ao enviar comentário');
+    }
+  }
+  window.sendComment = sendComment;
 
   // ── DELETE ──
   function deleteVideo(id) {
-    const v = videos.find(x => x.id === id);
-    if (!v || !confirm('Deletar "' + v.title + '"?')) return;
-    videos = videos.filter(x => x.id !== id);
+    const v = videos.find(x=>x.id===id);
+    if (!v || !confirm('Deletar "'+v.title+'"?')) return;
+    videos = videos.filter(x=>x.id!==id);
     save(); applyFilter(); showToast('Vídeo removido');
   }
+  window.deleteVideo = deleteVideo;
+
+  // ── MOBILE COMMENTS ──
+  function openMobileComments() { document.getElementById('mobileCommentModal').classList.add('open'); }
+  function closeMobileComments(){ document.getElementById('mobileCommentModal').classList.remove('open'); }
+  window.openMobileComments  = openMobileComments;
+  window.closeMobileComments = closeMobileComments;
 
   // ── LOGIN ──
-  function openLogin() {
-    if (isAdmin) { openUpload(); return; }
-    document.getElementById('loginModal').classList.add('open');
-    setTimeout(() => document.getElementById('adminPass').focus(), 150);
-  }
-  function closeLogin() {
-    document.getElementById('loginModal').classList.remove('open');
-    document.getElementById('adminPass').value = '';
-    document.getElementById('loginError').style.display = 'none';
-  }
-  function checkLogin() {
+  function openLogin() { if (isAdmin){openUpload();return;} document.getElementById('loginModal').classList.add('open'); setTimeout(()=>document.getElementById('adminPass').focus(),150); }
+  function closeLogin(){ document.getElementById('loginModal').classList.remove('open'); document.getElementById('adminPass').value=''; document.getElementById('loginError').style.display='none'; }
+  function checkLogin(){
     if (document.getElementById('adminPass').value === ADMIN_PASSWORD) {
-      isAdmin = true; closeLogin(); renderFeed(); openUpload();
+      isAdmin=true; closeLogin(); renderFeed(); openUpload();
     } else {
-      document.getElementById('loginError').style.display = 'block';
-      document.getElementById('adminPass').value = '';
+      document.getElementById('loginError').style.display='block';
+      document.getElementById('adminPass').value='';
     }
   }
+  window.openLogin=openLogin; window.closeLogin=closeLogin; window.checkLogin=checkLogin;
 
   // ── UPLOAD ──
-  function openUpload()  { document.getElementById('uploadModal').classList.add('open'); }
-  function closeUpload() {
-    document.getElementById('uploadModal').classList.remove('open');
-    document.getElementById('videoFile').value  = '';
-    document.getElementById('videoTitle').value = '';
-    document.getElementById('videoDesc').value  = '';
-  }
-  function addVideo() {
+  function openUpload() { document.getElementById('uploadModal').classList.add('open'); }
+  function closeUpload(){ document.getElementById('uploadModal').classList.remove('open'); document.getElementById('videoFile').value=''; document.getElementById('videoTitle').value=''; document.getElementById('videoDesc').value=''; }
+  function addVideo(){
     const file  = document.getElementById('videoFile').value.trim();
     const title = document.getElementById('videoTitle').value.trim();
     const desc  = document.getElementById('videoDesc').value.trim();
     if (!file)  { showToast('Digite o nome do arquivo!'); return; }
     if (!title) { showToast('Adicione um título!'); return; }
-    videos.unshift({ id: Date.now().toString(), file, title, desc });
+    videos.unshift({ id:Date.now().toString(), file, title, desc });
     save(); closeUpload(); applyFilter(); showToast('Vídeo adicionado! 🎉');
   }
+  window.openUpload=openUpload; window.closeUpload=closeUpload; window.addVideo=addVideo;
 
   function save() { localStorage.setItem('meutok_local', JSON.stringify(videos)); }
 
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+    t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2500);
   }
+  window.showToast = showToast;
+  window.onSearch  = onSearch;
+  window.clearSearch = clearSearch;
 
-  // init
-  filtered = [...videos];
-  renderFeed();
+  // aguarda Firebase e inicia
+  if (window._firebaseReady) { filtered=[...videos]; applyFilter(); }
+  else {
+    filtered=[...videos]; applyFilter();
+    window.addEventListener('firebaseReady', ()=>{ if(currentId) loadComments(currentId); });
+  }
 </script>
 </body>
 </html>
