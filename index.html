@@ -36,6 +36,17 @@
   }
   .nav-btn:hover { border-color:var(--accent); color:var(--accent); }
 
+  /* mute button */
+  #muteBtn {
+    position:fixed; top:16px; right:80px; z-index:101;
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(255,255,255,.13); backdrop-filter:blur(10px);
+    border:none; font-size:18px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .2s;
+  }
+  #muteBtn:hover { background:rgba(255,255,255,.25); }
+
   /* FEED */
   #feed { height:100dvh; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; }
   #feed::-webkit-scrollbar { display:none; }
@@ -84,6 +95,18 @@
   }
   .play-indicator.pop { animation:fadeOut .55s ease forwards; }
 
+  /* tap to unmute hint */
+  #muteHint {
+    position:fixed; bottom:40px; left:50%;
+    transform:translateX(-50%);
+    background:rgba(0,0,0,.65); backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.15);
+    color:#fff; padding:9px 20px; border-radius:30px;
+    font-size:13px; z-index:102;
+    animation:fadeUp .4s ease, fadeOut2 .5s ease 3s forwards;
+    pointer-events:none; white-space:nowrap;
+  }
+
   /* EMPTY */
   #empty-state {
     display:none; flex-direction:column; align-items:center; justify-content:center;
@@ -123,20 +146,6 @@
   .btn-close { background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; position:absolute; top:16px; right:20px; }
   .error-msg { color:var(--accent); font-size:12px; margin-top:-8px; margin-bottom:10px; display:none; }
 
-  /* video list in admin */
-  .video-list { margin-bottom:14px; max-height:140px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; }
-  .video-list::-webkit-scrollbar { width:4px; }
-  .video-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
-  .video-item {
-    display:flex; align-items:center; gap:10px; background:var(--bg);
-    border:1px solid var(--border); border-radius:10px; padding:10px 12px;
-    font-size:13px; cursor:pointer; transition:border-color .2s;
-  }
-  .video-item:hover { border-color:var(--accent2); }
-  .video-item .vi-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .video-item .vi-check { font-size:16px; }
-  .video-item.selected { border-color:var(--accent2); background:rgba(0,242,234,.06); }
-
   #toast {
     position:fixed; bottom:30px; left:50%;
     transform:translateX(-50%) translateY(80px);
@@ -160,12 +169,14 @@
   @keyframes fadeUp  { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
   @keyframes popIn   { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
   @keyframes fadeOut { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.4)} }
+  @keyframes fadeOut2 { from{opacity:1} to{opacity:0} }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="logo">MeuTok</div>
+  <button id="muteBtn" onclick="toggleMute()" title="Ativar/desativar som">🔇</button>
   <button class="nav-btn" id="adminNavBtn" onclick="openLogin()">+ Admin</button>
 </nav>
 
@@ -174,10 +185,7 @@
 <div id="empty-state">
   <div class="big-icon">🎬</div>
   <h2>Nenhum vídeo ainda</h2>
-  <p>
-    Coloque seus vídeos na pasta <code>videos/</code><br>
-    depois faça login e adicione ao feed!
-  </p>
+  <p>Faça login como admin e<br>adicione o primeiro vídeo!</p>
 </div>
 
 <!-- LOGIN -->
@@ -198,15 +206,9 @@
   <div class="modal">
     <button class="btn-close" onclick="closeUpload()">✕</button>
     <h2>Novo Vídeo</h2>
-    <p class="subtitle">Digite o nome do arquivo de vídeo que está na pasta <code>videos/</code> do seu repositório.</p>
-
-    <input type="text" id="videoFile" placeholder="meu-video.mp4"
-      oninput="previewFile(this.value)"/>
-    <div class="hint">
-      Ex: <code>videos/festa.mp4</code> → digite só <code>festa.mp4</code><br>
-      Formatos aceitos: <code>.mp4</code> <code>.webm</code> <code>.mov</code>
-    </div>
-
+    <p class="subtitle">Digite o nome do arquivo que está na pasta <code>videos/</code> do repositório.</p>
+    <input type="text" id="videoFile" placeholder="meu-video.mp4"/>
+    <div class="hint">Ex: <code>festa.mp4</code> — precisa ter o <code>.mp4</code> no final!</div>
     <input type="text" id="videoTitle" placeholder="Título do vídeo"/>
     <textarea id="videoDesc" placeholder="Descrição (opcional)"></textarea>
     <button class="btn-primary" onclick="addVideo()">PUBLICAR</button>
@@ -220,14 +222,31 @@
   //  ⚠️  TROQUE A SENHA ABAIXO
   // ══════════════════════════════════
   const ADMIN_PASSWORD = "joao";
+  const VIDEO_FOLDER   = "videos/";
 
-  // pasta onde ficam os vídeos no repositório
-  const VIDEO_FOLDER = "videos/";
-
-  let videos  = JSON.parse(localStorage.getItem('meutok_local') || '[]');
-  let likes   = JSON.parse(localStorage.getItem('meutok_likes') || '{}');
-  let isAdmin = false;
+  let videos    = JSON.parse(localStorage.getItem('meutok_local') || '[]');
+  let likes     = JSON.parse(localStorage.getItem('meutok_likes') || '{}');
+  let isAdmin   = false;
+  let isMuted   = true;
   let currentVid = null;
+  let hintShown = false;
+
+  // ---------- MUTE ----------
+  function toggleMute() {
+    isMuted = !isMuted;
+    document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
+    if (currentVid) currentVid.muted = isMuted;
+  }
+
+  function showMuteHint() {
+    if (hintShown) return;
+    hintShown = true;
+    const hint = document.createElement('div');
+    hint.id = 'muteHint';
+    hint.textContent = '🔇 Toque em 🔇 para ativar o som';
+    document.body.appendChild(hint);
+    setTimeout(() => hint.remove(), 4000);
+  }
 
   // ---------- RENDER ----------
   function renderFeed() {
@@ -253,7 +272,7 @@
       slide.dataset.index = i;
 
       slide.innerHTML = `
-        <video src="${VIDEO_FOLDER}${v.file}" loop playsinline preload="metadata"></video>
+        <video src="${VIDEO_FOLDER}${v.file}" loop playsinline preload="auto" muted></video>
         <div class="play-indicator" id="pi-${i}"></div>
         <div class="progress-bar"  id="pb-${i}"></div>
         <div class="video-info">
@@ -272,7 +291,7 @@
         </div>
       `;
 
-      // tap: single = play/pause, double = like
+      // single tap = play/pause | double tap = like
       let lastTap = 0;
       slide.addEventListener('click', e => {
         if (e.target.closest('.side-actions')) return;
@@ -293,6 +312,7 @@
     });
 
     observeSlides();
+    showMuteHint();
   }
 
   function esc(s) {
@@ -306,12 +326,17 @@
         const vid = entry.target.querySelector('video');
         const i   = entry.target.dataset.index;
         if (entry.isIntersecting) {
-          if (currentVid && currentVid !== vid) currentVid.pause();
-          currentVid = vid;
-          vid.play().catch(()=>{});
+          if (currentVid && currentVid !== vid) {
+            currentVid.pause();
+            currentVid.currentTime = 0;
+          }
+          currentVid      = vid;
+          vid.muted       = isMuted;
+          vid.play().catch(() => {});
           trackProgress(vid, i);
         } else {
           vid.pause();
+          vid.currentTime = 0;
         }
       });
     }, { threshold: 0.65 });
@@ -330,14 +355,13 @@
 
   // ---------- LIKES ----------
   function toggleLike(i) {
-    const v      = videos[i];
-    const icon   = document.getElementById('like-icon-' + i);
+    const v       = videos[i];
+    const icon    = document.getElementById('like-icon-' + i);
     const countEl = document.getElementById('like-count-' + i);
-    const key    = 'liked_' + v.id;
-    let count    = likes[v.id] || 0;
+    const key     = 'liked_' + v.id;
+    let count     = likes[v.id] || 0;
     if (likes[key]) {
-      count = Math.max(0, count - 1);
-      icon.textContent = '🤍'; delete likes[key];
+      count = Math.max(0, count - 1); icon.textContent = '🤍'; delete likes[key];
     } else {
       count++; icon.textContent = '❤️'; likes[key] = true;
     }
