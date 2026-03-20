@@ -317,7 +317,7 @@
         <div id="musicAdminBtn" style="display:none;">
           <label style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#00f2ea,#3B8BD4);border-radius:20px;cursor:pointer;font-size:13px;font-weight:700;color:#0a0a0a;">
             <span>+ Upload</span>
-            <input type="file" id="musicUploadInput" accept="audio/*,video/*,.m4a" style="display:none;" onchange="uploadMusic(this)"/>
+            <input type="file" id="musicUploadInput" accept="audio/*,video/*,.m4a,.mp3,.wav,.ogg,.aac,.flac" style="display:none;" onchange="uploadMusic(this)" multiple/>
           </label>
         </div>
       </div>
@@ -327,6 +327,16 @@
         <div style="height:4px;background:#222;border-radius:4px;overflow:hidden;">
           <div id="uploadProgressBar" style="height:100%;width:0%;background:linear-gradient(to right,#00f2ea,#3B8BD4);transition:width .3s;border-radius:4px;"></div>
         </div>
+      </div>
+      <!-- Drop zone (só admin) -->
+      <div id="musicDropZone" style="display:none;margin:0 20px 16px;border:2px dashed #222;border-radius:14px;padding:28px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;"
+        ondragover="event.preventDefault();this.style.borderColor='#00f2ea';this.style.background='rgba(0,242,234,.04)'"
+        ondragleave="this.style.borderColor='#222';this.style.background=''"
+        ondrop="onMusicDrop(event)">
+        <div style="font-size:36px;margin-bottom:8px;">🎵</div>
+        <div style="font-size:13px;font-weight:700;color:#00f2ea;margin-bottom:4px;">Arraste músicas aqui</div>
+        <div style="font-size:12px;color:#666;">ou clique no botão + Upload acima</div>
+        <div style="font-size:11px;color:#444;margin-top:6px;">MP3 · M4A · WAV · OGG · AAC · FLAC · MP4</div>
       </div>
       <div class="music-feed" id="musicFeed"></div>
     </div>
@@ -525,6 +535,8 @@
     const feed = document.getElementById('musicFeed');
     const adminBtn = document.getElementById('musicAdminBtn');
     if (adminBtn) adminBtn.style.display = isAdmin ? 'block' : 'none';
+    const dropZone = document.getElementById('musicDropZone');
+    if (dropZone) dropZone.style.display = isAdmin ? 'block' : 'none';
     feed.innerHTML = '<div class="music-empty"><div class="icon">⏳</div><p>Carregando...</p></div>';
     try {
       const { data, error } = await _supabase.storage.from('videos').list('music', { sortBy: { column: 'created_at', order: 'desc' } });
@@ -571,6 +583,20 @@
     input.value = '';
   }
   window.uploadMusic = uploadMusic;
+
+  async function onMusicDrop(event) {
+    event.preventDefault();
+    const dropZone = document.getElementById('musicDropZone');
+    dropZone.style.borderColor = '#222';
+    dropZone.style.background = '';
+    const files = [...event.dataTransfer.files];
+    if (files.length === 0) return;
+    for (const file of files) {
+      const fakeInput = { files: [file] };
+      await uploadMusic(fakeInput);
+    }
+  }
+  window.onMusicDrop = onMusicDrop;
 
   async function deleteMusicFile(filename) {
     if (!confirm('Deletar "' + filename + '"?')) return;
