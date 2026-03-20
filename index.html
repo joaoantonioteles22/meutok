@@ -280,7 +280,9 @@
 
     <!-- SEÇÃO VÍDEOS -->
     <div id="section-videos" style="flex:1;display:flex;overflow:hidden;">
-      <div id="feed-area">
+      <div id="feed-area" style="position:relative;">
+        <!-- botão upload vídeo (admin) -->
+        <button id="videoUploadBtn" onclick="openUpload()" style="display:none;position:absolute;top:10px;right:10px;z-index:10;padding:8px 16px;background:linear-gradient(135deg,#00f2ea,#3B8BD4);border:none;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#0a0a0a;cursor:pointer;transition:opacity .2s;">+ Upload</button>
         <div id="video-col">
           <div id="feed"></div>
           <div class="center-msg" id="noResults"><div class="big-icon">🔍</div><h2>Sem resultados</h2><p>Nenhum vídeo com esse título</p></div>
@@ -315,10 +317,7 @@
           <p>Faça upload e ouça músicas direto no site</p>
         </div>
         <div id="musicAdminBtn" style="display:none;">
-          <label style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#00f2ea,#3B8BD4);border-radius:20px;cursor:pointer;font-size:13px;font-weight:700;color:#0a0a0a;">
-            <span>+ Upload</span>
-            <input type="file" id="musicUploadInput" accept="audio/*,video/*,.m4a,.mp3,.wav,.ogg,.aac,.flac" style="display:none;" onchange="uploadMusic(this)" multiple/>
-          </label>
+          <button onclick="openMusicUploadModal()" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#00f2ea,#3B8BD4);border-radius:20px;cursor:pointer;font-size:13px;font-weight:700;color:#0a0a0a;border:none;">+ Upload</button>
         </div>
       </div>
       <!-- progresso de upload -->
@@ -440,19 +439,50 @@
   <div class="modal">
     <button class="btn-close" onclick="closeUpload()">✕</button>
     <h2>Novo Vídeo</h2>
-    <p class="subtitle">Nome do arquivo na pasta <code>videos/</code>.</p>
-    <input type="text" id="videoFile" placeholder="meu-video.mp4"/>
-    <div class="hint">Ex: <code>festa.mp4</code></div>
-    <input type="text" id="videoTitle" placeholder="Título"/>
-    <textarea id="videoDesc" placeholder="Descrição (opcional)"></textarea>
-    <div style="margin-bottom:10px;">
-      <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Categoria</label>
-      <select id="videoCategory" style="width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;">
-        <option value="videos">🎬 Vídeos</option>
-        <option value="music">🎵 Música</option>
-      </select>
+    <p class="subtitle">Arraste o vídeo ou cole o nome do arquivo da pasta <code>videos/</code>.</p>
+
+    <!-- Drag & Drop zone -->
+    <div id="videoDrop"
+      style="border:2px dashed #222;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:12px;position:relative;"
+      ondragover="event.preventDefault();this.style.borderColor='#00f2ea';this.style.background='rgba(0,242,234,.04)'"
+      ondragleave="this.style.borderColor='#222';this.style.background=''"
+      ondrop="onVideoDrop(event)">
+      <input type="file" id="videoFileInput" accept="video/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" onchange="onVideoFileSelect(this)"/>
+      <div style="font-size:32px;margin-bottom:8px;">🎬</div>
+      <div id="videoDropLabel" style="font-size:13px;font-weight:700;color:#00f2ea;margin-bottom:4px;">Arraste o vídeo aqui</div>
+      <div style="font-size:11px;color:#666;">ou clique pra selecionar · MP4, WEBM, MOV</div>
     </div>
+
+    <input type="text" id="videoTitle" placeholder="Título do vídeo"/>
+    <textarea id="videoDesc" placeholder="Descrição (opcional)"></textarea>
     <button class="btn-primary" onclick="addVideo()">PUBLICAR</button>
+  </div>
+</div>
+
+<!-- MODAL UPLOAD MÚSICA -->
+<div class="modal-overlay" id="musicUploadModal">
+  <div class="modal">
+    <button class="btn-close" onclick="closeMusicUploadModal()">✕</button>
+    <h2>🎵 Nova Música</h2>
+    <p class="subtitle">Arraste o arquivo ou clique para selecionar.</p>
+    <div id="musicModalDrop"
+      style="border:2px dashed #222;border-radius:12px;padding:24px;text-align:center;margin-bottom:12px;cursor:pointer;transition:border-color .2s,background .2s;position:relative;"
+      ondragover="event.preventDefault();this.style.borderColor='#00f2ea';this.style.background='rgba(0,242,234,.04)'"
+      ondragleave="this.style.borderColor='#222';this.style.background=''"
+      ondrop="onMusicModalDrop(event)">
+      <input type="file" accept="audio/*,.m4a,.mp3,.wav,.ogg,.aac,.flac" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" onchange="onMusicModalSelect(this)"/>
+      <div style="font-size:32px;margin-bottom:8px;">🎵</div>
+      <div id="musicModalDropLabel" style="font-size:13px;font-weight:700;color:#00f2ea;margin-bottom:4px;">Arraste a música aqui</div>
+      <div style="font-size:11px;color:#666;">MP3 · M4A · WAV · OGG · AAC · FLAC</div>
+    </div>
+    <input type="text" id="musicDisplayName" placeholder="Nome da música (ex: Queiroz - Minha Música)"/>
+    <div id="musicUploadModalProgress" style="display:none;margin-bottom:10px;">
+      <div style="font-size:12px;color:#00f2ea;margin-bottom:6px;" id="musicUploadModalText">Enviando...</div>
+      <div style="height:4px;background:#222;border-radius:4px;overflow:hidden;">
+        <div id="musicUploadModalBar" style="height:100%;width:0%;background:linear-gradient(to right,#00f2ea,#3B8BD4);transition:width .3s;border-radius:4px;"></div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="confirmMusicUpload()">PUBLICAR</button>
   </div>
 </div>
 
@@ -583,6 +613,74 @@
     input.value = '';
   }
   window.uploadMusic = uploadMusic;
+
+  // ── MODAL UPLOAD MÚSICA ──
+  window._pendingMusicFile = null;
+
+  function openMusicUploadModal() {
+    document.getElementById('musicUploadModal').classList.add('open');
+    document.getElementById('musicModalDropLabel').textContent = 'Arraste a música aqui';
+    document.getElementById('musicModalDrop').style.borderColor = '#222';
+    document.getElementById('musicDisplayName').value = '';
+    document.getElementById('musicUploadModalProgress').style.display = 'none';
+    window._pendingMusicFile = null;
+  }
+  function closeMusicUploadModal() {
+    document.getElementById('musicUploadModal').classList.remove('open');
+    window._pendingMusicFile = null;
+  }
+  function onMusicModalDrop(event) {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (!file) return;
+    window._pendingMusicFile = file;
+    document.getElementById('musicModalDropLabel').textContent = '✅ ' + file.name;
+    document.getElementById('musicModalDrop').style.borderColor = '#00f2ea';
+    if (!document.getElementById('musicDisplayName').value)
+      document.getElementById('musicDisplayName').value = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+  }
+  function onMusicModalSelect(input) {
+    const file = input.files[0];
+    if (!file) return;
+    window._pendingMusicFile = file;
+    document.getElementById('musicModalDropLabel').textContent = '✅ ' + file.name;
+    document.getElementById('musicModalDrop').style.borderColor = '#00f2ea';
+    if (!document.getElementById('musicDisplayName').value)
+      document.getElementById('musicDisplayName').value = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+  }
+  async function confirmMusicUpload() {
+    const file = window._pendingMusicFile;
+    const name = document.getElementById('musicDisplayName').value.trim();
+    if (!file) { showToast('Selecione um arquivo!'); return; }
+    if (!name) { showToast('Digite o nome da música!'); return; }
+
+    const prog = document.getElementById('musicUploadModalProgress');
+    const bar  = document.getElementById('musicUploadModalBar');
+    const txt  = document.getElementById('musicUploadModalText');
+    prog.style.display = 'block';
+    bar.style.width = '10%';
+    txt.textContent = 'Enviando...';
+
+    try {
+      // usa o nome bonito como nome do arquivo (sem caracteres especiais)
+      const safeName = name.replace(/[^a-zA-Z0-9 \-_]/g, '').replace(/\s+/g, '_');
+      const ext = file.name.split('.').pop();
+      const path = 'music/' + safeName + '.' + ext;
+      const { error } = await _supabase.storage.from('videos').upload(path, file, { upsert: true });
+      if (error) throw error;
+      bar.style.width = '100%';
+      txt.textContent = 'Upload concluído!';
+      setTimeout(() => { closeMusicUploadModal(); renderMusic(); }, 1200);
+    } catch(e) {
+      txt.textContent = 'Erro: ' + e.message;
+      bar.style.width = '0%';
+    }
+  }
+  window.openMusicUploadModal = openMusicUploadModal;
+  window.closeMusicUploadModal = closeMusicUploadModal;
+  window.onMusicModalDrop = onMusicModalDrop;
+  window.onMusicModalSelect = onMusicModalSelect;
+  window.confirmMusicUpload = confirmMusicUpload;
 
   async function onMusicDrop(event) {
     event.preventDefault();
@@ -846,7 +944,9 @@
 
   function renderFeed() {
     const feed=document.getElementById('feed'), noRes=document.getElementById('noResults');
-    document.getElementById('adminNavBtn').textContent=isAdmin?'+ Adicionar':'+ Admin';
+    document.getElementById('adminNavBtn').textContent=isAdmin?'+ Admin':'+ Admin';
+    const vub = document.getElementById('videoUploadBtn');
+    if (vub) vub.style.display = isAdmin ? 'block' : 'none';
     feed.innerHTML=''; feed.style.display=noRes.style.display='none';
     if(filtered.length===0){noRes.style.display='flex';return;}
     feed.style.display='block';
@@ -999,8 +1099,18 @@
   function checkLogin(){if(document.getElementById('adminPass').value===ADMIN_PASSWORD){isAdmin=true;closeLogin();renderFeed();openUpload();}else{document.getElementById('loginError').style.display='block';document.getElementById('adminPass').value='';}}
   window.openLogin=openLogin;window.closeLogin=closeLogin;window.checkLogin=checkLogin;
 
-  function openUpload(){document.getElementById('uploadModal').classList.add('open');}
-  function closeUpload(){document.getElementById('uploadModal').classList.remove('open');document.getElementById('videoFile').value='';document.getElementById('videoTitle').value='';document.getElementById('videoDesc').value='';}
+  function openUpload(){
+    document.getElementById('uploadModal').classList.add('open');
+    document.getElementById('videoDropLabel').textContent = 'Arraste o vídeo aqui';
+    document.getElementById('videoDrop').style.borderColor = '#222';
+  }
+  function closeUpload(){
+    document.getElementById('uploadModal').classList.remove('open');
+    document.getElementById('videoTitle').value='';
+    document.getElementById('videoDesc').value='';
+    window._pendingVideoFile = null;
+    window._pendingVideoName = null;
+  }
   function addVideo(){
     const file=document.getElementById('videoFile').value.trim(),title=document.getElementById('videoTitle').value.trim();
     const desc=document.getElementById('videoDesc').value.trim(),category=document.getElementById('videoCategory').value;
@@ -1010,6 +1120,27 @@
     localStorage.setItem('meutok_extra',JSON.stringify(videosExtra));
     closeUpload();applyFilter();if(category==='music')renderMusic();showToast('Vídeo adicionado! 🎉');
   }
+  function onVideoDrop(event) {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (!file) return;
+    window._pendingVideoName = file.name;
+    document.getElementById('videoDropLabel').textContent = '✅ ' + file.name;
+    document.getElementById('videoDrop').style.borderColor = '#00f2ea';
+    if (!document.getElementById('videoTitle').value)
+      document.getElementById('videoTitle').value = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g,' ');
+  }
+  function onVideoFileSelect(input) {
+    const file = input.files[0];
+    if (!file) return;
+    window._pendingVideoName = file.name;
+    document.getElementById('videoDropLabel').textContent = '✅ ' + file.name;
+    document.getElementById('videoDrop').style.borderColor = '#00f2ea';
+    if (!document.getElementById('videoTitle').value)
+      document.getElementById('videoTitle').value = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g,' ');
+  }
+  window.onVideoDrop = onVideoDrop;
+  window.onVideoFileSelect = onVideoFileSelect;
   window.openUpload=openUpload;window.closeUpload=closeUpload;window.addVideo=addVideo;
 
   function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
