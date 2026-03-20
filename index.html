@@ -317,7 +317,7 @@
         <div id="musicAdminBtn" style="display:none;">
           <label style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#00f2ea,#3B8BD4);border-radius:20px;cursor:pointer;font-size:13px;font-weight:700;color:#0a0a0a;">
             <span>+ Upload</span>
-            <input type="file" id="musicUploadInput" accept="audio/*,video/*" style="display:none;" onchange="uploadMusic(this)"/>
+            <input type="file" id="musicUploadInput" accept="audio/*,video/*,.m4a" style="display:none;" onchange="uploadMusic(this)"/>
           </label>
         </div>
       </div>
@@ -535,7 +535,7 @@
       }
       feed.innerHTML = data.map(file => {
         const url = 'https://xzelxpdylewqtwwvzfqc.supabase.co/storage/v1/object/public/videos/music/' + file.name;
-        const isAudio = /\.(mp3|wav|ogg|aac|flac)$/i.test(file.name);
+        const isAudio = /\.(mp3|wav|ogg|aac|flac|m4a)$/i.test(file.name);
         const name = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
         const mediaEl = isAudio
           ? '<div style="padding:16px;background:#0d0d0d;display:flex;align-items:center;gap:12px;"><div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#00f2ea,#3B8BD4);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🎵</div><audio src="' + url + '" controls preload="metadata" style="flex:1;min-width:0;"></audio></div>'
