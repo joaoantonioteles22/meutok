@@ -75,7 +75,7 @@
   .progress-track { position:relative; height:3px; margin:0 12px; background:rgba(255,255,255,.25); border-radius:3px; transition:height .15s; }
   .progress-wrap:hover .progress-track { height:5px; }
   .progress-fill { height:100%; border-radius:3px; width:0%; background:linear-gradient(to right,var(--accent),var(--accent2)); pointer-events:none; }
-  .progress-thumb { position:absolute; top:50%; right:0; width:12px; height:12px; border-radius:50%; background:#fff; transform:translate(50%,-50%); opacity:0; transition:opacity .15s; pointer-events:none; }
+  .progress-thumb { position:absolute; top:50%; left:0%; width:12px; height:12px; border-radius:50%; background:#fff; transform:translate(-50%,-50%); opacity:0; transition:opacity .15s; pointer-events:none; }
   .progress-wrap:hover .progress-thumb { opacity:1; }
   .time-display { display:flex; justify-content:space-between; padding:5px 12px 0; font-size:10px; color:rgba(255,255,255,.7); pointer-events:none; }
 
@@ -589,22 +589,26 @@
   }
 
   function trackProgress(vid, i) {
-    const fill = document.getElementById('pb-'+i);
-    const cur  = document.getElementById('cur-'+i);
-    const dur  = document.getElementById('dur-'+i);
-    vid.addEventListener('loadedmetadata', () => { if(dur) dur.textContent = fmtTime(vid.duration); }, { once:true });
-    // atualiza posição sempre que o tempo muda (inclusive ao arrastar pausado)
-    vid.addEventListener('timeupdate', () => {
+    const fill  = document.getElementById('pb-'+i);
+    const cur   = document.getElementById('cur-'+i);
+    const dur   = document.getElementById('dur-'+i);
+    const thumb = fill ? fill.parentElement.querySelector('.progress-thumb') : null;
+
+    const update = () => {
       if (!vid.duration) return;
-      fill.style.width = (vid.currentTime/vid.duration*100)+'%';
-      if (cur) cur.textContent = fmtTime(vid.currentTime);
-    });
-    const tick = () => {
-      if (vid.duration) { fill.style.width = (vid.currentTime/vid.duration*100)+'%'; if(cur) cur.textContent = fmtTime(vid.currentTime); }
-      if (!vid.paused) requestAnimationFrame(tick);
+      const pct = (vid.currentTime / vid.duration * 100);
+      if (fill)  fill.style.width = pct + '%';
+      if (thumb) thumb.style.left = pct + '%';
+      if (cur)   cur.textContent  = fmtTime(vid.currentTime);
     };
-    vid.addEventListener('play', () => requestAnimationFrame(tick));
-    requestAnimationFrame(tick);
+
+    vid.addEventListener('loadedmetadata', () => { if(dur) dur.textContent = fmtTime(vid.duration); }, { once:true });
+    vid.addEventListener('timeupdate', update);
+    vid.addEventListener('play', () => requestAnimationFrame(function tick(){
+      update();
+      if (!vid.paused) requestAnimationFrame(tick);
+    }));
+    requestAnimationFrame(update);
   }
 
   // ── LIKES ──
