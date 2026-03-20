@@ -63,82 +63,108 @@
   .video-title { font-size:14px; font-weight:700; margin-bottom:4px; text-shadow:0 1px 8px rgba(0,0,0,.9); }
   .video-desc  { font-size:12px; color:rgba(255,255,255,.7); line-height:1.4; }
 
-  /* botões laterais — bem mais acima */
+  /* botões laterais */
   .side-actions { position:absolute; right:10px; bottom:240px; z-index:2; display:flex; flex-direction:column; gap:14px; align-items:center; }
   .action-btn { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; user-select:none; }
   .action-icon { width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.13); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; font-size:18px; transition:transform .15s,background .15s; }
   .action-btn:active .action-icon { transform:scale(1.22); background:rgba(255,45,85,.35); }
   .action-btn span { font-size:10px; color:rgba(255,255,255,.85); font-weight:500; }
 
-  /* ── BARRA DE PROGRESSO CLICÁVEL ── */
-  .progress-wrap {
-    position:absolute; bottom:0; left:0; right:0; z-index:4;
-    padding:18px 0 8px;
-    background:linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 100%);
-    cursor:pointer;
-    user-select:none;
-  }
-  .progress-track {
-    position:relative; height:3px; margin:0 12px;
-    background:rgba(255,255,255,.25); border-radius:3px;
-    transition:height .15s;
-  }
+  /* barra de progresso */
+  .progress-wrap { position:absolute; bottom:0; left:0; right:0; z-index:4; padding:18px 0 8px; background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 100%); cursor:pointer; user-select:none; }
+  .progress-track { position:relative; height:3px; margin:0 12px; background:rgba(255,255,255,.25); border-radius:3px; transition:height .15s; }
   .progress-wrap:hover .progress-track { height:5px; }
-  .progress-fill {
-    height:100%; border-radius:3px; width:0%;
-    background:linear-gradient(to right,var(--accent),var(--accent2));
-    pointer-events:none;
-  }
-  .progress-thumb {
-    position:absolute; top:50%; right:0;
-    width:12px; height:12px; border-radius:50%;
-    background:#fff; transform:translate(50%,-50%);
-    opacity:0; transition:opacity .15s;
-    pointer-events:none;
-  }
+  .progress-fill { height:100%; border-radius:3px; width:0%; background:linear-gradient(to right,var(--accent),var(--accent2)); pointer-events:none; }
+  .progress-thumb { position:absolute; top:50%; right:0; width:12px; height:12px; border-radius:50%; background:#fff; transform:translate(50%,-50%); opacity:0; transition:opacity .15s; pointer-events:none; }
   .progress-wrap:hover .progress-thumb { opacity:1; }
-
-  /* tempo */
-  .time-display {
-    display:flex; justify-content:space-between;
-    padding:5px 12px 0; font-size:10px; color:rgba(255,255,255,.7);
-    pointer-events:none;
-  }
+  .time-display { display:flex; justify-content:space-between; padding:5px 12px 0; font-size:10px; color:rgba(255,255,255,.7); pointer-events:none; }
 
   .play-indicator { position:absolute; font-size:56px; z-index:5; pointer-events:none; opacity:0; }
   .play-indicator.pop { animation:fadeOut .55s ease forwards; }
 
-  /* COMENTÁRIOS direita */
-  #comments-col { display:none; width:280px; flex-shrink:0; border-left:1px solid var(--border); flex-direction:column; background:var(--surface); }
+  /* ── COMENTÁRIOS direita (desktop) ── */
+  #comments-col {
+    display:none; width:280px; flex-shrink:0;
+    border-left:1px solid var(--border); flex-direction:column; background:var(--surface);
+  }
   @media(min-width:768px){ #comments-col { display:flex; } }
-  .comments-header { padding:14px 16px 10px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+
+  .comments-header {
+    padding:12px 16px 10px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
   .comments-header h3 { font-size:13px; font-weight:700; }
+  .comments-header-right { display:flex; align-items:center; gap:8px; }
   .comments-count { font-size:11px; color:var(--muted); background:var(--surface2); padding:2px 8px; border-radius:10px; }
+  .close-comments-btn { background:none; border:none; color:var(--muted); font-size:18px; cursor:pointer; line-height:1; transition:color .2s; }
+  .close-comments-btn:hover { color:var(--text); }
+
   #commentsList { flex:1; overflow-y:auto; padding:10px 12px; display:flex; flex-direction:column; gap:8px; }
   #commentsList::-webkit-scrollbar { width:3px; }
   #commentsList::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
-  .comment-item { background:var(--surface2); border-radius:10px; padding:10px 12px; font-size:12px; line-height:1.5; animation:fadeUp .3s ease; border:1px solid var(--border); }
-  .comment-text { color:var(--text); word-break:break-word; }
+
+  .comment-item { background:var(--surface2); border-radius:10px; padding:10px 12px; font-size:12px; line-height:1.5; animation:fadeUp .3s ease; border:1px solid var(--border); position:relative; }
+  .comment-text { color:var(--text); word-break:break-word; padding-right:20px; }
   .comment-time { font-size:10px; color:var(--muted); margin-top:4px; }
+  .comment-delete {
+    position:absolute; top:8px; right:8px;
+    background:none; border:none; color:var(--muted);
+    font-size:13px; cursor:pointer; opacity:0;
+    transition:opacity .2s, color .2s; line-height:1;
+  }
+  .comment-item:hover .comment-delete { opacity:1; }
+  .comment-delete:hover { color:var(--accent); }
+
   .no-comments-msg { text-align:center; color:var(--muted); font-size:12px; padding:30px 10px; }
   .no-comments-msg .icon { font-size:28px; margin-bottom:6px; }
-  .comment-form { padding:10px 12px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:8px; }
-  .comment-form textarea { width:100%; background:var(--bg); border:1.5px solid var(--border); color:var(--text); padding:9px 12px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; resize:none; height:64px; outline:none; transition:border-color .2s; }
+
+  /* form com emoji */
+  .comment-form { padding:10px 12px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:8px; position:relative; }
+  .comment-input-wrap { position:relative; }
+  .comment-form textarea {
+    width:100%; background:var(--bg); border:1.5px solid var(--border); color:var(--text);
+    padding:9px 36px 9px 12px; border-radius:10px; font-family:'DM Sans',sans-serif;
+    font-size:13px; resize:none; height:64px; outline:none; transition:border-color .2s;
+  }
   .comment-form textarea:focus { border-color:var(--accent2); }
   .comment-form textarea::placeholder { color:var(--muted); }
-  .send-btn { align-self:flex-end; padding:7px 18px; border:none; border-radius:20px; background:linear-gradient(135deg,var(--accent),#ff6b6b); color:#fff; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; cursor:pointer; transition:opacity .2s; }
+  .emoji-btn {
+    position:absolute; right:8px; bottom:8px;
+    background:none; border:none; font-size:18px; cursor:pointer;
+    opacity:.6; transition:opacity .2s;
+  }
+  .emoji-btn:hover { opacity:1; }
+
+  /* emoji picker */
+  .emoji-picker {
+    display:none; position:absolute; bottom:100%; right:0; z-index:50;
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:10px; width:240px; animation:fadeUp .2s ease;
+  }
+  .emoji-picker.open { display:block; }
+  .emoji-grid { display:flex; flex-wrap:wrap; gap:4px; }
+  .emoji-grid button { background:none; border:none; font-size:20px; cursor:pointer; padding:4px; border-radius:6px; transition:background .15s; }
+  .emoji-grid button:hover { background:#1a1a1a; }
+
+  .form-bottom { display:flex; justify-content:flex-end; }
+  .send-btn { padding:7px 18px; border:none; border-radius:20px; background:linear-gradient(135deg,var(--accent),#ff6b6b); color:#fff; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; cursor:pointer; transition:opacity .2s; }
   .send-btn:hover { opacity:.85; }
 
+  /* modal mobile */
   #mobileCommentModal { display:none; position:fixed; inset:0; z-index:300; background:rgba(10,10,10,.97); flex-direction:column; }
   #mobileCommentModal.open { display:flex; }
-  .mcm-header { padding:16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
+  .mcm-header { padding:14px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
   .mcm-header h3 { font-size:15px; font-weight:700; }
   .mcm-close { background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; }
   #mobileCommentsList { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; }
-  .mcm-form { padding:12px; border-top:1px solid var(--border); display:flex; gap:8px; }
-  .mcm-form textarea { flex:1; background:#1a1a1a; border:1.5px solid var(--border); color:var(--text); padding:10px 12px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; resize:none; height:44px; outline:none; }
+  .mcm-form { padding:12px; border-top:1px solid var(--border); display:flex; gap:8px; align-items:center; position:relative; }
+  .mcm-input-wrap { flex:1; position:relative; }
+  .mcm-form textarea { width:100%; background:#1a1a1a; border:1.5px solid var(--border); color:var(--text); padding:10px 36px 10px 12px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; resize:none; height:44px; outline:none; }
   .mcm-form textarea:focus { border-color:var(--accent2); }
-  .mcm-send { padding:0 16px; border:none; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; font-size:13px; cursor:pointer; }
+  .mcm-emoji-btn { position:absolute; right:8px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:18px; cursor:pointer; opacity:.6; }
+  .mcm-emoji-picker { display:none; position:absolute; bottom:100%; right:0; z-index:50; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px; width:240px; animation:fadeUp .2s ease; }
+  .mcm-emoji-picker.open { display:block; }
+  .mcm-send { padding:0 16px; height:44px; border:none; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; font-size:13px; cursor:pointer; flex-shrink:0; }
 
   .center-msg { display:none; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:12px; text-align:center; padding:40px; }
   .center-msg .big-icon { font-size:52px; }
@@ -201,19 +227,33 @@
     </div>
   </div>
 
+  <!-- COMENTÁRIOS desktop -->
   <div id="comments-col">
     <div class="comments-header">
       <h3>💬 Comentários</h3>
-      <span class="comments-count" id="commentsCount">0</span>
+      <div class="comments-header-right">
+        <span class="comments-count" id="commentsCount">0</span>
+        <button class="close-comments-btn" onclick="toggleCommentsCol()" title="Fechar">✕</button>
+      </div>
     </div>
     <div id="commentsList"></div>
     <div class="comment-form">
-      <textarea id="commentInput" placeholder="Escreva um comentário..."></textarea>
-      <button class="send-btn" onclick="sendComment()">Enviar ↑</button>
+      <div class="comment-input-wrap">
+        <textarea id="commentInput" placeholder="Escreva um comentário..."
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendComment();}"></textarea>
+        <button class="emoji-btn" onclick="toggleEmojiPicker('emojiPicker')" title="Emoji">😊</button>
+        <div class="emoji-picker" id="emojiPicker">
+          <div class="emoji-grid" id="emojiGrid"></div>
+        </div>
+      </div>
+      <div class="form-bottom">
+        <button class="send-btn" onclick="sendComment()">Enviar ↑</button>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- MOBILE COMMENTS -->
 <div id="mobileCommentModal">
   <div class="mcm-header">
     <h3>💬 Comentários</h3>
@@ -221,11 +261,19 @@
   </div>
   <div id="mobileCommentsList"></div>
   <div class="mcm-form">
-    <textarea id="mobileCommentInput" placeholder="Comentar..."></textarea>
+    <div class="mcm-input-wrap">
+      <textarea id="mobileCommentInput" placeholder="Comentar..."
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendComment(true);}"></textarea>
+      <button class="mcm-emoji-btn" onclick="toggleEmojiPicker('mcmEmojiPicker')">😊</button>
+      <div class="mcm-emoji-picker" id="mcmEmojiPicker">
+        <div class="emoji-grid" id="mcmEmojiGrid"></div>
+      </div>
+    </div>
     <button class="mcm-send" onclick="sendComment(true)">↑</button>
   </div>
 </div>
 
+<!-- LOGIN -->
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
     <button class="btn-close" onclick="closeLogin()">✕</button>
@@ -237,6 +285,7 @@
   </div>
 </div>
 
+<!-- ADD VIDEO -->
 <div class="modal-overlay" id="uploadModal">
   <div class="modal">
     <button class="btn-close" onclick="closeUpload()">✕</button>
@@ -255,7 +304,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, onSnapshot, query, where, orderBy,
-           serverTimestamp, doc, setDoc, increment, getDoc }
+           serverTimestamp, doc, setDoc, increment, deleteDoc }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -281,7 +330,7 @@
   window._doc = doc;
   window._setDoc = setDoc;
   window._increment = increment;
-  window._getDoc = getDoc;
+  window._deleteDoc = deleteDoc;
   window._firebaseReady = true;
   window.dispatchEvent(new Event('firebaseReady'));
 </script>
@@ -301,23 +350,71 @@
     { id: "video_pernambuco", file: "pernambuco.mp4",    title: "Pernambuco", desc: "" },
   ];
 
-  let videosExtra  = JSON.parse(localStorage.getItem('meutok_extra') || '[]');
-  let isAdmin      = false;
-  let isMuted      = true;
-  let currentVid   = null;
-  let currentId    = null;
-  let hintShown    = false;
-  let filtered     = [];
-  let searchQ      = '';
+  // código secreto único por dispositivo pra identificar quem comentou
+  let myToken = localStorage.getItem('meutok_token');
+  if (!myToken) {
+    myToken = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem('meutok_token', myToken);
+  }
+
+  let videosExtra   = JSON.parse(localStorage.getItem('meutok_extra') || '[]');
+  let likedLocally  = JSON.parse(localStorage.getItem('meutok_liked') || '{}');
+  let isAdmin       = false;
+  let isMuted       = true;
+  let currentVid    = null;
+  let currentId     = null;
+  let hintShown     = false;
+  let filtered      = [];
+  let searchQ       = '';
   let unsubComments = null;
   let unsubLikes    = null;
+  let commentsColOpen = true;
 
-  // likes locais pra saber se JÁ curtiu neste dispositivo
-  let likedLocally = JSON.parse(localStorage.getItem('meutok_liked') || '{}');
+  // emojis
+  const EMOJIS = ['😀','😂','🥰','😍','🤩','😎','🥳','😜','🤔','😮','😢','😡','❤️','🔥','👏','🙌','💯','✨','🎉','🎬','👍','👎','💀','😭','🤣','😱','🥺','😏','🤗','💪','🙏','👀'];
+
+  function buildEmojiGrid(gridId, inputId) {
+    const grid = document.getElementById(gridId);
+    if (!grid || grid.children.length > 0) return;
+    EMOJIS.forEach(e => {
+      const btn = document.createElement('button');
+      btn.textContent = e;
+      btn.onclick = () => {
+        const input = document.getElementById(inputId);
+        const pos   = input.selectionStart || input.value.length;
+        input.value = input.value.slice(0, pos) + e + input.value.slice(pos);
+        input.focus();
+        document.getElementById(gridId).closest('.emoji-picker, .mcm-emoji-picker').classList.remove('open');
+      };
+      grid.appendChild(btn);
+    });
+  }
+
+  function toggleEmojiPicker(pickerId) {
+    const picker = document.getElementById(pickerId);
+    const isDesktop = pickerId === 'emojiPicker';
+    buildEmojiGrid(isDesktop ? 'emojiGrid' : 'mcmEmojiGrid', isDesktop ? 'commentInput' : 'mobileCommentInput');
+    picker.classList.toggle('open');
+  }
+  window.toggleEmojiPicker = toggleEmojiPicker;
+
+  // fecha emoji picker ao clicar fora
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.emoji-btn') && !e.target.closest('.mcm-emoji-btn') &&
+        !e.target.closest('.emoji-picker') && !e.target.closest('.mcm-emoji-picker')) {
+      document.querySelectorAll('.emoji-picker, .mcm-emoji-picker').forEach(p => p.classList.remove('open'));
+    }
+  });
+
+  function toggleCommentsCol() {
+    const col = document.getElementById('comments-col');
+    commentsColOpen = !commentsColOpen;
+    col.style.display = commentsColOpen ? 'flex' : 'none';
+  }
+  window.toggleCommentsCol = toggleCommentsCol;
 
   function getAllVideos() { return [...VIDEOS_FIXOS, ...videosExtra]; }
 
-  // ── SEARCH ──
   function onSearch(q) {
     searchQ = q.trim().toLowerCase();
     document.getElementById('clearBtn').style.display = q ? 'block' : 'none';
@@ -332,11 +429,9 @@
     const all = getAllVideos();
     let r = searchQ ? all.filter(v => v.title.toLowerCase().startsWith(searchQ)) : [...all];
     r.sort((a,b) => a.title.localeCompare(b.title, 'pt'));
-    filtered = r;
-    renderFeed();
+    filtered = r; renderFeed();
   }
 
-  // ── MUTE ──
   function toggleMute() {
     isMuted = !isMuted;
     document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
@@ -352,7 +447,6 @@
     document.body.appendChild(h); setTimeout(() => h.remove(), 4000);
   }
 
-  // ── RENDER ──
   function renderFeed() {
     const feed  = document.getElementById('feed');
     const noRes = document.getElementById('noResults');
@@ -364,39 +458,34 @@
     feed.style.display = 'block';
 
     filtered.forEach((v, i) => {
+      const liked = !!likedLocally[v.id];
       const slide = document.createElement('div');
-      slide.className     = 'video-slide';
+      slide.className = 'video-slide';
       slide.dataset.index = i;
       slide.dataset.id    = v.id;
-
-      const liked = !!likedLocally[v.id];
 
       slide.innerHTML = `
         <video src="${VIDEO_FOLDER}${v.file}" loop playsinline preload="auto" muted></video>
         <div class="play-indicator" id="pi-${i}"></div>
-
         <div class="video-info">
           <div class="video-title">${esc(v.title)}</div>
           ${v.desc ? `<div class="video-desc">${esc(v.desc)}</div>` : ''}
         </div>
-
         <div class="side-actions">
-          <div class="action-btn" onclick="toggleLike('${v.id}', ${i})">
+          <div class="action-btn" onclick="toggleLike('${v.id}',${i})">
             <div class="action-icon" id="like-icon-${i}">${liked?'❤️':'🤍'}</div>
             <span id="like-count-${i}">0</span>
           </div>
-          <div class="action-btn" onclick="openMobileComments()" style="${window.innerWidth < 768 ? 'display:flex' : 'display:none'}">
+          <div class="action-btn" onclick="openMobileComments()" style="${window.innerWidth<768?'display:flex':'display:none'}">
             <div class="action-icon">💬</div>
             <span>Comentar</span>
           </div>
-          ${isAdmin ? `<div class="action-btn" onclick="deleteVideo('${v.id}')"><div class="action-icon">🗑️</div><span>Deletar</span></div>` : ''}
+          ${isAdmin?`<div class="action-btn" onclick="deleteVideo('${v.id}')"><div class="action-icon">🗑️</div><span>Deletar</span></div>`:''}
         </div>
-
-        <!-- barra de progresso clicável -->
         <div class="progress-wrap" id="pw-${i}">
           <div class="progress-track" id="pt-${i}">
             <div class="progress-fill" id="pb-${i}"></div>
-            <div class="progress-thumb" id="pth-${i}"></div>
+            <div class="progress-thumb"></div>
           </div>
           <div class="time-display">
             <span id="cur-${i}">0:00</span>
@@ -405,43 +494,24 @@
         </div>
       `;
 
-      // clique na barra = navegar no vídeo
+      // barra clicável
       const pw = slide.querySelector(`#pw-${i}`);
       const pt = slide.querySelector(`#pt-${i}`);
-      pw.addEventListener('click', e => {
+      const seekTo = (clientX) => {
         const vid = slide.querySelector('video');
         if (!vid.duration) return;
         const rect = pt.getBoundingClientRect();
-        const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        vid.currentTime = pct * vid.duration;
-      });
-      // arrastar na barra
+        vid.currentTime = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)) * vid.duration;
+      };
       let dragging = false;
+      pw.addEventListener('click',     e => seekTo(e.clientX));
       pw.addEventListener('mousedown', () => dragging = true);
-      window.addEventListener('mouseup',  () => dragging = false);
-      window.addEventListener('mousemove', e => {
-        if (!dragging) return;
-        const vid = slide.querySelector('video');
-        if (!vid.duration) return;
-        const rect = pt.getBoundingClientRect();
-        const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        vid.currentTime = pct * vid.duration;
-      });
-      // touch drag
-      pw.addEventListener('touchstart', e => { dragging = true; });
-      pw.addEventListener('touchend',   () => { dragging = false; });
-      pw.addEventListener('touchmove',  e => {
-        if (!dragging) return;
-        const vid = slide.querySelector('video');
-        if (!vid.duration) return;
-        const rect = pt.getBoundingClientRect();
-        const touch = e.touches[0];
-        const pct   = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-        vid.currentTime = pct * vid.duration;
-        e.preventDefault();
-      }, { passive:false });
+      window.addEventListener('mouseup', () => dragging = false);
+      window.addEventListener('mousemove', e => { if (dragging) seekTo(e.clientX); });
+      pw.addEventListener('touchstart', () => dragging = true, { passive:true });
+      pw.addEventListener('touchend',   () => dragging = false);
+      pw.addEventListener('touchmove',  e => { if (dragging) seekTo(e.touches[0].clientX); e.preventDefault(); }, { passive:false });
 
-      // tap simples = play/pause | duplo = like
       let lastTap = 0;
       slide.addEventListener('click', e => {
         if (e.target.closest('.side-actions') || e.target.closest('.progress-wrap')) return;
@@ -477,14 +547,8 @@
   }
 
   function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function fmtTime(s) { if(isNaN(s))return'0:00'; const m=Math.floor(s/60),sec=Math.floor(s%60); return`${m}:${sec.toString().padStart(2,'0')}`; }
 
-  function fmtTime(s) {
-    if (isNaN(s)) return '0:00';
-    const m = Math.floor(s/60), sec = Math.floor(s%60);
-    return `${m}:${sec.toString().padStart(2,'0')}`;
-  }
-
-  // ── OBSERVER ──
   function observeSlides() {
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -510,75 +574,45 @@
 
   function trackProgress(vid, i) {
     const fill = document.getElementById('pb-'+i);
-    const thumb = document.getElementById('pth-'+i);
-    const cur   = document.getElementById('cur-'+i);
-    const dur   = document.getElementById('dur-'+i);
-    if (!fill) return;
-
-    vid.addEventListener('loadedmetadata', () => {
-      if (dur) dur.textContent = fmtTime(vid.duration);
-    });
-
+    const cur  = document.getElementById('cur-'+i);
+    const dur  = document.getElementById('dur-'+i);
+    vid.addEventListener('loadedmetadata', () => { if(dur) dur.textContent = fmtTime(vid.duration); }, { once:true });
     const tick = () => {
-      if (vid.duration) {
-        const pct = (vid.currentTime / vid.duration * 100) + '%';
-        fill.style.width  = pct;
-        if (thumb) thumb.style.left = pct;
-        if (cur)   cur.textContent  = fmtTime(vid.currentTime);
-      }
+      if (vid.duration) { fill.style.width = (vid.currentTime/vid.duration*100)+'%'; if(cur) cur.textContent = fmtTime(vid.currentTime); }
       if (!vid.paused) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
   }
 
-  // ── LIKES (Firebase sincronizado) ──
+  // ── LIKES ──
   function loadLikes(videoId, slideIndex) {
-    if (!window._firebaseReady) {
-      window.addEventListener('firebaseReady', () => loadLikes(videoId, slideIndex), { once:true });
-      return;
-    }
-    if (unsubLikes) { unsubLikes(); unsubLikes = null; }
-
+    if (!window._firebaseReady) { window.addEventListener('firebaseReady', ()=>loadLikes(videoId,slideIndex),{once:true}); return; }
+    if (unsubLikes) { unsubLikes(); unsubLikes=null; }
     const ref = window._doc(window._db, 'likes', videoId);
     unsubLikes = window._onSnapshot(ref, snap => {
-      const count = snap.exists() ? (snap.data().count || 0) : 0;
-      const el = document.getElementById('like-count-' + slideIndex);
+      const count = snap.exists() ? (snap.data().count||0) : 0;
+      const el = document.getElementById('like-count-'+slideIndex);
       if (el) el.textContent = count;
     });
   }
 
   async function toggleLike(videoId, slideIndex) {
     if (!window._firebaseReady) return;
-    const icon    = document.getElementById('like-icon-' + slideIndex);
-    const countEl = document.getElementById('like-count-' + slideIndex);
-    const key     = videoId;
-    const already = !!likedLocally[key];
-
+    const icon  = document.getElementById('like-icon-'+slideIndex);
+    const already = !!likedLocally[videoId];
     if (already) {
-      // descurtir
-      delete likedLocally[key];
-      icon.textContent = '🤍';
-      await window._setDoc(
-        window._doc(window._db, 'likes', videoId),
-        { count: window._increment(-1) },
-        { merge: true }
-      );
+      delete likedLocally[videoId]; icon.textContent='🤍';
+      await window._setDoc(window._doc(window._db,'likes',videoId),{count:window._increment(-1)},{merge:true});
     } else {
-      // curtir
-      likedLocally[key] = true;
-      icon.textContent = '❤️';
-      await window._setDoc(
-        window._doc(window._db, 'likes', videoId),
-        { count: window._increment(1) },
-        { merge: true }
-      );
+      likedLocally[videoId]=true; icon.textContent='❤️';
+      await window._setDoc(window._doc(window._db,'likes',videoId),{count:window._increment(1)},{merge:true});
     }
     localStorage.setItem('meutok_liked', JSON.stringify(likedLocally));
   }
   window.toggleLike = toggleLike;
 
   function triggerLike(videoId, slideIndex, slide) {
-    const icon = document.getElementById('like-icon-' + slideIndex);
+    const icon = document.getElementById('like-icon-'+slideIndex);
     if (icon.textContent !== '❤️') toggleLike(videoId, slideIndex);
     const burst = document.createElement('div');
     burst.className='heart-burst'; burst.textContent='❤️';
@@ -587,40 +621,58 @@
 
   // ── COMENTÁRIOS ──
   function loadComments(videoId) {
-    if (!window._firebaseReady) {
-      window.addEventListener('firebaseReady', () => loadComments(videoId), { once:true });
-      return;
-    }
-    if (unsubComments) { unsubComments(); unsubComments = null; }
+    if (!window._firebaseReady) { window.addEventListener('firebaseReady',()=>loadComments(videoId),{once:true}); return; }
+    if (unsubComments) { unsubComments(); unsubComments=null; }
     try {
       const q = window._query(
-        window._collection(window._db, 'comments'),
-        window._where('videoId','==', videoId),
+        window._collection(window._db,'comments'),
+        window._where('videoId','==',videoId),
         window._orderBy('createdAt','asc')
       );
       unsubComments = window._onSnapshot(q, snap => {
-        renderComments(snap.docs.map(d => ({ id:d.id, ...d.data() })));
-      }, err => console.error('Erro comentários:', err));
+        renderComments(snap.docs.map(d=>({id:d.id,...d.data()})));
+      }, err=>console.error(err));
     } catch(e) { console.error(e); }
   }
 
   function renderComments(comments) {
     const list   = document.getElementById('commentsList');
     const mobile = document.getElementById('mobileCommentsList');
-    const count  = document.getElementById('commentsCount');
-    count.textContent = comments.length;
-    const html = comments.length === 0
-      ? `<div class="no-comments-msg"><div class="icon">💬</div><div>Nenhum comentário ainda.<br>Seja o primeiro!</div></div>`
-      : comments.map(c => `<div class="comment-item"><div class="comment-text">${esc(c.text)}</div><div class="comment-time">${formatTime(c.createdAt)}</div></div>`).join('');
-    list.innerHTML = mobile.innerHTML = html;
-    list.scrollTop = list.scrollHeight;
+    document.getElementById('commentsCount').textContent = comments.length;
+
+    if (comments.length === 0) {
+      const html = `<div class="no-comments-msg"><div class="icon">💬</div><div>Nenhum comentário ainda.<br>Seja o primeiro!</div></div>`;
+      list.innerHTML = mobile.innerHTML = html;
+      return;
+    }
+
+    const makeHtml = (c) => {
+      const isMine = c.token === myToken;
+      return `<div class="comment-item">
+        <div class="comment-text">${esc(c.text)}</div>
+        <div class="comment-time">${formatTime(c.createdAt)}</div>
+        ${isMine ? `<button class="comment-delete" onclick="deleteComment('${c.id}')" title="Excluir">🗑</button>` : ''}
+      </div>`;
+    };
+
+    list.innerHTML   = comments.map(makeHtml).join('');
+    mobile.innerHTML = comments.map(makeHtml).join('');
+    list.scrollTop   = list.scrollHeight;
     mobile.scrollTop = mobile.scrollHeight;
   }
+
+  async function deleteComment(commentId) {
+    if (!confirm('Excluir seu comentário?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db,'comments',commentId));
+    } catch(e) { showToast('Erro ao excluir'); }
+  }
+  window.deleteComment = deleteComment;
 
   function formatTime(ts) {
     if (!ts) return 'agora';
     const d = ts.toDate ? ts.toDate() : new Date(ts);
-    return d.toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+    return d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
   }
 
   async function sendComment(mobile=false) {
@@ -631,18 +683,17 @@
     input.value = '';
     try {
       await window._addDoc(window._collection(window._db,'comments'), {
-        videoId: currentId, text, createdAt: window._serverTimestamp()
+        videoId: currentId, text, token: myToken, createdAt: window._serverTimestamp()
       });
     } catch(e) { showToast('Erro ao enviar comentário'); }
   }
   window.sendComment = sendComment;
 
-  // ── DELETE ──
   function deleteVideo(id) {
-    const isFixed = VIDEOS_FIXOS.find(v => v.id === id);
+    const isFixed = VIDEOS_FIXOS.find(v=>v.id===id);
     if (isFixed) { showToast('Vídeos fixos não podem ser deletados aqui'); return; }
     if (!confirm('Deletar este vídeo?')) return;
-    videosExtra = videosExtra.filter(x => x.id !== id);
+    videosExtra = videosExtra.filter(x=>x.id!==id);
     localStorage.setItem('meutok_extra', JSON.stringify(videosExtra));
     applyFilter(); showToast('Vídeo removido');
   }
@@ -653,12 +704,11 @@
   window.openMobileComments  = openMobileComments;
   window.closeMobileComments = closeMobileComments;
 
-  function openLogin()  { if (isAdmin){openUpload();return;} document.getElementById('loginModal').classList.add('open'); setTimeout(()=>document.getElementById('adminPass').focus(),150); }
+  function openLogin()  { if(isAdmin){openUpload();return;} document.getElementById('loginModal').classList.add('open'); setTimeout(()=>document.getElementById('adminPass').focus(),150); }
   function closeLogin() { document.getElementById('loginModal').classList.remove('open'); document.getElementById('adminPass').value=''; document.getElementById('loginError').style.display='none'; }
   function checkLogin() {
-    if (document.getElementById('adminPass').value === ADMIN_PASSWORD) {
-      isAdmin=true; closeLogin(); renderFeed(); openUpload();
-    } else { document.getElementById('loginError').style.display='block'; document.getElementById('adminPass').value=''; }
+    if (document.getElementById('adminPass').value===ADMIN_PASSWORD) { isAdmin=true; closeLogin(); renderFeed(); openUpload(); }
+    else { document.getElementById('loginError').style.display='block'; document.getElementById('adminPass').value=''; }
   }
   window.openLogin=openLogin; window.closeLogin=closeLogin; window.checkLogin=checkLogin;
 
@@ -670,7 +720,7 @@
     const desc  = document.getElementById('videoDesc').value.trim();
     if (!file)  { showToast('Digite o nome do arquivo!'); return; }
     if (!title) { showToast('Adicione um título!'); return; }
-    videosExtra.unshift({ id: 'extra_'+Date.now(), file, title, desc });
+    videosExtra.unshift({ id:'extra_'+Date.now(), file, title, desc });
     localStorage.setItem('meutok_extra', JSON.stringify(videosExtra));
     closeUpload(); applyFilter(); showToast('Vídeo adicionado! 🎉');
   }
@@ -679,13 +729,13 @@
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent=msg; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 2500);
+    setTimeout(()=>t.classList.remove('show'),2500);
   }
   window.showToast=showToast; window.onSearch=onSearch; window.clearSearch=clearSearch;
 
   applyFilter();
   window.addEventListener('firebaseReady', () => {
-    if (currentId) { loadComments(currentId); loadLikes(currentId, 0); }
+    if (currentId) { loadComments(currentId); loadLikes(currentId,0); }
   });
 </script>
 </body>
