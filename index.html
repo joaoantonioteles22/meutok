@@ -14,7 +14,6 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; overflow:hidden; height:100dvh; }
 
-  /* NAV */
   nav {
     position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nav-h);
     display:flex; align-items:center; gap:12px; padding:0 16px;
@@ -26,11 +25,7 @@
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   }
   .search-wrap { flex:1; position:relative; max-width:380px; }
-  .search-wrap input {
-    width:100%; background:#1a1a1a; border:1.5px solid var(--border);
-    color:var(--text); padding:8px 32px 8px 34px; border-radius:20px;
-    font-family:'DM Sans',sans-serif; font-size:13px; outline:none; transition:border-color .2s;
-  }
+  .search-wrap input { width:100%; background:#1a1a1a; border:1.5px solid var(--border); color:var(--text); padding:8px 32px 8px 34px; border-radius:20px; font-family:'DM Sans',sans-serif; font-size:13px; outline:none; transition:border-color .2s; }
   .search-wrap input:focus { border-color:var(--accent2); }
   .search-wrap input::placeholder { color:var(--muted); }
   .search-icon { position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:14px; pointer-events:none; }
@@ -41,10 +36,8 @@
   .nav-btn { background:none; border:1.5px solid var(--border); color:var(--text); padding:6px 14px; border-radius:20px; font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all .2s; white-space:nowrap; }
   .nav-btn:hover { border-color:var(--accent); color:var(--accent); }
 
-  /* LAYOUT */
   #app { display:flex; height:100dvh; padding-top:var(--nav-h); }
 
-  /* SIDEBAR esquerda */
   #sidebar { display:none; width:200px; flex-shrink:0; border-right:1px solid var(--border); flex-direction:column; background:var(--bg); }
   @media(min-width:768px){ #sidebar { display:flex; } }
   .sidebar-header { padding:12px 12px 8px; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border); }
@@ -57,7 +50,6 @@
   .sidebar-num { font-family:'Bebas Neue',sans-serif; font-size:14px; width:18px; text-align:center; flex-shrink:0; }
   .sidebar-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
-  /* FEED AREA centro */
   #feed-area { flex:1; display:flex; align-items:stretch; justify-content:center; overflow:hidden; background:#0a0a0a; }
   #video-col { width:100%; max-width:400px; position:relative; }
   #feed { width:100%; height:100%; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; }
@@ -80,7 +72,6 @@
   .play-indicator { position:absolute; font-size:56px; z-index:5; pointer-events:none; opacity:0; }
   .play-indicator.pop { animation:fadeOut .55s ease forwards; }
 
-  /* COMENTÁRIOS direita */
   #comments-col { display:none; width:280px; flex-shrink:0; border-left:1px solid var(--border); flex-direction:column; background:var(--surface); }
   @media(min-width:768px){ #comments-col { display:flex; } }
   .comments-header { padding:14px 16px 10px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
@@ -101,7 +92,6 @@
   .send-btn { align-self:flex-end; padding:7px 18px; border:none; border-radius:20px; background:linear-gradient(135deg,var(--accent),#ff6b6b); color:#fff; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; cursor:pointer; transition:opacity .2s; }
   .send-btn:hover { opacity:.85; }
 
-  /* modal comentários mobile */
   #mobileCommentModal { display:none; position:fixed; inset:0; z-index:300; background:rgba(10,10,10,.97); flex-direction:column; }
   #mobileCommentModal.open { display:flex; }
   .mcm-header { padding:16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
@@ -113,13 +103,11 @@
   .mcm-form textarea:focus { border-color:var(--accent2); }
   .mcm-send { padding:0 16px; border:none; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; font-size:13px; cursor:pointer; }
 
-  /* mensagens centrais */
   .center-msg { display:none; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:12px; text-align:center; padding:40px; }
   .center-msg .big-icon { font-size:52px; }
   .center-msg h2 { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--muted); }
   .center-msg p { font-size:13px; color:var(--muted); line-height:1.6; }
 
-  /* modais */
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); backdrop-filter:blur(12px); z-index:200; align-items:center; justify-content:center; }
   .modal-overlay.open { display:flex; }
   .modal { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:30px; width:90%; max-width:400px; position:relative; animation:popIn .25s cubic-bezier(.34,1.56,.64,1); }
@@ -137,7 +125,6 @@
 
   #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 22px; border-radius:30px; font-size:13px; font-weight:500; z-index:999; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
   #toast.show { transform:translateX(-50%) translateY(0); }
-
   .heart-burst { position:absolute; font-size:72px; z-index:10; pointer-events:none; left:50%; top:40%; transform:translate(-50%,-50%); animation:heartBurst .6s ease forwards; }
   .mute-hint { position:fixed; bottom:32px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.75); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.1); color:#fff; padding:8px 18px; border-radius:30px; font-size:12px; z-index:102; animation:fadeUpC .4s ease, fadeOut2 .4s ease 3s forwards; pointer-events:none; white-space:nowrap; }
 
@@ -174,7 +161,6 @@
     <div id="video-col">
       <div id="feed"></div>
       <div class="center-msg" id="noResults"><div class="big-icon">🔍</div><h2>Sem resultados</h2><p>Nenhum vídeo com esse título</p></div>
-      <div class="center-msg" id="emptyState"><div class="big-icon">🎬</div><h2>Nenhum vídeo ainda</h2><p>Faça login como admin<br>e adicione o primeiro vídeo!</p></div>
     </div>
   </div>
 
@@ -191,7 +177,6 @@
   </div>
 </div>
 
-<!-- mobile comments -->
 <div id="mobileCommentModal">
   <div class="mcm-header">
     <h3>💬 Comentários</h3>
@@ -204,7 +189,6 @@
   </div>
 </div>
 
-<!-- LOGIN -->
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
     <button class="btn-close" onclick="closeLogin()">✕</button>
@@ -216,7 +200,6 @@
   </div>
 </div>
 
-<!-- ADD VIDEO -->
 <div class="modal-overlay" id="uploadModal">
   <div class="modal">
     <button class="btn-close" onclick="closeUpload()">✕</button>
@@ -232,7 +215,6 @@
 
 <div id="toast"></div>
 
-<!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp }
@@ -250,7 +232,6 @@
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
 
-  // expõe funções pro escopo global
   window._db = db;
   window._addDoc = addDoc;
   window._collection = collection;
@@ -260,8 +241,6 @@
   window._onSnapshot = onSnapshot;
   window._serverTimestamp = serverTimestamp;
   window._firebaseReady = true;
-
-  // avisa o app que Firebase está pronto
   window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
@@ -272,7 +251,23 @@
   const ADMIN_PASSWORD = "minhasenha123";
   const VIDEO_FOLDER   = "videos/";
 
-  let videos     = JSON.parse(localStorage.getItem('meutok_local') || '[]');
+  // ══════════════════════════════════
+  //  VÍDEOS FIXOS — aparecem pra todo mundo
+  //  Para adicionar mais: copie o modelo abaixo
+  // ══════════════════════════════════
+  const VIDEOS_FIXOS = [
+    { id: "video_rata",        file: "ratacamponesa.mp4", title: "Rata",       desc: "" },
+    { id: "video_pernambuco",  file: "pernambuco.mp4",    title: "Pernambuco", desc: "" },
+  ];
+
+  // vídeos extras adicionados pelo admin (salvos localmente)
+  let videosExtra = JSON.parse(localStorage.getItem('meutok_extra') || '[]');
+
+  // junta fixos + extras (fixos primeiro)
+  function getAllVideos() {
+    return [...VIDEOS_FIXOS, ...videosExtra];
+  }
+
   let likes      = JSON.parse(localStorage.getItem('meutok_likes') || '{}');
   let isAdmin    = false;
   let isMuted    = true;
@@ -283,7 +278,6 @@
   let searchQ    = '';
   let unsubscribe = null;
 
-  // ── SEARCH ──
   function onSearch(q) {
     searchQ = q.trim().toLowerCase();
     document.getElementById('clearBtn').style.display = q ? 'block' : 'none';
@@ -295,15 +289,15 @@
     searchQ = ''; applyFilter();
   }
   function applyFilter() {
+    const all = getAllVideos();
     let r = searchQ
-      ? videos.filter(v => v.title.toLowerCase().startsWith(searchQ))
-      : [...videos];
+      ? all.filter(v => v.title.toLowerCase().startsWith(searchQ))
+      : [...all];
     r.sort((a,b) => a.title.localeCompare(b.title, 'pt'));
     filtered = r;
     renderFeed();
   }
 
-  // ── MUTE ──
   function toggleMute() {
     isMuted = !isMuted;
     document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
@@ -321,19 +315,16 @@
     setTimeout(() => h.remove(), 4000);
   }
 
-  // ── RENDER ──
   function renderFeed() {
     const feed  = document.getElementById('feed');
     const noRes = document.getElementById('noResults');
-    const empty = document.getElementById('emptyState');
     document.getElementById('adminNavBtn').textContent = isAdmin ? '+ Adicionar' : '+ Admin';
 
     renderSidebar();
     feed.innerHTML = '';
-    feed.style.display = noRes.style.display = empty.style.display = 'none';
+    feed.style.display = noRes.style.display = 'none';
 
-    if (videos.length === 0)  { empty.style.display = 'flex'; return; }
-    if (filtered.length === 0){ noRes.style.display = 'flex'; return; }
+    if (filtered.length === 0) { noRes.style.display = 'flex'; return; }
 
     feed.style.display = 'block';
 
@@ -358,19 +349,13 @@
             <div class="action-icon" id="like-icon-${i}">${liked?'❤️':'🤍'}</div>
             <span id="like-count-${i}">${likeCount}</span>
           </div>
-          <div class="action-btn" onclick="openMobileComments()" style="display:none" id="mob-cmt-btn-${i}">
+          <div class="action-btn" onclick="openMobileComments()" style="${window.innerWidth < 768 ? 'display:flex' : 'display:none'}">
             <div class="action-icon">💬</div>
             <span>Comentar</span>
           </div>
           ${isAdmin ? `<div class="action-btn" onclick="deleteVideo('${v.id}')"><div class="action-icon">🗑️</div><span>Deletar</span></div>` : ''}
         </div>
       `;
-
-      // mostrar botão comentar só no mobile
-      if (window.innerWidth < 768) {
-        const btn = slide.querySelector(`#mob-cmt-btn-${i}`);
-        if (btn) btn.style.display = 'flex';
-      }
 
       let lastTap = 0;
       slide.addEventListener('click', e => {
@@ -400,19 +385,14 @@
     filtered.forEach((v,i) => {
       const item = document.createElement('div');
       item.className = 'sidebar-item';
-      item.dataset.idx = i;
       item.innerHTML = `<span class="sidebar-num">${i+1}</span><span class="sidebar-name">${esc(v.title)}</span>`;
-      item.onclick = () => {
-        const slides = document.querySelectorAll('.video-slide');
-        if (slides[i]) slides[i].scrollIntoView({ behavior:'smooth' });
-      };
+      item.onclick = () => document.querySelectorAll('.video-slide')[i]?.scrollIntoView({ behavior:'smooth' });
       list.appendChild(item);
     });
   }
 
   function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-  // ── OBSERVER ──
   function observeSlides() {
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -445,7 +425,6 @@
     requestAnimationFrame(tick);
   }
 
-  // ── LIKES ──
   function toggleLike(i) {
     const v = filtered[i];
     const icon = document.getElementById('like-icon-'+i);
@@ -467,21 +446,27 @@
     slide.appendChild(burst); setTimeout(()=>burst.remove(), 700);
   }
 
-  // ── COMENTÁRIOS (Firebase) ──
   function loadComments(videoId) {
-    if (!window._firebaseReady) return;
-    if (unsubscribe) unsubscribe();
-
-    const q = window._query(
-      window._collection(window._db, 'comments'),
-      window._where('videoId','==', videoId),
-      window._orderBy('createdAt','asc')
-    );
-
-    unsubscribe = window._onSnapshot(q, snap => {
-      const comments = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-      renderComments(comments);
-    });
+    if (!window._firebaseReady) {
+      // Firebase ainda não carregou — aguarda e tenta de novo
+      window.addEventListener('firebaseReady', () => loadComments(videoId), { once: true });
+      return;
+    }
+    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+    try {
+      const q = window._query(
+        window._collection(window._db, 'comments'),
+        window._where('videoId','==', videoId),
+        window._orderBy('createdAt','asc')
+      );
+      unsubscribe = window._onSnapshot(q, snap => {
+        renderComments(snap.docs.map(d => ({ id:d.id, ...d.data() })));
+      }, err => {
+        console.error('Erro comentários:', err);
+      });
+    } catch(e) {
+      console.error('Erro ao carregar comentários:', e);
+    }
   }
 
   function renderComments(comments) {
@@ -489,18 +474,11 @@
     const mobile = document.getElementById('mobileCommentsList');
     const count  = document.getElementById('commentsCount');
     count.textContent = comments.length;
-
     const html = comments.length === 0
       ? `<div class="no-comments-msg"><div class="icon">💬</div><div>Nenhum comentário ainda.<br>Seja o primeiro!</div></div>`
-      : comments.map(c => `
-          <div class="comment-item">
-            <div class="comment-text">${esc(c.text)}</div>
-            <div class="comment-time">${formatTime(c.createdAt)}</div>
-          </div>`).join('');
-
-    list.innerHTML   = html;
-    mobile.innerHTML = html;
-    list.scrollTop   = list.scrollHeight;
+      : comments.map(c => `<div class="comment-item"><div class="comment-text">${esc(c.text)}</div><div class="comment-time">${formatTime(c.createdAt)}</div></div>`).join('');
+    list.innerHTML = mobile.innerHTML = html;
+    list.scrollTop = list.scrollHeight;
     mobile.scrollTop = mobile.scrollHeight;
   }
 
@@ -514,39 +492,32 @@
     const inputId = mobile ? 'mobileCommentInput' : 'commentInput';
     const input   = document.getElementById(inputId);
     const text    = input.value.trim();
-    if (!text) return;
-    if (!currentId) { showToast('Nenhum vídeo selecionado'); return; }
-    if (!window._firebaseReady) { showToast('Firebase não conectado'); return; }
-
+    if (!text || !currentId || !window._firebaseReady) return;
     input.value = '';
     try {
       await window._addDoc(window._collection(window._db,'comments'), {
-        videoId: currentId,
-        text,
-        createdAt: window._serverTimestamp()
+        videoId: currentId, text, createdAt: window._serverTimestamp()
       });
-    } catch(e) {
-      showToast('Erro ao enviar comentário');
-    }
+    } catch(e) { showToast('Erro ao enviar comentário'); }
   }
   window.sendComment = sendComment;
 
-  // ── DELETE ──
   function deleteVideo(id) {
-    const v = videos.find(x=>x.id===id);
-    if (!v || !confirm('Deletar "'+v.title+'"?')) return;
-    videos = videos.filter(x=>x.id!==id);
-    save(); applyFilter(); showToast('Vídeo removido');
+    // só pode deletar vídeos extras (não os fixos)
+    const isFixed = VIDEOS_FIXOS.find(v => v.id === id);
+    if (isFixed) { showToast('Vídeos fixos não podem ser deletados aqui'); return; }
+    if (!confirm('Deletar este vídeo?')) return;
+    videosExtra = videosExtra.filter(x => x.id !== id);
+    localStorage.setItem('meutok_extra', JSON.stringify(videosExtra));
+    applyFilter(); showToast('Vídeo removido');
   }
   window.deleteVideo = deleteVideo;
 
-  // ── MOBILE COMMENTS ──
   function openMobileComments() { document.getElementById('mobileCommentModal').classList.add('open'); }
   function closeMobileComments(){ document.getElementById('mobileCommentModal').classList.remove('open'); }
   window.openMobileComments  = openMobileComments;
   window.closeMobileComments = closeMobileComments;
 
-  // ── LOGIN ──
   function openLogin() { if (isAdmin){openUpload();return;} document.getElementById('loginModal').classList.add('open'); setTimeout(()=>document.getElementById('adminPass').focus(),150); }
   function closeLogin(){ document.getElementById('loginModal').classList.remove('open'); document.getElementById('adminPass').value=''; document.getElementById('loginError').style.display='none'; }
   function checkLogin(){
@@ -559,7 +530,6 @@
   }
   window.openLogin=openLogin; window.closeLogin=closeLogin; window.checkLogin=checkLogin;
 
-  // ── UPLOAD ──
   function openUpload() { document.getElementById('uploadModal').classList.add('open'); }
   function closeUpload(){ document.getElementById('uploadModal').classList.remove('open'); document.getElementById('videoFile').value=''; document.getElementById('videoTitle').value=''; document.getElementById('videoDesc').value=''; }
   function addVideo(){
@@ -568,12 +538,11 @@
     const desc  = document.getElementById('videoDesc').value.trim();
     if (!file)  { showToast('Digite o nome do arquivo!'); return; }
     if (!title) { showToast('Adicione um título!'); return; }
-    videos.unshift({ id:Date.now().toString(), file, title, desc });
-    save(); closeUpload(); applyFilter(); showToast('Vídeo adicionado! 🎉');
+    videosExtra.unshift({ id: Date.now().toString(), file, title, desc });
+    localStorage.setItem('meutok_extra', JSON.stringify(videosExtra));
+    closeUpload(); applyFilter(); showToast('Vídeo adicionado! 🎉');
   }
   window.openUpload=openUpload; window.closeUpload=closeUpload; window.addVideo=addVideo;
-
-  function save() { localStorage.setItem('meutok_local', JSON.stringify(videos)); }
 
   function showToast(msg) {
     const t = document.getElementById('toast');
@@ -584,12 +553,10 @@
   window.onSearch  = onSearch;
   window.clearSearch = clearSearch;
 
-  // aguarda Firebase e inicia
-  if (window._firebaseReady) { filtered=[...videos]; applyFilter(); }
-  else {
-    filtered=[...videos]; applyFilter();
-    window.addEventListener('firebaseReady', ()=>{ if(currentId) loadComments(currentId); });
-  }
+  applyFilter();
+  window.addEventListener('firebaseReady', () => {
+    if (currentId) loadComments(currentId);
+  });
 </script>
 </body>
 </html>
