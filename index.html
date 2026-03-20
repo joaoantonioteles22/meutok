@@ -503,14 +503,23 @@
         const rect = pt.getBoundingClientRect();
         vid.currentTime = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)) * vid.duration;
       };
-      let dragging = false;
-      pw.addEventListener('click',     e => seekTo(e.clientX));
-      pw.addEventListener('mousedown', () => dragging = true);
-      window.addEventListener('mouseup', () => dragging = false);
-      window.addEventListener('mousemove', e => { if (dragging) seekTo(e.clientX); });
-      pw.addEventListener('touchstart', () => dragging = true, { passive:true });
-      pw.addEventListener('touchend',   () => dragging = false);
-      pw.addEventListener('touchmove',  e => { if (dragging) seekTo(e.touches[0].clientX); e.preventDefault(); }, { passive:false });
+      // mouse drag — limpa listeners após soltar
+      pw.addEventListener('mousedown', e => {
+        e.preventDefault();
+        seekTo(e.clientX);
+        const onMove = e => seekTo(e.clientX);
+        const onUp   = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+      });
+      // touch drag
+      pw.addEventListener('touchstart', e => {
+        seekTo(e.touches[0].clientX);
+        const onMove = e => { seekTo(e.touches[0].clientX); e.preventDefault(); };
+        const onEnd  = () => { pw.removeEventListener('touchmove', onMove); pw.removeEventListener('touchend', onEnd); };
+        pw.addEventListener('touchmove', onMove, { passive:false });
+        pw.addEventListener('touchend', onEnd);
+      }, { passive:true });
 
       let lastTap = 0;
       slide.addEventListener('click', e => {
