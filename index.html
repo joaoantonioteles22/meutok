@@ -760,28 +760,24 @@
     if (!file) { showToast('Selecione um arquivo!'); return; }
     if (!name) { showToast('Digite o nome da música!'); return; }
 
-    const prog = document.getElementById('musicUploadModalProgress');
-    const bar  = document.getElementById('musicUploadModalBar');
-    const txt  = document.getElementById('musicUploadModalText');
-    prog.style.display = 'block';
-    bar.style.width = '10%';
-    txt.textContent = 'Enviando...';
+    closeMusicUploadModal();
+    showUploadLoading('Enviando música: ' + name);
 
     try {
-      // usa o nome bonito como nome do arquivo (sem caracteres especiais)
-      const safeName = name.replace(/[^a-zA-Z0-9 \-_]/g, '').replace(/\s+/g, '_');
+      const safeName = name.replace(/[^a-zA-Z0-9 _]/g, '').replace(/\s+/g, '_');
       const ext = file.name.split('.').pop();
       const path = 'music/' + safeName + '.' + ext;
+      let fake = 0;
+      const fakeTimer = setInterval(() => { fake = Math.min(fake + 4, 85); updateUploadLoading(fake); }, 200);
       const { error } = await _supabase.storage.from('videos').upload(path, file, { upsert: true });
+      clearInterval(fakeTimer);
       if (error) throw error;
-      bar.style.width = '100%';
-      txt.textContent = 'Upload concluído!';
-      setTimeout(() => { closeMusicUploadModal(); renderMusic(); }, 1200);
+      updateUploadLoading(100);
+      setTimeout(() => { hideUploadLoading(); renderMusic(); showToast('Música publicada! 🎵'); }, 800);
     } catch(e) {
-      txt.textContent = 'Erro: ' + e.message;
-      bar.style.width = '0%';
-      console.error('Upload error:', e);
+      hideUploadLoading();
       showToast('Erro: ' + e.message);
+      console.error(e);
     }
   }
   window.openMusicUploadModal = openMusicUploadModal;
