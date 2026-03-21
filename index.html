@@ -1244,28 +1244,25 @@
     if(!file)  { showToast('Selecione um vídeo!'); return; }
     if(!title) { showToast('Adicione um título!'); return; }
 
-    const prog = document.getElementById('videoUploadProgress');
-    const bar  = document.getElementById('videoUploadBar');
-    const txt  = document.getElementById('videoUploadText');
-    if(prog) prog.style.display='block';
-    if(bar)  bar.style.width='10%';
-    if(txt)  txt.textContent='Enviando vídeo...';
+    closeUpload();
+    window.showUploadLoading('Enviando vídeo: ' + file.name);
 
     try {
-      const safeName = title.replace(/[^a-zA-Z0-9 \-_]/g,'').replace(/\s+/g,'_');
+      const safeName = title.replace(/[^a-zA-Z0-9 _]/g,'').replace(/\s+/g,'_');
       const ext  = file.name.split('.').pop();
       const path = safeName + '_' + Date.now() + '.' + ext;
-      const { data, error } = await _supabase.storage.from('videos').upload(path, file, { upsert: true });
+      let fake = 0;
+      const fakeTimer = setInterval(() => { fake = Math.min(fake+3, 85); window.updateUploadLoading(fake); }, 200);
+      const { error } = await _supabase.storage.from('videos').upload(path, file, { upsert: true });
+      clearInterval(fakeTimer);
       if(error) throw error;
-      if(bar) bar.style.width='100%';
-      if(txt) txt.textContent='Upload concluído!';
+      window.updateUploadLoading(100);
       const url = 'https://xzelxpdylewqtwwvzfqc.supabase.co/storage/v1/object/public/videos/' + path;
       videosExtra.unshift({ id:'extra_'+Date.now(), url, title, desc, category:'videos', fromSupabase:true });
       localStorage.setItem('meutok_extra', JSON.stringify(videosExtra));
-      setTimeout(() => { closeUpload(); applyFilter(); showToast('Vídeo publicado! 🎉'); }, 1200);
+      setTimeout(() => { window.hideUploadLoading(); applyFilter(); showToast('Vídeo publicado! 🎉'); }, 800);
     } catch(e) {
-      if(txt) txt.textContent='Erro: ' + e.message;
-      if(bar) bar.style.width='0%';
+      window.hideUploadLoading();
       showToast('Erro: ' + e.message);
       console.error(e);
     }
