@@ -1208,28 +1208,60 @@
 
   function openUpload(){
     document.getElementById('uploadModal').classList.add('open');
-    document.getElementById('videoDropLabel').textContent = 'Arraste o vídeo aqui';
-    document.getElementById('videoDrop').style.borderColor = '#222';
+    const lbl = document.getElementById('videoDropLabel');
+    const drp = document.getElementById('videoDrop');
+    if(lbl) lbl.textContent = 'Arraste o vídeo aqui';
+    if(drp) drp.style.borderColor = '#222';
+    window._pendingVideoFile = null;
   }
   function closeUpload(){
     document.getElementById('uploadModal').classList.remove('open');
-    document.getElementById('videoTitle').value='';
-    document.getElementById('videoDesc').value='';
-    document.getElementById('videoDropLabel').textContent='Arraste o vídeo aqui';
-    document.getElementById('videoDrop').style.borderColor='#222';
-    document.getElementById('videoUploadProgress').style.display='none';
-    document.getElementById('videoUploadBar').style.width='0%';
+    const title = document.getElementById('videoTitle');
+    const desc  = document.getElementById('videoDesc');
+    const lbl   = document.getElementById('videoDropLabel');
+    const drp   = document.getElementById('videoDrop');
+    const prog  = document.getElementById('videoUploadProgress');
+    const bar   = document.getElementById('videoUploadBar');
+    if(title) title.value='';
+    if(desc)  desc.value='';
+    if(lbl)   lbl.textContent='Arraste o vídeo aqui';
+    if(drp)   drp.style.borderColor='#222';
+    if(prog)  prog.style.display='none';
+    if(bar)   bar.style.width='0%';
     window._pendingVideoFile = null;
-    window._pendingVideoName = null;
   }
-  function addVideo(){
-    const file=document.getElementById('videoFile').value.trim(),title=document.getElementById('videoTitle').value.trim();
-    const desc=document.getElementById('videoDesc').value.trim(),category=document.getElementById('videoCategory').value;
-    if(!file){showToast('Digite o nome do arquivo!');return;}
-    if(!title){showToast('Adicione um título!');return;}
-    videosExtra.unshift({id:'extra_'+Date.now(),file,title,desc,category});
-    localStorage.setItem('meutok_extra',JSON.stringify(videosExtra));
-    closeUpload();applyFilter();if(category==='music')renderMusic();showToast('Vídeo adicionado! 🎉');
+  async function addVideo(){
+    const title = (document.getElementById('videoTitle').value||'').trim();
+    const desc  = (document.getElementById('videoDesc').value||'').trim();
+    const file  = window._pendingVideoFile;
+    if(!file)  { showToast('Selecione um vídeo!'); return; }
+    if(!title) { showToast('Adicione um título!'); return; }
+
+    const prog = document.getElementById('videoUploadProgress');
+    const bar  = document.getElementById('videoUploadBar');
+    const txt  = document.getElementById('videoUploadText');
+    if(prog) prog.style.display='block';
+    if(bar)  bar.style.width='10%';
+    if(txt)  txt.textContent='Enviando vídeo...';
+
+    try {
+      const safeName = title.replace(/[^a-zA-Z0-9 \-_]/g,'').replace(/\s+/g,'_');
+      const ext  = file.name.split('.').pop();
+      const path = safeName + '_' + Date.now() + '.' + ext;
+      const { data, error } = await _supabase.storage.from('videos').upload(path, file, { upsert: true });
+      if(error) throw error;
+      if(bar) bar.style.width='100%';
+      if(txt) txt.textContent='Upload concluído!';
+      const url = 'https://xzelxpdylewqtwwvzfqc.supabase.co/storage/v1/object/public/videos/' + path;
+      videosExtra.unshift({ id:'extra_'+Date.now(), url, title, desc, category:'videos', fromSupabase:true });
+      localStorage.setItem('meutok_extra', JSON.stringify(videosExtra));
+      setTimeout(() => { closeUpload(); applyFilter(); showToast('Vídeo publicado! 🎉'); }, 1200);
+    } catch(e) {
+      if(txt) txt.textContent='Erro: ' + e.message;
+      if(bar) bar.style.width='0%';
+      showToast('Erro: ' + e.message);
+      console.error(e);
+    }
   }
   function onVideoDrop(event) {
     event.preventDefault();
