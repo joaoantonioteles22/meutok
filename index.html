@@ -1050,8 +1050,9 @@
       const liked=!!likedLocally[v.id];
       const slide=document.createElement('div');
       slide.className='video-slide'; slide.dataset.index=i; slide.dataset.id=v.id;
+      const videoSrc = v.fromSupabase ? v.url : VIDEO_FOLDER + v.file;
       slide.innerHTML=`
-        <video src="${VIDEO_FOLDER}${v.file}" loop playsinline preload="auto" muted></video>
+        <video src="${videoSrc}" loop playsinline preload="auto" muted></video>
         <div class="play-indicator" id="pi-${i}"></div>
         <div class="video-info">
           <div class="video-title">${esc(v.title)}</div>
@@ -1065,7 +1066,7 @@
           <div class="action-btn" onclick="openMobileComments()">
             <div class="action-icon">💬</div><span>Comentar</span>
           </div>
-          <div class="action-btn" onclick="downloadVideo('${VIDEO_FOLDER}${v.file}','${v.title}')">
+          <div class="action-btn" onclick="downloadVideo(v.fromSupabase ? v.url : '${VIDEO_FOLDER}${v.file}','${v.title}')">
             <div class="action-icon">⬇️</div><span>Baixar</span>
           </div>
           ${isAdmin?`<div class="action-btn" onclick="deleteVideo('${v.id}')"><div class="action-icon">🗑️</div><span>Deletar</span></div>`:''}
@@ -1213,6 +1214,10 @@
     document.getElementById('uploadModal').classList.remove('open');
     document.getElementById('videoTitle').value='';
     document.getElementById('videoDesc').value='';
+    document.getElementById('videoDropLabel').textContent='Arraste o vídeo aqui';
+    document.getElementById('videoDrop').style.borderColor='#222';
+    document.getElementById('videoUploadProgress').style.display='none';
+    document.getElementById('videoUploadBar').style.width='0%';
     window._pendingVideoFile = null;
     window._pendingVideoName = null;
   }
@@ -1229,6 +1234,7 @@
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (!file) return;
+    window._pendingVideoFile = file;
     window._pendingVideoName = file.name;
     document.getElementById('videoDropLabel').textContent = '✅ ' + file.name;
     document.getElementById('videoDrop').style.borderColor = '#00f2ea';
@@ -1238,6 +1244,7 @@
   function onVideoFileSelect(input) {
     const file = input.files[0];
     if (!file) return;
+    window._pendingVideoFile = file;
     window._pendingVideoName = file.name;
     document.getElementById('videoDropLabel').textContent = '✅ ' + file.name;
     document.getElementById('videoDrop').style.borderColor = '#00f2ea';
