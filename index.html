@@ -305,7 +305,7 @@
     <div id="section-videos" style="flex:1;display:flex;overflow:hidden;">
       <div id="feed-area" style="position:relative;">
         <!-- botão upload vídeo (admin) -->
-        <button id="videoUploadBtn" onclick="openUpload()" style="display:none;position:absolute;top:10px;right:10px;z-index:10;padding:8px 16px;background:linear-gradient(135deg,#00f2ea,#3B8BD4);border:none;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#0a0a0a;cursor:pointer;transition:opacity .2s;">+ Upload</button>
+
         <div id="video-col">
           <div id="feed"></div>
           <div class="center-msg" id="noResults"><div class="big-icon">🔍</div><h2>Sem resultados</h2><p>Nenhum vídeo com esse título</p></div>
@@ -769,6 +769,8 @@
     } catch(e) {
       txt.textContent = 'Erro: ' + e.message;
       bar.style.width = '0%';
+      console.error('Upload error:', e);
+      showToast('Erro: ' + e.message);
     }
   }
   window.openMusicUploadModal = openMusicUploadModal;
@@ -1039,9 +1041,8 @@
 
   function renderFeed() {
     const feed=document.getElementById('feed'), noRes=document.getElementById('noResults');
-    document.getElementById('adminNavBtn').textContent=isAdmin?'+ Vídeo':'+ Admin';
-    const vub = document.getElementById('videoUploadBtn');
-    if (vub) vub.style.display = isAdmin ? 'block' : 'none';
+    document.getElementById('adminNavBtn').textContent='+ Admin';
+
     feed.innerHTML=''; feed.style.display=noRes.style.display='none';
     if(filtered.length===0){noRes.style.display='flex';return;}
     feed.style.display='block';
@@ -1050,7 +1051,7 @@
       const liked=!!likedLocally[v.id];
       const slide=document.createElement('div');
       slide.className='video-slide'; slide.dataset.index=i; slide.dataset.id=v.id;
-      const videoSrc = v.fromSupabase ? v.url : VIDEO_FOLDER + v.file;
+      const videoSrc = v.fromSupabase ? v.url : (VIDEO_FOLDER + (v.file||''));
       slide.innerHTML=`
         <video src="${videoSrc}" loop playsinline preload="auto" muted></video>
         <div class="play-indicator" id="pi-${i}"></div>
