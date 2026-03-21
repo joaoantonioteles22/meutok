@@ -761,7 +761,7 @@
     if (!name) { showToast('Digite o nome da música!'); return; }
 
     closeMusicUploadModal();
-    showUploadLoading('Enviando música: ' + name);
+    window.showUploadLoading('Enviando música: ' + name);
 
     try {
       const safeName = name.replace(/[^a-zA-Z0-9 _]/g, '').replace(/\s+/g, '_');
@@ -772,10 +772,10 @@
       const { error } = await _supabase.storage.from('videos').upload(path, file, { upsert: true });
       clearInterval(fakeTimer);
       if (error) throw error;
-      updateUploadLoading(100);
-      setTimeout(() => { hideUploadLoading(); renderMusic(); showToast('Música publicada! 🎵'); }, 800);
+      window.updateUploadLoading(100);
+      setTimeout(() => { window.hideUploadLoading(); renderMusic(); showToast('Música publicada! 🎵'); }, 800);
     } catch(e) {
-      hideUploadLoading();
+      window.hideUploadLoading();
       showToast('Erro: ' + e.message);
       console.error(e);
     }
@@ -1316,7 +1316,9 @@
     if(ov) ov.classList.remove('open');
   }
   window.showUploadLoading = showUploadLoading;
+  window.showUploadLoading = showUploadLoading;
   window.hideUploadLoading = hideUploadLoading;
+  window.updateUploadLoading = updateUploadLoading;
 
   function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
   window.showToast=showToast;window.onSearch=onSearch;window.clearSearch=clearSearch;
