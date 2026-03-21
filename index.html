@@ -1041,7 +1041,7 @@
 
   function renderFeed() {
     const feed=document.getElementById('feed'), noRes=document.getElementById('noResults');
-    document.getElementById('adminNavBtn').textContent='+ Admin';
+    document.getElementById('adminNavBtn').textContent=isAdmin?'+ Upload':'+ Admin';
 
     feed.innerHTML=''; feed.style.display=noRes.style.display='none';
     if(filtered.length===0){noRes.style.display='flex';return;}
