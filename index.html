@@ -1067,7 +1067,7 @@
           <div class="action-btn" onclick="openMobileComments()">
             <div class="action-icon">💬</div><span>Comentar</span>
           </div>
-          <div class="action-btn" onclick="downloadVideo(v.fromSupabase ? v.url : '${VIDEO_FOLDER}${v.file}','${v.title}')">
+          <div class="action-btn" onclick="downloadVideo('${v.fromSupabase ? v.url : VIDEO_FOLDER + v.file}','${v.title}')">
             <div class="action-icon">⬇️</div><span>Baixar</span>
           </div>
           ${isAdmin?`<div class="action-btn" onclick="deleteVideo('${v.id}')"><div class="action-icon">🗑️</div><span>Deletar</span></div>`:''}
